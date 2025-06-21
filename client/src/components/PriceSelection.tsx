@@ -1,3 +1,4 @@
+import priceOptions from '../config/priceOptions';
 
 interface PriceSelectionProps {
   onSelect: (price: string) => void
@@ -7,11 +8,11 @@ interface PriceSelectionProps {
 function PriceSelection ({ onSelect }: PriceSelectionProps) {
 
   // price options
-  const options = ['Affordable', 'Average', 'Expensive'];
+  const options = priceOptions;
 
   return (
     <div>
-      <h2>Choose a price</h2>
+      <h2>What is your budget?</h2>
       {options.map((option) => (
         <button
           key={option}

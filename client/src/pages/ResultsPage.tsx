@@ -1,13 +1,15 @@
+import { useNavigate } from 'react-router';
 
-interface ResultsPageProps {
-  onSelect: (bottle: string) => void
-}
+function ResultsPage () {
+  const navigate = useNavigate();
 
-// onSelect props is a function from the parent component
-function ResultsPage ({ onSelect }: ResultsPageProps
-) {
-  // To flow from back end when ready: bottle suggestions
+  // Bottle suggestions need to be updated and connected to database once ready
   const options = ['Bottle 1', 'Bottle 2', 'Bottle 3'];
+
+  const handleSelect = (bottle: string) => {
+    // passing the bottle name via a query param
+    navigate(`/summary?bottle=${encodeURIComponent(bottle)}`);
+  };
 
   return (
     <div>
@@ -15,7 +17,7 @@ function ResultsPage ({ onSelect }: ResultsPageProps
       {options.map((option) => (
         <button
           key={option}
-          onClick={ () => onSelect(option)}
+          onClick={ () => handleSelect(option)}
         >
           {option}
         </button>

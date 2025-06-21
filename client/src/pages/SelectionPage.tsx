@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import PairingSelection from './PairingSelection';
-import PriceSelection from './PriceSelection';
-import BottlesSuggestions from './BottlesSuggestions';
+import PairingSelection from '../components/PairingSelection';
+import PriceSelection from '../components/PriceSelection';
+import ResultsPage from './ResultsPage';
 
 
 
-function WineSelection () {
+function SelectionPage () {
   const [pairing, setPairing] = useState<string | null>(null);
   const [price, setPrice] = useState<string | null>(null);
   const [bottle, setBottle] = useState<string | null>(null);
@@ -30,7 +30,7 @@ function WineSelection () {
       {/* Show Select Bottle */}
       {pairing && price && !bottle && (
         <div>
-          <BottlesSuggestions onSelect={setBottle} />
+          <ResultsPage onSelect={setBottle} />
         </div>
       )}
 
@@ -47,4 +47,4 @@ function WineSelection () {
   )
 }
 
-export default WineSelection;
+export default SelectionPage;

@@ -1,9 +1,10 @@
-interface BottlesSuggestionsProps {
+
+interface ResultsPageProps {
   onSelect: (bottle: string) => void
 }
 
 // onSelect props is a function from the parent component
-function BottlesSuggestions ({ onSelect }: BottlesSuggestionsProps
+function ResultsPage ({ onSelect }: ResultsPageProps
 ) {
   // To flow from back end when ready: bottle suggestions
   const options = ['Bottle 1', 'Bottle 2', 'Bottle 3'];
@@ -24,4 +25,4 @@ function BottlesSuggestions ({ onSelect }: BottlesSuggestionsProps
   )
 }
 
-export default BottlesSuggestions;
+export default ResultsPage;

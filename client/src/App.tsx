@@ -1,13 +1,16 @@
-import './App.css'
-import LandingPage from './pages/LandingPage'
-import WineSelection from './components/WineSelection';
+import {Routes, Route} from 'react-router';
+import './App.css';
+import LandingPage from './pages/LandingPage';
+import SelectionPage from './pages/SelectionPage';
+import ResultsPage from './pages/ResultsPage';
 
 function App () {
   return (
-    <div>
-      <LandingPage />
-      <WineSelection />
-    </div>
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/selection" element={<SelectionPage />} />
+      <Route path="/results" element={<ResultsPage />} />
+    </Routes>
   )
 }
 

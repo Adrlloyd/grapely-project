@@ -8,7 +8,6 @@ import ResultsPage from './ResultsPage';
 function SelectionPage () {
   const [pairing, setPairing] = useState<string | null>(null);
   const [price, setPrice] = useState<string | null>(null);
-  const [bottle, setBottle] = useState<string | null>(null);
 
 
   return (
@@ -28,20 +27,12 @@ function SelectionPage () {
       )}
 
       {/* Show Select Bottle */}
-      {pairing && price && !bottle && (
+      {pairing && price && (
         <div>
-          <ResultsPage onSelect={setBottle} />
+          <ResultsPage />
         </div>
       )}
 
-      {/* Show Choices */}
-      {pairing && price && bottle && (
-        <div>
-          <p>Pairing: {pairing}</p>
-          <p>Price: {price}</p>
-          <p>Bottle Choice: {bottle}</p>
-        </div>
-      )}
 
     </>
   )

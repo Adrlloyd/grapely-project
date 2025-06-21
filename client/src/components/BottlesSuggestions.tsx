@@ -5,7 +5,7 @@ interface BottlesSuggestionsProps {
 // onSelect props is a function from the parent component
 function BottlesSuggestions ({ onSelect }: BottlesSuggestionsProps
 ) {
-  // pairing options
+  // To flow from back end when ready: bottle suggestions
   const options = ['Bottle 1', 'Bottle 2', 'Bottle 3'];
 
   return (

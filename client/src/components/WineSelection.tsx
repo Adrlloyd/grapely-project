@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PairingSelection from './PairingSelection';
 import PriceSelection from './PriceSelection';
 import BottlesSuggestions from './BottlesSuggestions';

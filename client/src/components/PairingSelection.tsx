@@ -1,3 +1,4 @@
+import pairingOptions from '../config/pairingOptions';
 
 interface PairingSelectionProps {
   onSelect: (pairing: string) => void
@@ -7,11 +8,11 @@ interface PairingSelectionProps {
 function PairingSelection ({ onSelect }: PairingSelectionProps) {
 
   // pairing options
-  const options = ['No pairing', 'Red Meat', 'Fish', 'Cheese'];
+  const options = pairingOptions;
 
   return (
     <div>
-      <h2>Choose a pairing</h2>
+      <h2>What do you fancy eating?</h2>
       {options.map((option) => (
         <button
           key={option}

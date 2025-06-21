@@ -1,0 +1,51 @@
+.region-buttons {
+  display: none;
+}
+
+.region-buttons.mobile {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  flex: 1;
+}
+
+.region-buttons.desktop {
+  display: none;
+}
+
+.region-button {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 1rem;
+  font-weight: 600;
+  color: #333;
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.region-button:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transform: scale(1.02);
+}
+
+.desktop-button {
+  height: 8rem;
+}
+
+@media screen and (min-width: 611px) {
+  .region-buttons.mobile {
+    display: none;
+  }
+
+  .region-buttons.desktop {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    padding: 2rem;
+    flex: 1;
+    align-content: center;
+  }
+}

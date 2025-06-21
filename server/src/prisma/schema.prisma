@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Wine {
+  @@map("wines") // << map model to lowercase table. The standard in SQL is lowercase aka this will be wines
+
+  id          String   @id @default(uuid())
+  name        String
+  grape       String?
+  color       String?
+  sparkling   Boolean  @default(false)
+  region      String?
+  country     String?
+  price       Float?
+  image_url   String?
+  description String?
+  pairingOptions String[]
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}

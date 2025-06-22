@@ -1,9 +1,9 @@
 import { useNavigate, useLocation } from 'react-router';
 import '../styles/Results.css';
-import wineData from '../config/wineSample.ts';
+import wineResults from '../config/wineSample.ts';
 
 // TO BE UDPATED: Fetch call to Back end
-const options = wineData.wineResults;
+const options = wineResults;
 
 function Results () {
 

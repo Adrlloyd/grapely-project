@@ -4,7 +4,8 @@ import PairingSelection from '../components/PairingSelection';
 import PriceSelection from '../components/PriceSelection';
 
 
-function SelectionPage () {
+
+function Selection () {
   const [pairing, setPairing] = useState<string | null>(null);
   const [price, setPrice] = useState<string | null>(null);
 
@@ -57,4 +58,4 @@ function SelectionPage () {
   )
 }
 
-export default SelectionPage;
+export default Selection;

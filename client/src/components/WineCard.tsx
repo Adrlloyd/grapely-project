@@ -1,9 +1,9 @@
 // Page showing the detail
 import { useLocation } from 'react-router';
+import '../styles/WineCard.css';
 
 
-
-function BottlePage () {
+function WineCard () {
   // Get URL query string
   const { search } = useLocation();
 
@@ -24,4 +24,4 @@ function BottlePage () {
 
 }
 
-export default BottlePage;
+export default WineCard;

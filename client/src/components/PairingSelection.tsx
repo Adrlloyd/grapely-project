@@ -18,6 +18,7 @@ function PairingSelection ({ onSelect }: PairingSelectionProps) {
         <button
           key={option}
           onClick={ () => onSelect(option)}
+          className = "pairing-button"
         >
           {option}
         </button>

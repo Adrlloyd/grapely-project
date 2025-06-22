@@ -19,6 +19,7 @@ function PriceSelection ({ onSelect }: PriceSelectionProps) {
         <button
           key={option}
           onClick={ () => onSelect(option)}
+          className = "price-button"
         >
           {option}
         </button>

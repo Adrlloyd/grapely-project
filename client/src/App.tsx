@@ -1,14 +1,23 @@
-import './App.css'
-import LandingPage from './pages/LandingPage'
+import { Routes, Route } from 'react-router';
+import './App.css';
 import Navbar from './components/Navbar'
+import LandingPage from './pages/LandingPage';
+import SelectionPage from './pages/SelectionPage';
+import ResultsPage from './pages/ResultsPage';
+import SummaryPage from './pages/SummaryPage';
 
-function App() {
+function App () {
   return (
-    <>
+    <div>
       <Navbar />
-      <LandingPage />
-    </>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/selection" element={<SelectionPage />} />
+        <Route path="/results" element={<ResultsPage />} />
+        <Route path="/summary" element={<SummaryPage />} />
+      </Routes>
+    </div>
   )
 }
 
-export default App
+export default App;

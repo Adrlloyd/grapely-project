@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import LandingPage from './pages/LandingPage';
 import SelectionPage from './pages/SelectionPage';
 import ResultsPage from './pages/ResultsPage';
+import BottlePage from './pages/BottlePage';
 
 function App () {
   return (
@@ -13,6 +14,7 @@ function App () {
         <Route path="/" element={<LandingPage />} />
         <Route path="/selection" element={<SelectionPage />} />
         <Route path="/results" element={<ResultsPage />} />
+        <Route path="/summary" element={<BottlePage />} />
       </Routes>
     </div>
   )

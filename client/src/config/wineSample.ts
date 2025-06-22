@@ -1,20 +1,5 @@
 // Provisary sample data copied from back end
 
-const wineBottle = {
-  name: 'Château Margaux 2015',
-  grape: 'Cabernet Sauvignon',
-  color: 'Red',
-  sparkling: false,
-  region: 'Bordeaux',
-  country: 'France',
-  price: 799.99,
-  image_url:
-    'https://www.finewinedirect.co.uk/cdn/shop/products/chateau_margaux_d3911ba9-d750-4806-afd3-1a21156833d6_480x480.png?v=1549643511',
-  description:
-    'A full-bodied, complex red wine with notes of blackberry, truffle, and oak.',
-  pairingOptions: ['Red Meat']
-}
-
 const wineResults = [
   {
     name: 'Château Margaux 2015',
@@ -73,4 +58,4 @@ const wineResults = [
   },
 ]
 
-export default { wineBottle, wineResults };
+export default wineResults;

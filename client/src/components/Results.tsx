@@ -37,6 +37,7 @@ function Results () {
         <button
           key={option}
           onClick={() => handleSelect(option)}
+          className = "bottle-button"
         >
           {option}
         </button>

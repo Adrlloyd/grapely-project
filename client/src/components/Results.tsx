@@ -1,5 +1,9 @@
 import { useNavigate, useLocation } from 'react-router';
 import '../styles/Results.css';
+import wineData from '../config/wineSample.ts';
+
+// TO BE UDPATED: Fetch call to Back end
+const options = wineData.wineResults;
 
 function Results () {
 
@@ -14,9 +18,6 @@ function Results () {
   const country = query.get('country') || '';
   const pairing = query.get('pairing') || '';
   const price = query.get('price') || '';
-
-  // TO BE UDPATED: Fetch call to Back end
-  const options = ['Bottle 1', 'Bottle 2', 'Bottle 3'];
 
   const navigate = useNavigate();
 
@@ -33,16 +34,19 @@ function Results () {
   return (
     <div>
       <h2>Choose a bottle</h2>
-      {options.map((option) => (
-        <button
-          key={option}
-          onClick={() => handleSelect(option)}
-          className = "bottle-button"
-        >
-          {option}
-        </button>
-      )
-      )}
+      <div className="wine-list">
+        {options.map((wine) => (
+          <div key={wine.name} className="wine-card" onClick={() => handleSelect(wine.name)}>
+            <img src={wine.image_url} alt={wine.name} className="wine-image" />
+            <div className="wine-info">
+              <h3>{wine.name}</h3>
+              <p><strong>Grape: </strong>{wine.grape}</p>
+              <p><strong>Region: </strong>{wine.region}</p>
+              <p><strong>Price: </strong>{wine.price}</p>
+            </div>
+          </div>))
+        }
+      </div>
     </div>
   )
 }

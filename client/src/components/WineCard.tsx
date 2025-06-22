@@ -1,6 +1,11 @@
 // Page showing the detail
 import { useLocation } from 'react-router';
 import '../styles/WineCard.css';
+// import wineBottle from '../config/WineSample.ts';
+
+// TO BE UDPATED: using sample bottle data located in config file
+// const {name, grap, color, sparkling, region, country, price, image_url, description, pairingOptions} = wineBottle;
+
 
 
 function WineCard () {

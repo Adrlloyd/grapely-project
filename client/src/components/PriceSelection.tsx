@@ -1,4 +1,6 @@
 import priceOptions from '../config/priceOptions';
+import '../styles/PriceSelection.css';
+
 
 interface PriceSelectionProps {
   onSelect: (price: string) => void

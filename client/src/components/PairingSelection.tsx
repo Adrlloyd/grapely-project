@@ -1,4 +1,5 @@
 import pairingOptions from '../config/pairingOptions';
+import '../styles/PairingSelection.css';
 
 interface PairingSelectionProps {
   onSelect: (pairing: string) => void

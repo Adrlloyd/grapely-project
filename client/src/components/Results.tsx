@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from 'react-router';
+import '../styles/Results.css';
 
-function ResultsPage () {
+function Results () {
 
   // Get URL query string
   const { search } = useLocation();
@@ -45,4 +46,4 @@ function ResultsPage () {
   )
 }
 
-export default ResultsPage;
+export default Results;

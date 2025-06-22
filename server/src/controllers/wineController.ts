@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 
 import findWines from '../models/wineModel'
 
-const getWines = async (req: Request, res: Response): Promise<void> => {
+const getFilteredWines = async (req: Request, res: Response): Promise<void> => {
   try {
     const { country, priceBracket, pairing } = req.body;
     if (!country || !priceBracket || !pairing) {
@@ -17,4 +17,28 @@ const getWines = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
-export { getWines }
+const getAllWines = async (req: Request, res: Response): Promise<void> => {
+  try {
+
+  } catch (error) {
+
+  }
+};
+
+const getWineById = async (req: Request, res: Response): Promise<void> => {
+  try {
+
+  } catch (error) {
+
+  }
+};
+
+const getSurpriseWine = async (req: Request, res: Response): Promise<void> => {
+  try {
+
+  } catch (error) {
+
+  }
+};
+
+export { getFilteredWines, getAllWines, getWineById, getSurpriseWine }

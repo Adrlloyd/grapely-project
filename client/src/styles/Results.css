@@ -1,10 +1,28 @@
-.bottle-button {
+.wine-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.wine-card {
+  border: 1px solid gray;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  width: 300px;
+  cursor: pointer;
+  transition: transform 0.2s;
   background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 1rem;
-  font-weight: 600;
-  color: #333;
-  padding: 1rem;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wine-card:hover {
+  transform: scale(1.02);
+  border: 3px solid #722F37;
+}
+
+.wine-image {
+  width: 100px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
 }

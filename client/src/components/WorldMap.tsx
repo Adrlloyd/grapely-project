@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import type { Feature } from 'geojson';
 import '../styles/WorldMap.css';
@@ -7,6 +8,7 @@ import type { RegionName } from '../config/wineRegions';
 import { getCountryRegion } from '../utils/geo';
 import { getFeatureName } from '../types/geojson';
 import RegionCardList from './RegionCardList';
+
 
 const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
@@ -23,6 +25,21 @@ function WorldMap() {
     setSelectedRegion(null);
     setSelectedCountry(null);
   };
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // navigate to SelectionPage once both country and region are selected
+    if (selectedRegion && selectedCountry) {
+
+      const encodedRegion = encodeURIComponent(selectedRegion);
+      const encodedCountry = encodeURIComponent(selectedCountry);
+
+      navigate(`/selection?country=${encodedCountry}&region=${encodedRegion}`);
+    }
+  },
+    [selectedRegion, selectedCountry, navigate]
+  )
 
   if (!selectedRegion) {
     return (

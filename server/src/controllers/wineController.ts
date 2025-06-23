@@ -1,20 +1,94 @@
-import { Request, Response } from 'express'
+import type { Request, Response } from 'express'
+import type { Wine, Prisma } from '../generated/prisma';
 
-import findWines from '../models/wineModel'
+import prisma from '../prisma';
 
-const getWines = async (req: Request, res: Response): Promise<void> => {
+// const PRICE_BRACKETS = {
+//   cheap: (price: number) => price >= 0 && price < 10,
+//   moderatelyCheap: (price: number) => price >= 10 && price < 25,
+//   moderatelyExpensive: (price: number) => price >= 25 && price < 50,
+//   expensive: (price: number) => price >= 50
+// };
+
+const getRecommendedWines = async (req: Request, res: Response): Promise<any> => {
+  const { country, priceBracket, pairing } = req.body;
+
+  const filters: Prisma.WineWhereInput = {};
+  filters.country = country;
+  if (priceBracket.min !== undefined && priceBracket.max !== undefined) {
+    filters.price = {
+      gte: priceBracket.min,
+      lt: priceBracket.max
+    };
+  }
+  if (pairing) filters.pairingOptions = { has: pairing };
+
   try {
-    const { country, priceBracket, pairing } = req.body;
-    if (!country || !priceBracket || !pairing) {
-      res.status(400).json({ message: 'Missing information on country of origin, price bracket and/or food pairing' });
-      return;
+    const isFinalStep = country && priceBracket && pairing;
+
+    const recommendedWines = await prisma.wine.findMany({
+      where: filters,
+      ...(isFinalStep
+        ? {}
+        : {
+            select: {
+              price: true,
+              pairingOptions: true,
+            }
+          })
+    }); 
+
+    const winesCount = recommendedWines.length;
+
+    if (!isFinalStep && winesCount) {
+      const overallPriceBracket = (priceBracket.min === undefined || priceBracket.max === undefined)
+        ? [Math.min(...recommendedWines.map(wine => wine.price)), Math.max(...recommendedWines.map(wine => wine.price))]
+        : [];
+
+      const availablePairings = !pairing
+        ? [...new Set(recommendedWines.flatMap(wine => wine.pairingOptions))]
+        : [];
+
+      return res.json({
+        count: winesCount,
+        overallPriceBracket: overallPriceBracket,
+        availablePairings: availablePairings,
+      })
     }
-    const wines = await findWines(country, priceBracket, pairing);
-    res.status(200).json(wines);
+
+    return res.json({
+      count: winesCount,
+      wines: recommendedWines,
+    });
+
   } catch (error) {
-    console.error('Error fetching wine list: ', error);
-    res.status(500).json({ message: 'Could not retrieve wine list' });
+    console.error('Error fetching wines: ', error);
+    res.status(500).json({ message: 'Server error' });
   }
 }
 
-export { getWines }
+const getAllWines = async (req: Request, res: Response): Promise<void> => {
+  try {
+
+  } catch (error) {
+
+  }
+};
+
+const getWineById = async (req: Request, res: Response): Promise<void> => {
+  try {
+
+  } catch (error) {
+
+  }
+};
+
+const getSurpriseWine = async (req: Request, res: Response): Promise<void> => {
+  try {
+
+  } catch (error) {
+
+  }
+};
+
+export { getRecommendedWines, getAllWines, getWineById, getSurpriseWine }

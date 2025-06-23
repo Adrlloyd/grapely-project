@@ -8,20 +8,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Wine model: represents each wine in the system, including metadata for filtering and display
 model Wine {
-  @@map("wines") // << map model to lowercase table. The standard in SQL is lowercase aka this will be wines
+  @@map("wines") // Maps the model to the 'wines' table in the database (lowercase is standard in SQL)
 
-  id          String   @id @default(uuid())
-  name        String
-  grape       String?
-  color       String?
-  sparkling   Boolean  @default(false)
-  region      String?
-  country     String?
-  price       Float?
-  image_url   String?
-  description String?
-  pairingOptions String[]
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  id             String   @id @default(uuid())                 // Unique wine ID (UUID)
+  name           String                                        // Wine name (e.g., Château Margaux 2015)
+  grape          String?                                       // Grape variety or blend (optional)
+  color          String?                                       // Wine color (e.g., Red, White, Rosé)
+  sparkling      Boolean  @default(false)                      // Indicates if the wine is sparkling (default: false)
+  region         String?                                       // Region of origin (e.g., Bordeaux)
+  country        String?                                       // Country of origin (e.g., France)
+  price          Float?                                        // Price in local currency (optional)
+  image_url      String?                                       // Link to the wine’s image (optional)
+  description    String?                                       // Description or tasting notes (optional)
+  pairingOptions String[]                                      // Array of suggested food pairings (e.g., steak, seafood)
+  ratings        Rating[]                                      // One-to-many relation: one wine can be rated by many users
+  created_at     DateTime @default(now())                      // Timestamp when the wine was added
+  updated_at     DateTime @updatedAt                           // Automatically updates on any change to the record
+}
+
+// User model: represents each registered user in the system
+model User {
+  @@map("users")
+
+  id         String   @id @default(uuid())                    // Unique user ID (UUID)
+  firstName  String                                           // User's first name
+  lastName   String                                           // User's last name
+  email      String   @unique                                 // User's email, used for login (must be unique)
+  password   String                                           // Hashed password using bcrypt
+  ratings    Rating[]                                         // One-to-many relation: one user can rate many wines
+  createdAt  DateTime @default(now())                         // Timestamp when the user was created
+  updatedAt  DateTime @updatedAt                              // Automatically updates on any change to the record
+}
+
+// Rating model: links a user to a wine with a 1–5 rating
+model Rating {
+  @@map("ratings")
+
+  id      String   @id @default(uuid())                        // Unique rating ID (UUID)
+  userId  String                                               // Foreign key to the User
+  wineId  String                                               // Foreign key to the Wine
+  score   Int                                                  // Rating score (1 to 5)
+
+  user    User     @relation(fields: [userId], references: [id])  // Relation setup for user
+  wine    Wine     @relation(fields: [wineId], references: [id])  // Relation setup for wine
+
+  @@unique([userId, wineId])                                   // Prevents a user from rating the same wine more than once
 }

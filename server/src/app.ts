@@ -1,8 +1,8 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 
-import wineRoutes from './routers/wineRoutes';
-import favouriteRoutes from './routers/favouriteRoutes';
+import wineRoutes from './routes/wineRoutes';
+import favouriteRoutes from './routes/favouriteRoutes';
 
 const app: Application = express();
 

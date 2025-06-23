@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/Searchbar.css';
+import '../styles/SearchBar.css';
 
 const SearchBar: React.FC = () => {
   const [query, setQuery] = useState('');
@@ -27,37 +27,18 @@ const SearchBar: React.FC = () => {
   };
 
   return (
-    <div className="searchbar-container">
-      <form onSubmit={handleSubmit} className="searchbar-form">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={query}
-          onChange={handleInputChange}
-          className="searchbar-input"
-          autoComplete="off"
-        />
-        <button
-          type="submit"
-          className="searchbar-button"
-        >
-          Search
-        </button>
-      </form>
-      {query && (
-        <div className="searchbar-dropdown">
-          {results.length > 0 ? (
-            <ul>
-              {results.map(wine => (
-                <li key={wine.id}>{wine.name}</li>
-              ))}
-            </ul>
-          ) : (
-            <div className="searchbar-no-results">No results found.</div>
-          )}
-        </div>
-      )}
-    </div>
+    <form className="searchbar-form" onSubmit={handleSubmit}>
+      <input
+        className="searchbar-input"
+        type="text"
+        placeholder="Search..."
+        value={query}
+        onChange={handleInputChange}
+      />
+      <button className="searchbar-button" type="submit">
+        Search
+      </button>
+    </form>
   );
 };
 

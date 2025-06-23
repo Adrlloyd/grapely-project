@@ -25,3 +25,44 @@
   font-size: 1rem;
   transition: background 0.2s;
 }
+
+.searchbar-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.searchbar-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.searchbar-dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.searchbar-dropdown li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.searchbar-dropdown li:hover {
+  background: #f0f0f0;
+}
+
+.searchbar-no-results {
+  padding: 0.5rem 1rem;
+  color: #888;
+}

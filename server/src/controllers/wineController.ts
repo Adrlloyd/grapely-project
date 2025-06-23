@@ -10,7 +10,7 @@ import prisma from '../prisma';
 //   expensive: (price: number) => price >= 50
 // };
 
-const getFilteredWines = async (req: Request, res: Response): Promise<any> => {
+const getRecommendedWines = async (req: Request, res: Response): Promise<any> => {
   const { country, priceBracket, pairing } = req.body;
 
   const filters: Prisma.WineWhereInput = {};
@@ -26,7 +26,7 @@ const getFilteredWines = async (req: Request, res: Response): Promise<any> => {
   try {
     const isFinalStep = country && priceBracket && pairing;
 
-    const filteredWines = await prisma.wine.findMany({
+    const recommendedWines = await prisma.wine.findMany({
       where: filters,
       ...(isFinalStep
         ? {}
@@ -38,15 +38,15 @@ const getFilteredWines = async (req: Request, res: Response): Promise<any> => {
           })
     }); 
 
-    const winesCount = filteredWines.length;
+    const winesCount = recommendedWines.length;
 
     if (!isFinalStep && winesCount) {
       const overallPriceBracket = (priceBracket.min === undefined || priceBracket.max === undefined)
-        ? [Math.min(...filteredWines.map(wine => wine.price)), Math.max(...filteredWines.map(wine => wine.price))]
+        ? [Math.min(...recommendedWines.map(wine => wine.price)), Math.max(...recommendedWines.map(wine => wine.price))]
         : [];
 
       const availablePairings = !pairing
-        ? [...new Set(filteredWines.flatMap(wine => wine.pairingOptions))]
+        ? [...new Set(recommendedWines.flatMap(wine => wine.pairingOptions))]
         : [];
 
       return res.json({
@@ -58,7 +58,7 @@ const getFilteredWines = async (req: Request, res: Response): Promise<any> => {
 
     return res.json({
       count: winesCount,
-      wines: filteredWines,
+      wines: recommendedWines,
     });
 
   } catch (error) {
@@ -91,4 +91,4 @@ const getSurpriseWine = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { getFilteredWines, getAllWines, getWineById, getSurpriseWine }
+export { getRecommendedWines, getAllWines, getWineById, getSurpriseWine }

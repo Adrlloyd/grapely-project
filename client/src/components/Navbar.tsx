@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import './Navbar.css';
+import '../styles/Navbar.css';
+import SearchBar from './Searchbar';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,9 +33,11 @@ const Navbar: React.FC = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-brand">
+          {/* brand name maybe logo*/}
           <span className="brand-text">Grapely</span>
         </div>
-
+        {/* search bar */}
+        <SearchBar />
         {/* desktop menu */}
         <div className="navbar-menu desktop-menu">
           {/* this maps the menu items to link objects */}
@@ -48,7 +51,6 @@ const Navbar: React.FC = () => {
             </a>
           ))}
         </div>
-
         {/* mobile menu */}
         <button
           className={`hamburger ${isMenuOpen ? 'active' : ''}`}
@@ -59,7 +61,6 @@ const Navbar: React.FC = () => {
           <span className="hamburger-line"></span>
           <span className="hamburger-line"></span>
         </button>
-
         {/* Mobile Menu */}
         <div className={`mobile-menu ${isMenuOpen ? 'active' : ''}`}>
           {menuItems.map((item, index) => (

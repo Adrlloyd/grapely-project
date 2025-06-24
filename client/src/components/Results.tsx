@@ -55,7 +55,7 @@ function Results() {
       <h2>Choose a bottle</h2>
       <div className="wine-list">
         {wines.map((wine) => (
-          <div key={wine.name} className="wine-card" onClick={() => handleSelect(wine)}>
+          <div key={wine.id} className="wine-card" onClick={() => handleSelect(wine)}>
             <img
               src={`${BASE_URL}/${wine.image_url}`}
               alt={wine.name}

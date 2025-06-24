@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -14,14 +13,14 @@ model Wine {
 
   id             String   @id @default(uuid())                 // Unique wine ID (UUID)
   name           String                                        // Wine name (e.g., Château Margaux 2015)
-  grape          String?                                       // Grape variety or blend (optional)
-  color          String?                                       // Wine color (e.g., Red, White, Rosé)
+  grape          String                                       // Grape variety or blend (optional)
+  color          String                                       // Wine color (e.g., Red, White, Rosé)
   sparkling      Boolean  @default(false)                      // Indicates if the wine is sparkling (default: false)
-  region         String?                                       // Region of origin (e.g., Bordeaux)
-  country        String?                                       // Country of origin (e.g., France)
-  price          Float?                                        // Price in local currency (optional)
-  image_url      String?                                       // Link to the wine’s image (optional)
-  description    String?                                       // Description or tasting notes (optional)
+  region         String                                       // Region of origin (e.g., Bordeaux)
+  country        String                                       // Country of origin (e.g., France)
+  price          Float                                        // Price in local currency (optional)
+  image_url      String                                       // Link to the wine’s image (optional)
+  description    String                                       // Description or tasting notes (optional)
   pairingOptions String[]                                      // Array of suggested food pairings (e.g., steak, seafood)
   ratings        Rating[]                                      // One-to-many relation: one wine can be rated by many users
   created_at     DateTime @default(now())                      // Timestamp when the wine was added

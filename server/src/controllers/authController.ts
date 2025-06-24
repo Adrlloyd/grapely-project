@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '../generated/prisma';
+
+import JWT from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -28,6 +30,10 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
         password: hashedPassword
       }
     })
+
+    // Create session token for user
+
+
 
     // Response without password
 

@@ -15,7 +15,7 @@ const getRecommendedWines = async (req, res) => {
     const { country, priceBracket, pairing } = req.body;
     const filters = {};
     filters.country = country;
-    if (priceBracket.min !== undefined && priceBracket.max !== undefined) {
+    if (priceBracket && priceBracket.min !== undefined && priceBracket.max !== undefined) {
         filters.price = {
             gte: priceBracket.min,
             lt: priceBracket.max
@@ -38,7 +38,7 @@ const getRecommendedWines = async (req, res) => {
         });
         const winesCount = recommendedWines.length;
         if (!isFinalStep && winesCount) {
-            const overallPriceBracket = (priceBracket.min === undefined || priceBracket.max === undefined)
+            const overallPriceBracket = (!priceBracket || priceBracket.min === undefined || priceBracket.max === undefined)
                 ? [Math.min(...recommendedWines.map(wine => wine.price)), Math.max(...recommendedWines.map(wine => wine.price))]
                 : [];
             const availablePairings = !pairing

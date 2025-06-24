@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import type { WineSearchResult } from '../types/wine';
+import type { Wine } from '../types/wine';
 import '../styles/SearchBar.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
 const SearchBar: React.FC = () => {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<WineSearchResult[]>([]);
+  const [results, setResults] = useState<Wine[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -70,7 +70,7 @@ const SearchBar: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="searchbar-container">
       <form className="searchbar-form" onSubmit={handleSubmit}>
         <input
           className="searchbar-input"
@@ -85,38 +85,40 @@ const SearchBar: React.FC = () => {
       </form>
       {loading && <div className="loading">Searching...</div>}
       {error && <div className="error">{error}</div>}
-      {results.length > 0 && (
-        <ul className="searchbar-results">
-          {/* this is the mapped list of results */}
-          {results.map((result) => (
-            <li key={result.id} className="searchbar-result-item">
-              <div className="wine-info">
-                <h3>{result.name}</h3>
-                <div className="wine-details">
-                  {result.grape && <span className="grape">Grape: {result.grape}</span>}
-                  {result.color && <span className="color">Color: {result.color}</span>}
-                  {result.sparkling && <span className="sparkling">✨ Sparkling</span>}
-                  {result.region && <span className="region">Region: {result.region}</span>}
-                  {result.country && <span className="country">Country: {result.country}</span>}
-                  {result.price && <span className="price">{formatPrice(result.price)}</span>}
+      {results.length > 0 && !loading && !error && (
+        <div className="searchbar-dropdown">
+          <ul className="searchbar-results">
+            {/* this is the mapped list of results */}
+            {results.map((result) => (
+              <li key={result.id} className="searchbar-result-item">
+                <div className="wine-info">
+                  <h3>{result.name}</h3>
+                  <div className="wine-details">
+                    {result.grape && <span className="grape">Grape: {result.grape}</span>}
+                    {result.color && <span className="color">Color: {result.color}</span>}
+                    {result.sparkling && <span className="sparkling">✨ Sparkling</span>}
+                    {result.region && <span className="region">Region: {result.region}</span>}
+                    {result.country && <span className="country">Country: {result.country}</span>}
+                    {result.price && <span className="price">{formatPrice(result.price)}</span>}
+                  </div>
+                  {result.description && (
+                    <p className="description">{result.description}</p>
+                  )}
+                  {result.pairingOptions.length > 0 && (
+                    <div className="pairings">
+                      <strong>Pairings:</strong> {result.pairingOptions.join(', ')}
+                    </div>
+                  )}
                 </div>
-                {result.description && (
-                  <p className="description">{result.description}</p>
-                )}
-                {result.pairingOptions.length > 0 && (
-                  <div className="pairings">
-                    <strong>Pairings:</strong> {result.pairingOptions.join(', ')}
+                {result.image_url && (
+                  <div className="wine-image">
+                    <img src={result.image_url} alt={result.name} />
                   </div>
                 )}
-              </div>
-              {result.image_url && (
-                <div className="wine-image">
-                  <img src={result.image_url} alt={result.name} />
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

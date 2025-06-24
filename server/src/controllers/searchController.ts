@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import prisma from '../prisma';
 
+
 export const searchResults = async (req: Request, res: Response) => {
   const { query } = req.query;
   if (!query || typeof query !== 'string') {
@@ -49,6 +50,8 @@ export const searchResults = async (req: Request, res: Response) => {
         image_url: true,
         description: true,
         pairingOptions: true,
+        created_at: true,
+        updated_at: true,
       },
       take: 10, // increased limit for better search experience
     });

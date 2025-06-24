@@ -36,7 +36,6 @@ function Selection() {
 
     fetchFilteredWines({ country, priceBracket: undefined })
       .then((response) => {
-        console.log('Initial response for country fetch:', response);
         if ('wines' in response) {
           console.log(`Fetched ${response.count} wines for ${country}`);
           setCountryWines(response.wines);

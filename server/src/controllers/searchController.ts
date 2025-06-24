@@ -10,16 +10,47 @@ export const searchResults = async (req: Request, res: Response) => {
   try {
     const wineSearchResults = await prisma.wine.findMany({
       where: {
-        name: {
-          contains: query,
-          mode: 'insensitive', // important for case-insensitive search
-        },
+        OR: [
+          {
+            name: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+          {
+            grape: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+          {
+            region: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+          {
+            country: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+        ],
       },
       select: {
         id: true,
         name: true,
+        grape: true,
+        color: true,
+        sparkling: true,
+        region: true,
+        country: true,
+        price: true,
+        image_url: true,
+        description: true,
+        pairingOptions: true,
       },
-      take: 5, // limit results
+      take: 10, // increased limit for better search experience
     });
     res.json(wineSearchResults);
   } catch (error) {

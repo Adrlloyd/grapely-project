@@ -29,7 +29,7 @@
 .searchbar-container {
   position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
 }
 
@@ -38,13 +38,14 @@
   top: 100%;
   left: 0;
   right: 0;
-  background: #fff;
-  border: 1px solid #ccc;
+  background: #232323;
+  border: 1px solid #444;
   border-top: none;
-  z-index: 10;
-  max-height: 200px;
+  z-index: 100;
+  max-height: 350px;
   overflow-y: auto;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  border-radius: 0 0 8px 8px;
 }
 
 .searchbar-dropdown ul {
@@ -72,26 +73,26 @@ they are used to display the wine search results in a list */
 .searchbar-results {
   list-style: none;
   padding: 0;
-  margin: 1rem 0;
-  max-width: 800px;
+  margin: 0;
+  max-width: 100%;
 }
 
 .searchbar-result-item {
   display: flex;
   gap: 1rem;
   padding: 1rem;
-  margin-bottom: 1rem;
-  background: #2a2a2a;
-  border-radius: 8px;
-  border: 1px solid #444;
-  transition: all 0.2s ease;
+  background: transparent;
+  border-bottom: 1px solid #333;
+  transition: background 0.2s;
+}
+
+.searchbar-result-item:last-child {
+  border-bottom: none;
 }
 
 .searchbar-result-item:hover {
   background: #333;
-  border-color: #666;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-radius: 0 0 8px 8px;
 }
 
 .wine-info {

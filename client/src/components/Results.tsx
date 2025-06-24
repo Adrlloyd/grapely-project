@@ -4,6 +4,8 @@ import '../styles/Results.css';
 import { fetchFilteredWines } from '../services/wineService';
 import type { Wine } from '../types/wine';
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 function Results() {
   const [wines, setWines] = useState<Wine[]>([]);
   const navigate = useNavigate();
@@ -27,6 +29,7 @@ function Results() {
       .then((response) => {
         if ('wines' in response) {
           setWines(response.wines);
+          localStorage.setItem('filteredWines', JSON.stringify(response.wines));
         } else {
           console.warn('No wines found in response.');
         }
@@ -53,7 +56,11 @@ function Results() {
       <div className="wine-list">
         {wines.map((wine) => (
           <div key={wine.name} className="wine-card" onClick={() => handleSelect(wine)}>
-            <img src={wine.image_url} alt={wine.name} className="wine-image" />
+            <img
+              src={`${BASE_URL}/${wine.image_url}`}
+              alt={wine.name}
+              className="wine-image"
+            />
             <div className="wine-info">
               <h3>{wine.name}</h3>
               <p><strong>Grape:</strong> {wine.grape}</p>

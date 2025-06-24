@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
-import { getUserFavorites } from '../controllers/favouritesController'
+import { getUserFavourites } from '../controllers/favouritesController'
 
 const router = Router();
 
-router.get('/:id/favorites', getUserFavorites);
+router.get('/:id/favourites', getUserFavourites);
 
 export default router;

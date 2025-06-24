@@ -1,11 +1,10 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '../generated/prisma';
 import { Prisma } from '@prisma/client';
+
+import prisma from '../prisma';
 
 import JWT from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-
-const prisma = new PrismaClient();
 
 interface JWTPayload {
   userID: string;
@@ -117,12 +116,9 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
       token,
     });
 
-
   } catch (error) {
-
     console.error('Login error', error);
     res.status(500).json({error: "Internal server error"});
-
   }
 };
 

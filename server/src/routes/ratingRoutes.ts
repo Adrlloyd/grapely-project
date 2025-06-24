@@ -1,9 +1,6 @@
 import { Router } from 'express';
-import {
-  createOrUpdateRating,
-  deleteRating,
-  getRatingByUserAndWine
-} from '../controllers/ratingController';
+
+import { createOrUpdateRating, deleteRating, getRatingByUserAndWine } from '../controllers/ratingController';
 
 const router = Router();
 

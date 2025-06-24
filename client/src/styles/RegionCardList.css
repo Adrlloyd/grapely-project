@@ -1,51 +1,98 @@
-.region-buttons {
-  display: none;
+.region-carousel {
+  position: relative;
+  overflow-x: hidden;
+  padding: 3rem 0;
 }
 
-.region-buttons.mobile {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  gap: 1rem;
-  padding: 1rem;
-  flex: 1;
+.region-carousel-track {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 4rem;
+  scrollbar-width: none; /* Firefox */
 }
 
-.region-buttons.desktop {
-  display: none;
+.region-carousel-track::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.region-card-wrapper {
+  scroll-snap-align: center;
+  flex: 0 0 80%;
+  display: flex;
+  justify-content: center;
+  opacity: 0.5;
+  transform: scale(0.9);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.region-card-wrapper.active {
+  transform: scale(1);
+  opacity: 1;
 }
 
 .region-button {
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 1rem;
+  width: 100%;
+  max-width: 400px;
+  height: 250px;
+  font-size: 1.5rem;
   font-weight: 600;
-  color: #333;
-  padding: 1rem;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: white;
+  border: 3px solid #7B2E5A;
+  color: #7B2E5A;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .region-button:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transform: scale(1.02);
+  border-color: #4A7C59;
+  color: #4A7C59;
 }
 
-.desktop-button {
-  height: 8rem;
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.6); /* translucent white */
+  border: none;
+  color: #7B2E5A; /* primary grape */
+  font-size: 1.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  transition: background 0.3s ease;
 }
 
-@media screen and (min-width: 611px) {
-  .region-buttons.mobile {
-    display: none;
+.carousel-button:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.carousel-button.left {
+  left: 0.5rem;
+}
+
+.carousel-button.right {
+  right: 0.5rem;
+}
+
+/* Smaller buttons for mobile */
+@media (max-width: 640px) {
+  .carousel-button {
+    font-size: 1.2rem;
+    padding: 0.2rem 0.4rem;
   }
 
-  .region-buttons.desktop {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    padding: 2rem;
-    flex: 1;
-    align-content: center;
+  .carousel-button.left {
+    left: 0.25rem;
+  }
+
+  .carousel-button.right {
+    right: 0.25rem;
   }
 }

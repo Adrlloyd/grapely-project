@@ -8,12 +8,15 @@ import type { RegionName } from '../config/wineRegions';
 import { getCountryRegion } from '../utils/geo';
 import { getFeatureName } from '../types/geojson';
 import RegionCardList from './RegionCardList';
-
+import { useLocation } from 'react-router';
 
 const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
 function WorldMap() {
-  const [selectedRegion, setSelectedRegion] = useState<RegionName | null>(null);
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
+  const regionFromQuery = query.get('region') as RegionName | null;
+  const [selectedRegion, setSelectedRegion] = useState<RegionName | null>(regionFromQuery);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
 
   const handleRegionSelect = (regionName: RegionName) => {
@@ -29,7 +32,6 @@ function WorldMap() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // navigate to SelectionPage once both country and region are selected
     if (selectedRegion && selectedCountry) {
 
       const encodedRegion = encodeURIComponent(selectedRegion);

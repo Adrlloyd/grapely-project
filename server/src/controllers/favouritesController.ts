@@ -1,11 +1,16 @@
 import { Request, Response } from 'express'
 
-const getUserFavorites = async (req: Request, res: Response): Promise<void> => {
-  try {
+import prisma from '../prisma';
 
+const getUserFavourites = async (req: Request, res: Response): Promise<void> => {
+  const { userID } = req.params;
+  try {
+    const favourites = await prisma.rating.findMany({
+
+    })
   } catch (error) {
 
   }
 }
 
-export { getUserFavorites }
+export { getUserFavourites }

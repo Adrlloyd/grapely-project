@@ -3,5 +3,4 @@ node_modules
 .env
 
 /src/generated/prisma
-/src/scraper/images
-/src/scraper/scraper.js
+/src/scraper

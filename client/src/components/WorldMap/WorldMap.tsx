@@ -40,27 +40,29 @@ function WorldMap() {
   };
 
   return (
-    <div className="map-wrapper">
-      <div className="map-header">
-        <button onClick={handleBackToRegions} className="back-button">← Back</button>
-      </div>
+    <div className="worldmap-container">
+      <div className="map-wrapper">
+        <div className="map-header">
+          <button onClick={handleBackToRegions} className="back-button">← Back</button>
+        </div>
 
-      <ComposableMap
-        projection="geoMercator"
-        projectionConfig={projectionConfig}
-        className="map-svg"
-      >
-        <Geographies geography={GEO_URL}>
-          {({ geographies }: { geographies: Feature[] }) =>
-            renderGeographies({
-              geographies,
-              selectedRegion,
-              selectedCountry,
-              setSelectedCountry
-            })
-          }
-        </Geographies>
-      </ComposableMap>
+        <ComposableMap
+          projection="geoMercator"
+          projectionConfig={projectionConfig}
+          className="map-svg"
+        >
+          <Geographies geography={GEO_URL}>
+            {({ geographies }: { geographies: Feature[] }) =>
+              renderGeographies({
+                geographies,
+                selectedRegion,
+                selectedCountry,
+                setSelectedCountry
+              })
+            }
+          </Geographies>
+        </ComposableMap>
+      </div>
     </div>
   );
 }

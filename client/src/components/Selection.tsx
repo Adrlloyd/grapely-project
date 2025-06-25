@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router';
-import PairingSelection from '../components/PairingSelection';
+import PairingSelection from './Pairing Selection/PairingSelection';
 import PriceSelection from '../components/PriceSelection';
 import { fetchFilteredWines } from '../services/wineService';
 import type { Wine } from '../types/wine';
@@ -22,14 +22,6 @@ function Selection() {
   if (!region && country) {
     region = getCountryRegion(country);
   }
-
-  const handleBack = () => {
-    if (pairing) {
-      setPairing(null);
-    } else {
-      navigate(`/selection?country=${country}&region=${region}`);
-    }
-  };
 
   useEffect(() => {
     if (!country) return;
@@ -89,10 +81,6 @@ function Selection() {
 
   return (
     <>
-      <button onClick={handleBack} className="back-button">
-        ← Back
-      </button>
-
       {!price && (
         <PriceSelection
           minPrice={sliderBounds.min}

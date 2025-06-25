@@ -28,7 +28,7 @@
 
 .searchbar-container {
   position: relative;
-  width: 100%;
+  width: 85%;
   max-width: 500px;
   margin: 0 auto;
 }
@@ -44,7 +44,7 @@
   z-index: 100;
   max-height: 350px;
   overflow-y: auto;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   border-radius: 0 0 8px 8px;
 }
 
@@ -170,18 +170,20 @@ they are used to display the wine search results in a list */
 
 .wine-image {
   flex-shrink: 0;
-  width: 80px;
-  height: 120px;
+  width: 32px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .wine-image img {
-  max-width: 100%;
-  max-height: 100%;
+  width: 65%;
+  height: 65%;
   object-fit: contain;
   border-radius: 4px;
+  display: block;
 }
 
 /* loading and error states for the search bar
@@ -200,4 +202,77 @@ i'm not sure if this is needed   */
   border-radius: 4px;
   border: 1px solid #e53e3e;
   margin: 1rem 0;
+}
+
+@media (max-width: 600px) {
+  .searchbar-container {
+    max-width: 44vw;
+    padding: 0 1vw;
+    margin-top: 0.5rem;
+    padding-left: -5rem;
+  }
+
+  .searchbar-form {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .searchbar-input,
+  .searchbar-button {
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 50%;
+    box-sizing: border-box;
+  }
+
+  .searchbar-button {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.5rem;
+    width: 32px;
+    min-width: 32px;
+    max-width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .searchbar-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 250px;
+    border-radius: 0 0 8px 8px;
+    box-shadow: none;
+  }
+
+  .searchbar-result-item {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .wine-image {
+    width: 24px;
+    height: 36px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .wine-image img {
+    width: 25%;
+    height: 25%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .wine-info h3 {
+    font-size: 1rem;
+  }
+
+  .wine-details {
+    font-size: 0.85rem;
+    gap: 0.5rem;
+  }
 }

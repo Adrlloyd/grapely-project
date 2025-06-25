@@ -1,9 +1,9 @@
-import WorldMap from '../components/WorldMap';
+import WorldMap from '../components/WorldMap/WorldMap';
+import '../styles/LandingPage.css';
 
 function LandingPage() {
   return (
-    <div>
-      <h1>Grapely</h1>
+    <div className="landing-container">
       <WorldMap />
     </div>
   );

@@ -4,7 +4,7 @@ import '../styles/Results.css';
 import { fetchFilteredWines } from '../services/wineService';
 import type { Wine } from '../types/wine';
 
-const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Results() {
   const [wines, setWines] = useState<Wine[]>([]);
@@ -50,8 +50,10 @@ function Results() {
     navigate(`/summary?${encodedParams.toString()}`);
   };
 
+  
   return (
     <div>
+      <div className="results-page">
       <h2>Choose a bottle</h2>
       <div className="wine-list">
         {wines.map((wine) => (
@@ -62,13 +64,14 @@ function Results() {
               className="wine-image"
             />
             <div className="wine-info">
-              <h3>{wine.name}</h3>
+              <p><strong>{wine.name}</strong></p>
+              <p><strong>Country:</strong> {wine.country}</p>
               <p><strong>Grape:</strong> {wine.grape}</p>
-              <p><strong>Region:</strong> {wine.region}</p>
               <p><strong>Price:</strong> ${wine.price}</p>
             </div>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

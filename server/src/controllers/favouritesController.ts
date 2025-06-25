@@ -1,12 +1,14 @@
 import { Request, Response } from 'express'
 import prisma from '../prisma';
+import type { AuthenticatedRequest } from '../middleware/auth'
 
-const getUserFavourites = async (req: Request, res: Response): Promise<void> => {
-  const { userID } = req.params;
+
+const getUserFavourites = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  const userId = req.userId;
   try {
     const favourites = await prisma.rating.findMany({
       where: {
-        userId: userID,
+        userId,
         score: {
           gte: 4
         }

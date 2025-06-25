@@ -137,7 +137,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ autoFocus = false, onClose }) => 
                 </div>
                 {result.image_url && (
                   <div className="wine-image">
-                    <img src={result.image_url} alt={result.name} />
+                    {/* <img src={result.image_url} alt={result.name} /> */}
+                    <img src={`${API_BASE_URL}/${result.image_url}`} alt={result.name} />
                   </div>
                 )}
               </li>

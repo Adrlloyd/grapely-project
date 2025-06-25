@@ -1,54 +1,89 @@
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import '../styles/Results.css';
-import wineResults from '../config/wineSample.ts';
+import { fetchFilteredWines } from '../services/wineService';
+import type { Wine } from '../types/wine';
 
-// TO BE UDPATED: Fetch call to Back end
-const options = wineResults;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-function Results () {
-
-  // Get URL query string
+function Results() {
+  const [wines, setWines] = useState<Wine[]>([]);
+  const navigate = useNavigate();
   const { search } = useLocation();
 
-  // parse query string into key-value
   const query = new URLSearchParams(search);
-
-  // get values of all the keys (previous user's selections)
-  const region = query.get('region') || '';
   const country = query.get('country') || '';
+  const region = query.get('region') || '';
   const pairing = query.get('pairing') || '';
-  const price = query.get('price') || '';
+  const min = query.get('min');
+  const max = query.get('max');
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (!country || !pairing || !min || !max) return;
 
-  // navigate to BottlePage once bottle is selected
-  const handleSelect = (bottle: string) => {
-    const encodedBottle = encodeURIComponent(bottle);
-    const encodedPairing = encodeURIComponent(pairing);
-    const encodedPrice = encodeURIComponent(price);
-    const encodedRegion = encodeURIComponent(region);
-    const encodedCountry = encodeURIComponent(country);
-    navigate(`/summary?country=${encodedCountry}&region=${encodedRegion}&pairing=${encodedPairing}&price=${encodedPrice}&bottle=${encodedBottle}`);
+    fetchFilteredWines({
+      country,
+      priceBracket: { min: parseFloat(min), max: parseFloat(max) },
+      pairing,
+    })
+      .then((response) => {
+        if ('wines' in response) {
+          setWines(response.wines);
+          localStorage.setItem('filteredWines', JSON.stringify(response.wines));
+        } else {
+          console.warn('No wines found in response.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching final filtered wines:', error);
+      });
+  }, [country, min, max, pairing]);
+
+  const handleSelect = (wine: Wine) => {
+    const encodedParams = new URLSearchParams({
+      country,
+      region,
+      pairing,
+      price: wine.price.toString(),
+      bottle: wine.name,
+    });
+    navigate(`/summary?${encodedParams.toString()}`);
+  };
+
+  const handleBackClick = () => {
+    navigate(-1);
   };
 
   return (
     <div>
-      <h2>Choose a bottle</h2>
-      <div className="wine-list">
-        {options.map((wine) => (
-          <div key={wine.name} className="wine-card" onClick={() => handleSelect(wine.name)}>
-            <img src={wine.image_url} alt={wine.name} className="wine-image" />
-            <div className="wine-info">
-              <h3>{wine.name}</h3>
-              <p><strong>Grape: </strong>{wine.grape}</p>
-              <p><strong>Region: </strong>{wine.region}</p>
-              <p><strong>Price: </strong>{wine.price}</p>
+      <div className="results-page">
+        <div className="results-header">
+          <button className="back-button" onClick={handleBackClick}>← Back</button>
+          <h2 className="results-title">Choose a bottle</h2>
+        </div>
+
+        <div className="wine-list">
+          {wines.map((wine) => (
+            <div key={wine.id} className="wine-card" onClick={() => handleSelect(wine)}>
+              <div className="wine-image-wrapper">
+                <img
+                  src={`${BASE_URL}/${wine.image_url}`}
+                  alt={wine.name}
+                  className="wine-image"
+                />
+              </div>
+              <div className="wine-info">
+                <p className="wine-name"><strong>{wine.name}</strong></p>
+                <p className="wine-detail"><strong>Country:</strong> {wine.country}</p>
+                <p className="wine-detail"><strong>Grape:</strong> {wine.grape}</p>
+                <p className="wine-detail"><strong>Price:</strong> ${wine.price}</p>
+              </div>
             </div>
-          </div>))
-        }
+          ))}
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default Results;

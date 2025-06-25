@@ -6,6 +6,7 @@ import favouriteRoutes from './routes/favouriteRoutes';
 import searchRoutes from './routes/searchRoutes';
 import userRoutes from './routes/userRoutes';
 import authRoutes from './routes/authRoutes';
+import ratingRoutes from './routes/ratingRoutes'
 
 const app: Application = express();
 
@@ -18,5 +19,6 @@ app.use('/favourites', favouriteRoutes);
 app.use('/', searchRoutes);
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
+app.use('/rating', ratingRoutes);
 
 export default app;

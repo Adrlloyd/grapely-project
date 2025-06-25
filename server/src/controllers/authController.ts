@@ -1,8 +1,13 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '../generated/prisma';
+import { Prisma } from '@prisma/client';
+import prisma from '../prisma';
+import JWT from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-const prisma = new PrismaClient();
+interface JWTPayload {
+  userID: string;
+  name: string;
+}
 
 // POST
 const registerUser = async (req: Request, res: Response): Promise<void> => {
@@ -14,7 +19,10 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
     // Check required fields
     if (!firstName || !lastName || !email || !password) {
       res.status(400).json({error: 'Missing user details. All fields are required.'});
+      return;
     }
+
+    const normalizedEmail = email.toLowerCase();
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password,10);
@@ -24,29 +32,33 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
       data: {
         firstName,
         lastName,
-        email,
+        email: normalizedEmail,
         password: hashedPassword
       }
     })
 
-    // Response without password
+    // Create session token for user
 
-    const userNoPwd = {
-        firstName,
-        lastName,
-        email
-      }
+    const token = JWT.sign(
+      { userID: newUser.id, name: newUser.firstName } as JWTPayload,
+      process.env.JWT_SECRET as string,
+      { expiresIn: '30m' }
+    );
 
-    res.status(201).json(userNoPwd);
+    res.status(201).json({
+      message: 'Registration successful',
+      id: newUser.id,
+      name: newUser.firstName,
+      email: newUser.email,
+      token,
+    });
 
-  // TO UPDATE: TS ANY
+  // TO UPDATE: REVISE WITH CORRECT TYPE
   } catch (error: any) {
-
-    // "Unique constraint failed on the {constraint}"
-    if(error.code === 'P2002'){
+    if (error.code === 'P2002') {
       console.error('Error creating user: Email is already used', error)
       res.status(409).json({error: 'This email is already linked to a profile'});
-
+      return;
     } else {
       console.error('Error creating user', error)
       res.status(500).json({error: 'Internal server error'});
@@ -67,9 +79,11 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    const normalizedEmail = email.toLowerCase();    
+
     // Fetch user
     const user = await prisma.user.findUnique({
-      where: {email: email}
+      where: {email: normalizedEmail}
     })
 
     if(!user) {
@@ -85,17 +99,24 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // TO DO: GENERATE TOKEN
+    const token = JWT.sign(
+      { userID: user.id, name: user.firstName } as JWTPayload,
+      process.env.JWT_SECRET as string,
+      { expiresIn: '30m' }
+    );
 
     // Response
-    res.status(200).json({message: "log in successful"});
-
+    res.status(200).json({
+      message: 'Login successful',
+      id: user.id,
+      name: user.firstName,
+      email: user.email,
+      token,
+    });
 
   } catch (error) {
-
     console.error('Login error', error);
-    res.status(500).json({error: "Internal Servor error"});
-
+    res.status(500).json({error: "Internal server error"});
   }
 };
 

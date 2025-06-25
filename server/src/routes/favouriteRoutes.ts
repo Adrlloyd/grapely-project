@@ -6,7 +6,7 @@ import { getUserFavourites } from '../controllers/favouritesController'
 
 const router = Router();
 
-router.get('/:id', authenticate, (req, res, next) =>
+router.get('/', authenticate, (req, res, next) =>
   getUserFavourites(req as AuthenticatedRequest, res).catch(next));
 
 export default router;

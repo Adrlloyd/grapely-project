@@ -4,8 +4,6 @@ import prisma from '../prisma';
 import JWT from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-
-
 interface JWTPayload {
   userID: string;
   name: string;

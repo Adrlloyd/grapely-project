@@ -29,3 +29,4 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export { authenticate };
+export type { AuthenticatedRequest }

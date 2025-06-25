@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import WineBottle from '../components/WineBottle';
 import '../styles/PriceSelection.css';
 
@@ -11,6 +12,7 @@ interface PriceSelectionProps {
 function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) {
   const [minValue, setMinValue] = useState(minPrice);
   const [maxValue, setMaxValue] = useState(maxPrice);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setMinValue(minPrice);
@@ -19,6 +21,10 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
 
   const handleConfirm = () => {
     onConfirm({ min: minValue, max: maxValue });
+  };
+
+  const handleBack = () => {
+    navigate('/');
   };
 
   const handleMinChange = (newMinValue: number) => {
@@ -40,6 +46,10 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
 
   return (
     <div className="price-selection">
+      <div className="price-header">
+        <button onClick={handleBack} className="back-button">← Back</button>
+      </div>
+
       <h2 className="price-selection-title">Set Your Budget</h2>
 
       <div className="bottle-slider-frame">

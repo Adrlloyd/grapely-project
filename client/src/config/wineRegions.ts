@@ -7,40 +7,34 @@ export type WineRegion = {
 
 export const wineRegions: Record<string, WineRegion> = {
   'Europe': {
-    countries: ['France', 'Italy', 'Spain', 'Germany', 'Portugal', 'Greece', 'Hungary', 'Austria', 'Romania', 'Switzerland', 'Slovenia', 'Croatia', 'Bulgaria', 'Czech Republic', 'Moldova'],
-    center: [10, 54],
-    scale: 600,
-    color: '#8B1538'
+    countries: ['France', 'Spain', 'Italy', 'Portugal', 'Germany', 'Austria', 'Croatia', 'Greece'],
+    center: [10, 46],
+    scale: 1150,
+    color: '#7B2E5A'
   },
   'North America': {
-    countries: ['United States of America', 'Canada', 'Mexico'],
-    center: [-100, 45],
-    scale: 400,
-    color: '#A63446'
+    countries: ['United States of America'],
+    center: [-98, 40],
+    scale: 800,
+    color: '#7B2E5A'
   },
   'South America': {
-    countries: ['Argentina', 'Chile', 'Brazil', 'Uruguay'],
-    center: [-60, -15],
+    countries: ['Argentina', 'Chile', 'Ecuador'],
+    center: [-65, -30],
     scale: 500,
-    color: '#C44357'
+    color: '#7B2E5A'
   },
-  'Africa & Middle East': {
-    countries: ['South Africa', 'Lebanon', 'Israel', 'Turkey'],
-    center: [20, 0],
-    scale: 400,
-    color: '#6B1E3A'
-  },
-  'Asia': {
-    countries: ['China', 'Georgia'],
-    center: [100, 35],
-    scale: 300,
-    color: '#9B2C42'
+  'Africa': {
+    countries: ['South Africa'],
+    center: [22, -30],
+    scale: 900,
+    color: '#7B2E5A'
   },
   'Oceania': {
-    countries: ['Australia', 'New Zealand'],
-    center: [140, -25],
+    countries: ['Australia'],
+    center: [135, -25],
     scale: 800,
-    color: '#7A2E47'
+    color: '#7B2E5A'
   }
 };
 

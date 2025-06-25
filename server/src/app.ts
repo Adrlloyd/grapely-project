@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.use('/wines', wineRoutes);
+app.use('/api/wines', wineRoutes);
 // app.use('/favourites', favouriteRoutes);
 app.use('/', searchRoutes);
 app.use('/users', userRoutes);

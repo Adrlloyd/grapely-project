@@ -1,28 +1,100 @@
+.results-page {
+  padding-top: 100px;
+  font-family: 'Cinzel', serif;
+  color: #7B2E5A;
+  text-align: center;
+}
+
+.results-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
 .wine-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  justify-content: center;
+  gap: 2rem;
+  padding-bottom: 3rem;
 }
 
 .wine-card {
-  border: 1px solid gray;
-  border-radius: 10px;
-  padding: 10px;
-  margin: 10px;
-  width: 300px;
+  position: relative;
+  width: 260px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   cursor: pointer;
-  transition: transform 0.2s;
-  background-color: white;
+  padding: 1rem 1rem 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .wine-card:hover {
-  transform: scale(1.02);
-  border: 3px solid #722F37;
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(123, 46, 90, 0.2);
+  z-index: 2;
+}
+
+.wine-image-wrapper {
+  position: relative;
+  top: -50px;
+  display: flex;
+  justify-content: center;
+  z-index: 1;
+  transition: top 0.3s ease;
+}
+
+.wine-card:hover .wine-image-wrapper {
+  top: -60px;
 }
 
 .wine-image {
   width: 100px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  z-index: 3;
+}
+
+.wine-card:hover .wine-image {
+  transform: scale(1.12);
+}
+
+.wine-info {
+  padding-top: 0.5rem;
+  text-align: center;
+}
+
+.wine-name {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.wine-detail {
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.results-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: flex-start;
+  padding: 0 1rem 1rem;
+}
+
+.back-button {
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #7B2E5A;
+  border: none;
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: rgba(255, 255, 255, 0.85);
 }

@@ -1,6 +1,6 @@
 import { PrismaClient } from '../generated/prisma';
 import bcrypt from 'bcrypt';
-import {newFile} from '../scraper/converter'
+import {newFile} from '../scraper/converter';
 
 const prisma = new PrismaClient();
 

@@ -20,7 +20,7 @@ export function useRegionNavigation() {
     if (selectedRegion && selectedCountry) {
       const encodedRegion = encodeURIComponent(selectedRegion);
       const encodedCountry = encodeURIComponent(selectedCountry);
-      navigate(`/selection?country=${encodedCountry}&region=${encodedRegion}`);
+      navigate(`/selection?region=${encodedRegion}&country=${encodedCountry}`);
     }
   }, [selectedRegion, selectedCountry, navigate]);
 

@@ -2,20 +2,31 @@ import { useLocation, useNavigate } from 'react-router';
 import '../styles/WineCard.css';
 import type { Wine } from '../types/wine';
 
-function WineCard() {
+/* could probably just use the wine interface here or clean up
+ the whole thing to use just props */
+interface WineCardProps {
+  wine?: Wine;
+}
+
+//it now takes a wine prop OR uses the query params
+function WineCard({ wine }: WineCardProps) {
   const { search } = useLocation();
   const navigate = useNavigate();
   const query = new URLSearchParams(search);
 
-  const bottleName = decodeURIComponent(query.get('bottle') || '');
-  const storedWines = localStorage.getItem('filteredWines');
-  const wineList: Wine[] = storedWines ? JSON.parse(storedWines) : [];
-  const selectedBottle = wineList.find((bottle) => bottle.name === bottleName);
+  // if wine prop is passed use it, otherwise use the query params
+  let selectedBottle = wine;
+  if (!selectedBottle) {
+    const bottleName = decodeURIComponent(query.get('bottle') || '');
+    const storedWines = localStorage.getItem('filteredWines');
+    const wineList: Wine[] = storedWines ? JSON.parse(storedWines) : [];
+    selectedBottle = wineList.find((bottle) => bottle.name === bottleName);
+  }
 
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleBackClick = () => {
-    navigate(-1); // You can change this to navigate('/results') if needed
+    navigate(-1);
   };
 
   if (!selectedBottle) {

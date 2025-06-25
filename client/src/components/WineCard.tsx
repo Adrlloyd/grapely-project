@@ -15,7 +15,7 @@ function WineCard() {
 
   const selectedBottle = wineList.find((bottle) => bottle.name === bottleName);
 
-  const BASE_URL = import.meta.env.VITE_API_URL;
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   if (!selectedBottle) {
     return <p>Bottle Not Found</p>;

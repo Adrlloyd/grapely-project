@@ -1,7 +1,6 @@
 generator client {
   provider = "prisma-client-js"
   previewFeatures = ["fullTextSearchPostgres"]
-  output = “../generated/prisma”
 }
 
 datasource db {
@@ -27,8 +26,6 @@ model Wine {
   ratings        Rating[]                                      // One-to-many relation: one wine can be rated by many users
   created_at     DateTime @default(now())                      // Timestamp when the wine was added
   updated_at     DateTime @updatedAt                           // Automatically updates on any change to the record
-
-
 }
 
 // User model: represents each registered user in the system

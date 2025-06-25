@@ -9,7 +9,7 @@ const router = Router();
 router.post('/', authenticate, (req, res, next) =>
   createOrUpdateRating(req as AuthenticatedRequest, res).catch(next));
 router.get('/:userId/:wineId', authenticate, getRatingByUserAndWine);
-router.delete('/:id',authenticate, (req, res, next) =>
+router.delete('/',authenticate, (req, res, next) =>
   deleteRating(req as AuthenticatedRequest, res).catch(next));
 
 export default router;

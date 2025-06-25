@@ -10,8 +10,13 @@ interface PriceSelectionProps {
 }
 
 function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) {
+  // Add buffer range
+  const sliderMin = Math.floor(minPrice) - 1;
+  const sliderMax = Math.ceil(maxPrice) + 1;
+
   const [minValue, setMinValue] = useState(minPrice);
   const [maxValue, setMaxValue] = useState(maxPrice);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,7 +47,7 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
   };
 
   const getFill = (value: number) =>
-    ((value - minPrice) / (maxPrice - minPrice)) * 100;
+    ((value - sliderMin) / (sliderMax - sliderMin)) * 100;
 
   return (
     <div className="price-selection">
@@ -55,8 +60,9 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
       <div className="bottle-slider-frame">
         <input
           type="range"
-          min={minPrice}
-          max={maxPrice}
+          min={sliderMin}
+          max={sliderMax}
+          step="0.01"
           value={minValue}
           onChange={(e) => handleMinChange(Number(e.target.value))}
           className="bottle-slider-vertical"
@@ -65,19 +71,20 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
         <div className="bottle-center-pair">
           <div className="bottle-block">
             <WineBottle fillPercentage={getFill(minValue)} />
-            <span className="price-label">Min: ${minValue}</span>
+            <span className="price-label">Min: ${minValue.toFixed(2)}</span>
           </div>
 
           <div className="bottle-block">
             <WineBottle fillPercentage={getFill(maxValue)} />
-            <span className="price-label">Max: ${maxValue}</span>
+            <span className="price-label">Max: ${maxValue.toFixed(2)}</span>
           </div>
         </div>
 
         <input
           type="range"
-          min={minPrice}
-          max={maxPrice}
+          min={sliderMin}
+          max={sliderMax}
+          step="0.01"
           value={maxValue}
           onChange={(e) => handleMaxChange(Number(e.target.value))}
           className="bottle-slider-vertical"
@@ -90,5 +97,6 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
     </div>
   );
 }
+
 
 export default PriceSelection;

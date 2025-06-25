@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import type { Wine } from '../types/wine';
 import '../styles/SearchBar.css';
+import { Link } from 'react-router-dom';
 
 interface SearchBarProps {
   autoFocus?: boolean;
@@ -116,31 +117,37 @@ const SearchBar: React.FC<SearchBarProps> = ({ autoFocus = false, onClose }) => 
             {/* this is the mapped list of results */}
             {results.map((result) => (
               <li key={result.id} className="searchbar-result-item">
-                <div className="wine-info">
-                  <h3>{result.name}</h3>
-                  <div className="wine-details">
-                    {result.grape && <span className="grape">Grape: {result.grape}</span>}
-                    {result.color && <span className="color">Color: {result.color}</span>}
-                    {/* {result.sparkling && <span className="sparkling">✨ Sparkling</span>}
-                    {result.region && <span className="region">Region: {result.region}</span>} */}
-                    {result.country && <span className="country">Country: {result.country}</span>}
-                    {result.price && <span className="price">{formatPrice(result.price)}</span>}
-                  </div>
-                  {/* {result.description && (
-                    <p className="description">{result.description}</p>
-                  )}
-                  {result.pairingOptions.length > 0 && (
-                    <div className="pairings">
-                      <strong>Pairings:</strong> {result.pairingOptions.join(', ')}
+                <Link
+                  to="/summary"
+                  state={{ wine: result }}
+                  className='searchbar-result-link'
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                >
+                  <div className="wine-info">
+                    <h3>{result.name}</h3>
+                    <div className="wine-details">
+                      {result.grape && <span className="grape">Grape: {result.grape}</span>}
+                      {result.color && <span className="color">Color: {result.color}</span>}
+                      {/* {result.sparkling && <span className="sparkling">✨ Sparkling</span>}
+                      {result.region && <span className="region">Region: {result.region}</span>} */}
+                      {result.country && <span className="country">Country: {result.country}</span>}
+                      {result.price && <span className="price">{formatPrice(result.price)}</span>}
                     </div>
-                  )} */}
-                </div>
-                {result.image_url && (
-                  <div className="wine-image">
-                    {/* <img src={result.image_url} alt={result.name} /> */}
-                    <img src={`${API_BASE_URL}/${result.image_url}`} alt={result.name} />
+                    {/* {result.description && (
+                      <p className="description">{result.description}</p>
+                    )}
+                    {result.pairingOptions.length > 0 && (
+                      <div className="pairings">
+                        <strong>Pairings:</strong> {result.pairingOptions.join(', ')}
+                      </div>
+                    )} */}
                   </div>
-                )}
+                  {result.image_url && (
+                    <div className="wine-image">
+                      <img src={`${API_BASE_URL}/${result.image_url}`} alt={result.name} />
+                    </div>
+                  )}
+                </Link>
               </li>
             ))}
           </ul>

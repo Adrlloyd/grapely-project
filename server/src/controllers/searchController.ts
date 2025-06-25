@@ -56,7 +56,7 @@ export const searchResults = async (req: Request, res: Response) => {
       take: 10, // increased limit for better search experience
     });
     res.json(wineSearchResults);
-    console.log(wineSearchResults);
+    // console.log(wineSearchResults);
   } catch (error) {
     console.error('Error searching wines:', error);
     res.status(500).json({ error: 'Internal server error' });

@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const auth_1 = require("../middleware/auth");
 const ratingController_1 = require("../controllers/ratingController");
 const router = (0, express_1.Router)();
-router.post('/', ratingController_1.createOrUpdateRating);
-router.get('/:userId/:wineId', ratingController_1.getRatingByUserAndWine);
-router.delete('/:id', ratingController_1.deleteRating);
+router.post('/', auth_1.authenticate, (req, res, next) => (0, ratingController_1.createOrUpdateRating)(req, res).catch(next));
+router.get('/:userId/:wineId', auth_1.authenticate, ratingController_1.getRatingByUserAndWine);
+router.delete('/', auth_1.authenticate, (req, res, next) => (0, ratingController_1.deleteRating)(req, res).catch(next));
 exports.default = router;

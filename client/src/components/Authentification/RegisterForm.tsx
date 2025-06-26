@@ -7,6 +7,7 @@ const RegisterForm = () => {
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '' })
   const { login } = useAuth();
   const navigate = useNavigate();
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -16,7 +17,7 @@ const RegisterForm = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch('/api/auth/register', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify(form)
@@ -27,10 +28,11 @@ const RegisterForm = () => {
       const data = await res.json();
 
       login({
+        id: data.id,
+        name: data.name,
+        email: data.email,
         token: data.token,
-        firstName: data.firstName,
-        lastName: data.lastName
-      });
+      })
 
       // redirect to Home // to adjust
       const redirectTo = '/';

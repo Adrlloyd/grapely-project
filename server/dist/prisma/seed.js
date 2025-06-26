@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const prisma_1 = require("../generated/prisma");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const converter_1 = require("../scraper/converter");
+const converter_1 = require("../scripts/scraper/converter");
 const prisma = new prisma_1.PrismaClient();
 async function main() {
     // 1. Seed wines
@@ -14,27 +14,35 @@ async function main() {
         skipDuplicates: true
     });
     // 2. Create a sample user
-    const hashedPassword = await bcrypt_1.default.hash('password123', 10); // Use bcrypt to hash a sample password
-    const user = await prisma.user.create({
-        data: {
+    //2.1 check if user exists and if so dont run the code below
+    const userExists = await prisma.user.findFirst({
+        where: {
             firstName: 'Sample',
-            lastName: 'User',
-            email: 'sample@grapely.com',
-            password: hashedPassword,
         },
     });
-    // 3. Link the user to one wine as a favorite (score of 5)
-    const favoriteWine = await prisma.wine.findFirst({
-        where: { name: 'Whispering Angel Rosé 2022' },
-    });
-    if (favoriteWine) {
-        await prisma.rating.create({
+    if (!userExists) {
+        const hashedPassword = await bcrypt_1.default.hash('password123', 10); // Use bcrypt to hash a sample password
+        const user = await prisma.user.create({
             data: {
-                userId: user.id,
-                wineId: favoriteWine.id,
-                score: 5,
+                firstName: 'Sample',
+                lastName: 'User',
+                email: 'sample@grapely.com',
+                password: hashedPassword,
             },
         });
+        // 3. Link the user to one wine as a favorite (score of 5)
+        const favoriteWine = await prisma.wine.findFirst({
+            where: { name: 'Whispering Angel Rosé 2022' },
+        });
+        if (favoriteWine) {
+            await prisma.rating.create({
+                data: {
+                    userId: user.id,
+                    wineId: favoriteWine.id,
+                    score: 5,
+                },
+            });
+        }
     }
 }
 main()

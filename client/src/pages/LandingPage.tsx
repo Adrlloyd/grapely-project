@@ -1,11 +1,11 @@
 import WorldMap from '../components/WorldMap/WorldMap';
-import '../styles/LandingPage.css';
+import Layout from '../components/Layout';
 
 function LandingPage() {
   return (
-    <div className="landing-container">
+    <Layout>
       <WorldMap />
-    </div>
+    </Layout>
   );
 }
 

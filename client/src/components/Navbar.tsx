@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/Navbar.css';
 import SearchBar from './Searchbar';
 
-const Navbar: React.FC = () => {
+function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
@@ -48,7 +48,13 @@ const Navbar: React.FC = () => {
         ) : (
           <>
             <div className="navbar-brand">
-              {/* brand name maybe logo*/}
+              {/* Logo */}
+              <img 
+                src='../../public/noun-wine-5003254.png' 
+                alt="Grapely Logo" 
+                className="brand-logo"
+              />
+              {/* brand name */}
               <span className="brand-text">Grapely</span>
             </div>
             {/* search bar */}
@@ -104,6 +110,6 @@ const Navbar: React.FC = () => {
       </div>
     </nav>
   );
-};
+}
 
 export default Navbar;

@@ -1,14 +1,12 @@
-/* Full Navbar Container */
 .navbar {
   position: fixed;
-  /* forced at top of page */
   top: 0;
   left: 0;
   right: 0;
   color: white;
-  background: rgba(12, 12, 12, 0.98);
+  background-color: #7B2E5A;
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #4A7C59;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   transition: all 0.3s ease;
@@ -17,7 +15,7 @@
 .navbar-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 0.5rem 0 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -25,19 +23,31 @@
   position: relative;
 }
 
-/* Brand/Logo */
 .navbar-brand {
   flex-shrink: 0;
-  padding-right: 8px;
+  padding-right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: -0.5rem;
+}
+
+.brand-logo {
+  height: 55px;
+  width: auto;
+  object-fit: cover;
+  object-position: top;
+  /* Crop bottom 20% by showing only top 80% */
+  clip-path: inset(0 0 20% 0);
+  filter: brightness(1.1) contrast(1.05);
 }
 
 .brand-text {
   font-size: 1.5rem;
   font-weight: 700;
-  color: white;
+  color: #E6C36F;
 }
 
-/* Desktop Menu */
 .desktop-menu {
   display: flex;
   align-items: center;
@@ -46,23 +56,24 @@
 
 .nav-link {
   text-decoration: none;
-  color: #2c3e50;
+  color: #7B2E5A;
   font-weight: 500;
   font-size: 1rem;
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  background: white;
+  background: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #E6C36F;
 }
 
 .nav-link:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background-color: #E6C36F;
+  color: white;
   transform: translateY(-1px);
 }
 
-/* this handles the hamburger menu and the snazzy animation */
+/* Hamburger */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -79,7 +90,7 @@
 .hamburger-line {
   width: 100%;
   height: 3px;
-  background: white;
+  background-color: #E6C36F;
   border-radius: 2px;
   transition: all 0.3s ease;
   transform-origin: center;
@@ -97,7 +108,6 @@
   transform: rotate(-45deg) translate(6px, -8px);
 }
 
-/* Mobile Menu */
 .mobile-menu {
   display: none;
   flex-direction: column;
@@ -105,7 +115,7 @@
   position: absolute;
   top: 70px;
   left: 0;
-  background-color: #333;
+  background-color: #7B2E5A;
   text-align: center;
 }
 
@@ -119,7 +129,7 @@
   font-weight: 500;
   font-size: 1rem;
   padding: 1rem 0;
-  background: #444;
+  background: #4A7C59;
   margin: 0.5rem 1rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -127,11 +137,11 @@
 }
 
 .mobile-nav-link:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  background: #E6C36F;
+  color: #7B2E5A; 
   transform: translateY(-1px);
 }
 
-/* responsive styles */
 @media (max-width: 768px) {
   .desktop-menu {
     display: none;
@@ -142,17 +152,25 @@
   }
 
   .navbar-container {
-    padding: 0 1.5rem;
+    padding: 0 1rem 0 0;
   }
 
   .brand-text {
     font-size: 1.3rem;
   }
+
+  .brand-logo {
+    height: 50px;
+  }
+
+  .navbar-brand {
+    margin-left: -0.5rem;
+  }
 }
 
 @media (max-width: 610px) {
   .navbar-container {
-    padding: 0 1rem;
+    padding: 0 1rem 0 0;
     height: 60px;
     width: 90%;
   }
@@ -161,6 +179,15 @@
     font-size: 1.2rem;
     padding-right: 4px;
     margin-right: 1px;
+  }
+
+  .brand-logo {
+    height: 45px;
+  }
+
+  .navbar-brand {
+    gap: 12px;
+    margin-left: -0.5rem;
   }
 
   .mobile-menu {
@@ -179,7 +206,7 @@
   left: 0;
   width: 100vw;
   height: 100%;
-  background: rgba(12, 12, 12, 0.98);
+  background: #7B2E5A;
   z-index: 1100;
   display: grid;
   grid-template-columns: 1fr 44px 44px;

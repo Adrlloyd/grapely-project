@@ -6,7 +6,7 @@ import SelectionPage from './pages/SelectionPage';
 import ResultsPage from './pages/ResultsPage';
 import SummaryPage from './pages/SummaryPage';
 
-function App () {
+function App() {
   return (
     <div>
       <Navbar />

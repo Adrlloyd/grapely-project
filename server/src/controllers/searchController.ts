@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import prisma from '../prisma';
 
 
-export const searchResults = async (req: Request, res: Response) => {
+const searchResults = async (req: Request, res: Response) => {
   const { query } = req.query;
   if (!query || typeof query !== 'string') {
     return res.status(400).json({ error: 'Missing or invalid query parameter' });
@@ -53,12 +53,14 @@ export const searchResults = async (req: Request, res: Response) => {
         created_at: true,
         updated_at: true,
       },
-      take: 10, // increased limit for better search experience
+      take: 10, // change how many search results are returned
     });
     res.json(wineSearchResults);
-    console.log(wineSearchResults);
+    // console.log(wineSearchResults);
   } catch (error) {
     console.error('Error searching wines:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+export { searchResults };

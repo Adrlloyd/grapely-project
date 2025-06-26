@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import type { Wine } from '../types/wine';
 import '../styles/SearchBar.css';
+import { Link } from 'react-router';
 
 interface SearchBarProps {
   autoFocus?: boolean;
@@ -15,6 +16,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ autoFocus = false, onClose }) => 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // this is to prevent the predictive search from triggering too many times
   const debouncedSearch = useCallback(
@@ -38,7 +41,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ autoFocus = false, onClose }) => 
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_BASE_URL}/search?query=${encodeURIComponent(searchQuery)}`);
+      const response = await fetch(`${API_BASE_URL}/api/search?query=${encodeURIComponent(searchQuery)}`);
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       setResults(data);
@@ -55,6 +58,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ autoFocus = false, onClose }) => 
     const value = e.target.value;
     setQuery(value);
     debouncedSearch(value);
+    setDropdownOpen(true);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -88,13 +92,35 @@ const SearchBar: React.FC<SearchBarProps> = ({ autoFocus = false, onClose }) => 
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
+  // open dropdown when results are updated and there are results
+  useEffect(() => {
+    if (results.length > 0 && query.trim()) {
+      setDropdownOpen(true);
+    } else {
+      setDropdownOpen(false);
+    }
+  }, [results, query]);
+
+  // click outside to close dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const formatPrice = (price?: number) => {
     if (!price) return 'Price not available';
     return `$${price.toFixed(2)}`;
   };
 
   return (
-    <div className="searchbar-container">
+    <div className="searchbar-container" ref={containerRef}>
       <form className="searchbar-form" onSubmit={handleSubmit}>
         <input
           className="searchbar-input"
@@ -103,6 +129,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ autoFocus = false, onClose }) => 
           value={query}
           onChange={handleInputChange}
           autoFocus={autoFocus}
+          onFocus={() => { if (results.length > 0) setDropdownOpen(true); }}
         />
         <button className="searchbar-button" type="submit">
           {isMobile ? 'Q' : 'Search'}
@@ -110,37 +137,44 @@ const SearchBar: React.FC<SearchBarProps> = ({ autoFocus = false, onClose }) => 
       </form>
       {loading && <div className="loading">Searching...</div>}
       {error && <div className="error">{error}</div>}
-      {results.length > 0 && !loading && !error && (
+      {dropdownOpen && results.length > 0 && !loading && !error && (
         <div className="searchbar-dropdown">
           <ul className="searchbar-results">
             {/* this is the mapped list of results */}
             {results.map((result) => (
               <li key={result.id} className="searchbar-result-item">
-                <div className="wine-info">
-                  <h3>{result.name}</h3>
-                  <div className="wine-details">
-                    {result.grape && <span className="grape">Grape: {result.grape}</span>}
-                    {result.color && <span className="color">Color: {result.color}</span>}
-                    {/* {result.sparkling && <span className="sparkling">✨ Sparkling</span>}
-                    {result.region && <span className="region">Region: {result.region}</span>} */}
-                    {result.country && <span className="country">Country: {result.country}</span>}
-                    {result.price && <span className="price">{formatPrice(result.price)}</span>}
-                  </div>
-                  {/* {result.description && (
-                    <p className="description">{result.description}</p>
-                  )}
-                  {result.pairingOptions.length > 0 && (
-                    <div className="pairings">
-                      <strong>Pairings:</strong> {result.pairingOptions.join(', ')}
+                <Link
+                  to="/summary"
+                  state={{ wine: result }}
+                  className='searchbar-result-link'
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                  onClick={() => setDropdownOpen(false)}
+                >
+                  <div className="wine-info">
+                    <h3>{result.name}</h3>
+                    <div className="wine-details">
+                      {result.grape && <span className="grape">Grape: {result.grape}</span>}
+                      {result.color && <span className="color">Color: {result.color}</span>}
+                      {/* {result.sparkling && <span className="sparkling">✨ Sparkling</span>}
+                      {result.region && <span className="region">Region: {result.region}</span>} */}
+                      {result.country && <span className="country">Country: {result.country}</span>}
+                      {result.price && <span className="price">{formatPrice(result.price)}</span>}
                     </div>
-                  )} */}
-                </div>
-                {result.image_url && (
-                  <div className="wine-image">
-                    {/* <img src={result.image_url} alt={result.name} /> */}
-                    <img src={`${API_BASE_URL}/${result.image_url}`} alt={result.name} />
+                    {/* {result.description && (
+                      <p className="description">{result.description}</p>
+                    )}
+                    {result.pairingOptions.length > 0 && (
+                      <div className="pairings">
+                        <strong>Pairings:</strong> {result.pairingOptions.join(', ')}
+                      </div>
+                    )} */}
                   </div>
-                )}
+                  {result.image_url && (
+                    <div className="wine-image">
+                      <img src={`${API_BASE_URL}/${result.image_url}`} alt={result.name} />
+                    </div>
+                  )}
+                </Link>
               </li>
             ))}
           </ul>

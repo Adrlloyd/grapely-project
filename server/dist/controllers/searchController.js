@@ -58,6 +58,7 @@ const searchResults = async (req, res) => {
             take: 10, // increased limit for better search experience
         });
         res.json(wineSearchResults);
+        // console.log(wineSearchResults);
     }
     catch (error) {
         console.error('Error searching wines:', error);

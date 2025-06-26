@@ -1,7 +1,7 @@
 import WorldMap from '../components/WorldMap/WorldMap';
 import '../styles/LandingPage.css';
 
-function LandingPage() {
+const LandingPage = () => {
   return (
     <div className="landing-container">
       <WorldMap />

@@ -23,7 +23,7 @@ const RandomButton = () => {
     setModalOpen(true);
   };
 
-  // Close modal on outside click
+  // modal snippet
   useEffect(() => {
     if (!modalOpen) return;
     function handleClickOutside(event: MouseEvent) {

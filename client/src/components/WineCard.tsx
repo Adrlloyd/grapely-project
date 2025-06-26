@@ -23,7 +23,7 @@ function WineCard({ wine }: WineCardProps) {
     selectedBottle = wineList.find((bottle) => bottle.name === bottleName);
   }
 
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const IMAGE_BASE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
   const handleBackClick = () => {
     navigate(-1);
@@ -52,7 +52,7 @@ function WineCard({ wine }: WineCardProps) {
 
       <div className="winecard-card">
         <div className="winecard-image-wrapper">
-          <img src={`${BASE_URL}/${image_url}`} alt={name} className="winecard-image" />
+          <img src={`${IMAGE_BASE_URL}/${image_url}`} alt={name} className="winecard-image" />
         </div>
 
         <div className="winecard-info">

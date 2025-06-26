@@ -1,4 +1,4 @@
-import UserProfile from '../components/Selection';
+import UserProfile from '../components/UserProfile';
 
 function UserProfilePage() {
   return (

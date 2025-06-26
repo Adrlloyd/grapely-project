@@ -1,6 +1,6 @@
 import '../../styles/WorldMap.css';
 import { ComposableMap, Geographies } from 'react-simple-maps';
-
+import { Box, Heading, Flex, Button } from '@chakra-ui/react';
 import RegionCardList from '../RegionCardList/RegionCardList';
 import { wineRegions } from '../../config/wineRegions';
 import { renderGeographies } from './renderGeographies';
@@ -22,17 +22,23 @@ function WorldMap() {
     setSelectedCountry(null);
   };
 
-  // Show region selector if no region is currently chosen
   if (!selectedRegion) {
     return (
-      <div className="worldmap-container">
-        <h2 className="worldmap-title">Select Wine Region</h2>
+      <Box textAlign="center">
+        <Heading
+          as="h2"
+          fontSize="2xl"
+          mb={4}
+          color="brand.secondary"
+          fontFamily="heading"
+        >
+          Select Wine Region
+        </Heading>
         <RegionCardList onSelect={setSelectedRegion} />
-      </div>
+      </Box>
     );
   }
 
-  // Set projection config for focused region
   const region = wineRegions[selectedRegion];
   const projectionConfig = {
     scale: region.scale,
@@ -40,16 +46,34 @@ function WorldMap() {
   };
 
   return (
-    <div className="worldmap-container">
-      <div className="map-wrapper">
-        <div className="map-header">
-          <button onClick={handleBackToRegions} className="back-button">← Back</button>
-        </div>
+    <Box w="100%" py={{ base: 4, md: 6 }} px={{ base: 2, md: 6 }} textAlign="center">
+      <Flex justify="flex-start" mb={4} px={4}>
+        <Button
+          onClick={handleBackToRegions}
+          bg="whiteAlpha.600"
+          color="brand.primary"
+          borderRadius="full"
+          fontSize="lg"
+          px={4}
+          py={2}
+          boxShadow="md"
+          _hover={{ bg: "whiteAlpha.800" }}
+        >
+          ← Back
+        </Button>
+      </Flex>
 
+      <Box
+        width="100%"
+        maxH={{ base: '70vh', md: '80vh' }}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
         <ComposableMap
           projection="geoMercator"
           projectionConfig={projectionConfig}
-          className="map-svg"
+          style={{ width: '100%', height: 'auto' }} // Chakra can't style SVG
         >
           <Geographies geography={GEO_URL}>
             {({ geographies }: { geographies: Feature[] }) =>
@@ -62,8 +86,8 @@ function WorldMap() {
             }
           </Geographies>
         </ComposableMap>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

@@ -4,8 +4,9 @@ import { createContext, useState } from 'react';
 import type { ReactNode, ReactElement } from 'react';
 
 interface User {
-  firstName: string;
-  lastName: string;
+  id: string;
+  name: string;
+  email: string;
   token: string;
 }
 

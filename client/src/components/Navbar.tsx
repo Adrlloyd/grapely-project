@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Navbar.css';
 import SearchBar from './Searchbar';
-import {useAuth} from '../context/useAuth';
-import {useNavigate} from 'react-router';
+import { useAuth } from '../context/useAuth';
+import { useNavigate } from 'react-router';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
 
-  const {user, logout} = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
 
@@ -37,20 +37,19 @@ const Navbar: React.FC = () => {
   };
 
 
-   // add more menu items & add the routing links here
+  // add more menu items & add the routing links here
   const menuItems = user ?
     [
-    { label: "Favourites", href: "" },
-    { label: "Your Profile", href: "" },
-    { label: "Log out", href: '#', onclick: logout}
-  ]
+      { label: `Hello ${user.name}!`},
+      { label: "Favourites", href: "" },
+      { label: "Your Profile", href: "" },
+      { label: "Log out", href: "", onclick: logout }
+    ]
     :
     [
-    { label: "Log in", href: "/login" },
-  ]
-
-
-  ;
+      { label: "Log in", href: "/login" },
+    ]
+    ;
 
   return (
     <nav className="navbar">
@@ -62,7 +61,7 @@ const Navbar: React.FC = () => {
           </div>
         ) : (
           <>
-            <div className="navbar-brand" onClick={()=> navigate('/')}>
+            <div className="navbar-brand" onClick={() => navigate('/')}>
               {/* brand name maybe logo*/}
               <span className="brand-text">Grapely</span>
             </div>
@@ -76,6 +75,7 @@ const Navbar: React.FC = () => {
                   key={index}
                   href={item.href}
                   className="nav-link"
+                  onClick={item.onclick}
                 >
                   {item.label}
                 </a>
@@ -108,7 +108,12 @@ const Navbar: React.FC = () => {
                   key={index}
                   href={item.href}
                   className="mobile-nav-link"
-                  onClick={() => setIsMenuOpen(false)}
+
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (item.onclick) {item.onclick();}
+                    setIsMenuOpen(false)
+                  }}
                 >
                   {item.label}
                 </a>

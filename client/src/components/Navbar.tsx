@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
   // add more menu items & add the routing links here
   const menuItems = [
     { label: "Home Placeholder", href: "" },
-    { label: "Login Placeholder", href: "" },
+    { label: "Log in", href: "" },
     { label: "User Profile Placeholder", href: "" },
   ];
 

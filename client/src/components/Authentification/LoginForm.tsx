@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from "react-router";
-import { useAuth } from '../context/useAuth';
+import { useNavigate, Link } from "react-router";
+import { useAuth } from '../../context/useAuth';
 
 const LoginForm = () => {
 
@@ -36,6 +36,7 @@ const LoginForm = () => {
       navigate(redirectTo);
 
     } catch (error) {
+
       // Pop up for user
       alert('Login failed');
       // Error for dev
@@ -59,6 +60,13 @@ return (
     <button type="submit">Log in</button>
 
   </form>
+
+  <div>
+    <h3>
+      Don't have an account?
+      <Link to='/register'> Create one here </Link>
+    </h3>
+  </div>
       </>
 )
 

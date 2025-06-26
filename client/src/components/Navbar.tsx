@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Navbar.css';
 import SearchBar from './Searchbar';
+import {useAuth} from '../context/useAuth';
+import {useNavigate} from 'react-router';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
 
-  // add more menu items & add the routing links here
-  const menuItems = [
-    { label: "Home Placeholder", href: "" },
-    { label: "Log in", href: "" },
-    { label: "User Profile Placeholder", href: "" },
-  ];
+  const {user, logout} = useAuth();
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 600);
@@ -37,6 +36,22 @@ const Navbar: React.FC = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+
+   // add more menu items & add the routing links here
+  const menuItems = user ?
+    [
+    { label: "Favourites", href: "" },
+    { label: "Your Profile", href: "" },
+    { label: "Log out", href: '#', onclick: logout}
+  ]
+    :
+    [
+    { label: "Log in", href: "/login" },
+  ]
+
+
+  ;
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -47,7 +62,7 @@ const Navbar: React.FC = () => {
           </div>
         ) : (
           <>
-            <div className="navbar-brand">
+            <div className="navbar-brand" onClick={()=> navigate('/')}>
               {/* brand name maybe logo*/}
               <span className="brand-text">Grapely</span>
             </div>

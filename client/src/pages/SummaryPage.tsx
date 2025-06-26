@@ -11,7 +11,7 @@ function SummaryPage() {
     <div>
       <h1>Grapely</h1>
       {/* uncomment this to show the random button, this is for testing purposes */}
-      {/* <RandomButton /> */}
+      <RandomButton />
       <WineCard wine={wine} />
     </div>
   );

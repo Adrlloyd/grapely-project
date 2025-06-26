@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import type { Wine } from '../types/wine';
 import '../styles/SearchBar.css';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 interface SearchBarProps {
   autoFocus?: boolean;

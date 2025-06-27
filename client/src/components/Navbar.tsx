@@ -39,14 +39,20 @@ function Navbar() {
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
-  const menuItems = user
-    ? [
-        { label: `Hello ${user.name}!` },
-        { label: 'Favourites', href: '' },
-        { label: 'Your Profile', href: '' },
-        { label: 'Log out', onclick: logout },
-      ]
-    : [{ label: 'Log in', href: '/login' }];
+
+  // add more menu items & add the routing links here
+  const menuItems = user?
+    [
+      { label: `Hello ${user.firstName}!`},
+      { label: "Favourites", href: "" , onClick: () => navigate('/favourites')},
+      { label: "Your Profile", href: "", onClick: () => navigate('/userProfile')},
+      { label: "Log out", href: "", onClick: logout }
+    ]
+    :
+    [
+      { label: "Log in", href: "", onClick: () => navigate('/login') },
+    ]
+    ;
 
   return (
     <Box
@@ -103,6 +109,41 @@ function Navbar() {
               flexShrink={0}
               onClick={() => navigate('/')}
               cursor="pointer"
+            // <div className="navbar-brand" onClick={() => navigate('/')}>
+              {/* brand name maybe logo*/}
+              <span className="brand-text">Grapely</span>
+            </div>
+            {/* search bar */}
+            {!isMobile && <SearchBar />}
+            {/* desktop menu */}
+            <div className="navbar-menu desktop-menu">
+              {/* this maps the menu items to link objects */}
+              {menuItems.map((item, index) => (
+                <a
+                  key={index}
+                  href={item.href}
+                  className="nav-link"
+                  onClick={item.onClick}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+            {/* mobile search toggle */}
+            {isMobile && (
+              <button
+                className="mobile-search-toggle"
+                onClick={() => setShowMobileSearch(true)}
+                aria-label="Open search"
+              >
+                <span role="img" aria-label="search">🔍</span>
+              </button>
+            )}
+            {/* mobile menu */}
+            <button
+              className={`hamburger ${isMenuOpen ? 'active' : ''}`}
+              onClick={toggleMenu}
+              aria-label="Toggle navigation menu"
             >
               <Image
                 src="/logo/noun-wine-5003254.png"
@@ -134,10 +175,9 @@ function Navbar() {
                   variant="solid"
                   size="sm"
                   onClick={(e) => {
-                    if (item.onclick) {
-                      e.preventDefault();
-                      item.onclick();
-                    }
+                    e.preventDefault();
+                    if (item.onClick) {item.onClick();}
+                    setIsMenuOpen(false)
                   }}
                 >
                   {item.label}

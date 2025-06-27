@@ -1,7 +1,7 @@
 import WorldMap from '../components/WorldMap/WorldMap';
 import Layout from '../components/Layout';
 
-function LandingPage() {
+const LandingPage = () => {
   return (
     <Layout>
       <WorldMap />

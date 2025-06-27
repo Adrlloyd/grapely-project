@@ -54,7 +54,7 @@ function WorldMap() {
         mb={4} 
         px={4}
         position="relative"
-        zIndex="1300" // Higher than the flag (1200) and map
+        zIndex="1300"
       >
         <Button
           onClick={handleBackToRegions}

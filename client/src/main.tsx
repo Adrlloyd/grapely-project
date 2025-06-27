@@ -10,7 +10,11 @@ import theme from './theme';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <AuthProvider>
+        <ChakraProvider theme={theme}>
+        <App />
+        </ChakraProvider>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
 )

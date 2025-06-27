@@ -29,7 +29,8 @@ const RegisterForm = () => {
 
       login({
         id: data.id,
-        name: data.name,
+        firstName: data.firstName,
+        lastName: data.lastName,
         email: data.email,
         token: data.token,
       })

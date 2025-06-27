@@ -29,7 +29,8 @@ const LoginForm = () => {
       const data = await response.json();
       login({
         id: data.id,
-        name: data.name,
+        firstName: data.firstName,
+        lastName: data.lastName,
         email: data.email,
         token: data.token,
       })

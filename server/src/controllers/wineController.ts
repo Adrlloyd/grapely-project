@@ -1,14 +1,7 @@
 import type { Request, Response } from 'express'
-import type { Wine, Prisma } from '../generated/prisma';
+import type { Prisma } from '../generated/prisma';
 
 import prisma from '../prisma';
-
-// const PRICE_BRACKETS = {
-//   cheap: (price: number) => price >= 0 && price < 10,
-//   moderatelyCheap: (price: number) => price >= 10 && price < 25,
-//   moderatelyExpensive: (price: number) => price >= 25 && price < 50,
-//   expensive: (price: number) => price >= 50
-// };
 
 const getRecommendedWines = async (req: Request, res: Response): Promise<any> => {
     const { country, priceBracket, pairing } = req.body;

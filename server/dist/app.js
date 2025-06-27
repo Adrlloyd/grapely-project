@@ -5,20 +5,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const path_1 = __importDefault(require("path"));
 const wineRoutes_1 = __importDefault(require("./routes/wineRoutes"));
-<<<<<<< HEAD
-const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
-app.use(express_1.default.json());
-app.use('/api/wines', wineRoutes_1.default);
-// app.use('/api/favourites', favouriteRoutes);
-=======
+const favouriteRoutes_1 = __importDefault(require("./routes/favouriteRoutes"));
 const searchRoutes_1 = __importDefault(require("./routes/searchRoutes"));
+const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
+const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
+const ratingRoutes_1 = __importDefault(require("./routes/ratingRoutes"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-app.use('/wines', wineRoutes_1.default);
-// app.use('/favourites', favouriteRoutes);
-app.use('/', searchRoutes_1.default);
->>>>>>> dev
+app.use(express_1.default.static(path_1.default.join(__dirname, '../public')));
+app.use('/api/wines', wineRoutes_1.default);
+app.use('/api/favourites', favouriteRoutes_1.default);
+app.use('/api/', searchRoutes_1.default);
+app.use('/api/users', userRoutes_1.default);
+app.use('/api/auth', authRoutes_1.default);
+app.use('/api/rating', ratingRoutes_1.default);
 exports.default = app;

@@ -5,8 +5,12 @@ import LandingPage from './pages/LandingPage';
 import SelectionPage from './pages/SelectionPage';
 import ResultsPage from './pages/ResultsPage';
 import SummaryPage from './pages/SummaryPage';
+import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
+import UserProfilePage from './pages/UserProfilePage';
+import ProtectedRoute from './components/ProtectedRoute';
 
-function App () {
+function App() {
   return (
     <div>
       <Navbar />
@@ -15,6 +19,10 @@ function App () {
         <Route path="/selection" element={<SelectionPage />} />
         <Route path="/results" element={<ResultsPage />} />
         <Route path="/summary" element={<SummaryPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/userProfile" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
+        <Route path="/favourites" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
       </Routes>
     </div>
   )

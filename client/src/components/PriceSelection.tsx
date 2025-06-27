@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import WineBottle from '../components/WineBottle';
 import '../styles/PriceSelection.css';
+import { Box, Button, Text } from '@chakra-ui/react';
 
 interface PriceSelectionProps {
   minPrice: number;
@@ -10,7 +11,6 @@ interface PriceSelectionProps {
 }
 
 function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) {
-  // Add buffer range
   const sliderMin = Math.floor(minPrice) - 1;
   const sliderMax = Math.ceil(maxPrice) + 1;
 
@@ -50,12 +50,27 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
     ((value - sliderMin) / (sliderMax - sliderMin)) * 100;
 
   return (
-    <div className="price-selection">
-      <div className="price-header">
-        <button onClick={handleBack} className="back-button">← Back</button>
-      </div>
+    <Box className="price-selection">
+      <Box className="price-header">
+        <Button
+          onClick={handleBack}
+          className="back-button"
+          bg="whiteAlpha.600"
+          color="brand.primary"
+          borderRadius="full"
+          fontSize="md"
+          px={4}
+          py={2}
+          boxShadow="md"
+          _hover={{ bg: 'whiteAlpha.800' }}
+        >
+          ← Back
+        </Button>
+      </Box>
 
-      <h2 className="price-selection-title">Set Your Budget</h2>
+      <Text className="price-selection-title" fontFamily="heading">
+        Set Your Budget
+      </Text>
 
       <div className="bottle-slider-frame">
         <input
@@ -91,12 +106,28 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
         />
       </div>
 
-      <button onClick={handleConfirm} className="price-button">
+      <Button
+        onClick={handleConfirm}
+        className="price-button"
+        bg="brand.primary"
+        color="white"
+        borderRadius="full"
+        fontSize="lg"
+        mt={8}
+        px={8}
+        py={4}
+        boxShadow="lg"
+        fontFamily="heading"
+        _hover={{
+          bg: '#5e2347',
+          transform: 'translateY(-2px)',
+          boxShadow: 'xl',
+        }}
+      >
         Confirm Price Range
-      </button>
-    </div>
+      </Button>
+    </Box>
   );
 }
-
 
 export default PriceSelection;

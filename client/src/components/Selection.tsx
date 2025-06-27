@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router';
+import { Box, Container, Fade } from '@chakra-ui/react';
 import PairingSelection from './Pairing Selection/PairingSelection';
 import PriceSelection from '../components/PriceSelection';
 import { fetchFilteredWines } from '../services/wineService';
@@ -29,7 +30,6 @@ function Selection() {
     fetchFilteredWines({ country, priceBracket: undefined })
       .then((response) => {
         if ('wines' in response) {
-          console.log(`Fetched ${response.count} wines for ${country}`);
           setCountryWines(response.wines);
         }
 
@@ -80,22 +80,30 @@ function Selection() {
   }, [region, country, pairing, price, navigate]);
 
   return (
-    <>
+    <Container maxW="container.md" py={8}>
       {!price && (
-        <PriceSelection
-          minPrice={sliderBounds.min}
-          maxPrice={sliderBounds.max}
-          onConfirm={setPrice}
-        />
+        <Fade in>
+          <Box>
+            <PriceSelection
+              minPrice={sliderBounds.min - 2}
+              maxPrice={sliderBounds.max + 2}
+              onConfirm={setPrice}
+            />
+          </Box>
+        </Fade>
       )}
 
       {price && !pairing && (
-        <PairingSelection
-          onSelect={setPairing}
-          availableOptions={availablePairings}
-        />
+        <Fade in>
+          <Box>
+            <PairingSelection
+              onSelect={setPairing}
+              availableOptions={availablePairings}
+            />
+          </Box>
+        </Fade>
       )}
-    </>
+    </Container>
   );
 }
 

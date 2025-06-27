@@ -29,9 +29,7 @@ function Navbar() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 768) {
-        setIsMenuOpen(false);
-      }
+      if (window.innerWidth > 768) setIsMenuOpen(false);
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -39,8 +37,6 @@ function Navbar() {
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
-
-  // add more menu items & add the routing links here
   const menuItems = user?
     [
       { label: `Hello ${user.firstName}!`},
@@ -76,6 +72,7 @@ function Navbar() {
         justify="space-between"
         position="relative"
       >
+        {/* Mobile Search Mode */}
         {isMobile && showMobileSearch ? (
           <Flex
             position="absolute"
@@ -100,62 +97,27 @@ function Navbar() {
           </Flex>
         ) : (
           <>
-            {/* Logo and Brand */}
+            {/* Logo and brand */}
             <Flex
               align="center"
-              gap={{ base: 2, md: 4 }}
-              pl={{ base: 0, md: 4 }}
-              mr={4}
-              flexShrink={0}
-              onClick={() => navigate('/')}
+              gap={3}
               cursor="pointer"
-            // <div className="navbar-brand" onClick={() => navigate('/')}>
-              {/* brand name maybe logo*/}
-              <span className="brand-text">Grapely</span>
-            </div>
-            {/* search bar */}
-            {!isMobile && <SearchBar />}
-            {/* desktop menu */}
-            <div className="navbar-menu desktop-menu">
-              {/* this maps the menu items to link objects */}
-              {menuItems.map((item, index) => (
-                <a
-                  key={index}
-                  href={item.href}
-                  className="nav-link"
-                  onClick={item.onClick}
-                >
-                  {item.label}
-                </a>
-              ))}
-            </div>
-            {/* mobile search toggle */}
-            {isMobile && (
-              <button
-                className="mobile-search-toggle"
-                onClick={() => setShowMobileSearch(true)}
-                aria-label="Open search"
-              >
-                <span role="img" aria-label="search">🔍</span>
-              </button>
-            )}
-            {/* mobile menu */}
-            <button
-              className={`hamburger ${isMenuOpen ? 'active' : ''}`}
-              onClick={toggleMenu}
-              aria-label="Toggle navigation menu"
+              onClick={() => navigate('/')}
+              flexShrink={0}
             >
               <Image
                 src="/logo/noun-wine-5003254.png"
                 alt="Grapely Logo"
-                height={{ base: '55px', md: '72px' }}
+                height={{ base: '45px', md: '60px' }}
                 objectFit="cover"
                 objectPosition="top"
-                clipPath="inset(0 0 20% 0)"
-                filter="brightness(1.1) contrast(1.05)"
+                sx={{
+                  clipPath: 'inset(0 0 20% 0)',
+                  filter: 'brightness(1.1) contrast(1.05)',
+                }}
               />
               <Text
-                fontSize="xl"
+                fontSize={{ base: 'lg', md: '2xl' }}
                 fontWeight="bold"
                 color="brand.tertiary"
                 fontFamily="heading"
@@ -164,20 +126,23 @@ function Navbar() {
               </Text>
             </Flex>
 
-            {/* Desktop Menu */}
-            <Flex gap={4} align="center" display={{ base: 'none', md: 'flex' }} ml="auto">
+            {/* Desktop Search + Menu */}
+            <Flex
+              gap={4}
+              align="center"
+              display={{ base: 'none', md: 'flex' }}
+              ml="auto"
+            >
               <SearchBar />
               {menuItems.map((item, index) => (
                 <Button
                   key={index}
-                  as="a"
-                  href={item.href || '#'}
-                  variant="solid"
-                  size="sm"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (item.onClick) {item.onClick();}
-                    setIsMenuOpen(false)
+                  variant="ghost"
+                  color="white"
+                  onClick={item.onClick}
+                  _hover={{
+                    bg: 'brand.secondary',
+                    color: 'brand.tertiary',
                   }}
                 >
                   {item.label}
@@ -218,14 +183,12 @@ function Navbar() {
                 {menuItems.map((item, index) => (
                   <Button
                     key={index}
-                    as="a"
-                    href={item.href || '#'}
                     variant="ghost"
                     color="white"
                     _hover={{ bg: 'brand.tertiary', color: 'brand.primary' }}
                     onClick={(e) => {
                       e.preventDefault();
-                      if (item.onclick) item.onclick();
+                      if (item.onClick) item.onClick();
                       setIsMenuOpen(false);
                     }}
                   >

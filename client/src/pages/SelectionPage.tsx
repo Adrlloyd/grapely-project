@@ -1,9 +1,12 @@
 import Selection from '../components/Selection';
+import Layout from '../components/Layout';
 
 function SelectionPage() {
   return (
     <div>
-      <Selection />
+      <Layout>
+        <Selection />
+      </Layout>
     </div>
   );
 }

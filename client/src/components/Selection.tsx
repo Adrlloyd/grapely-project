@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router';
-import { Box, Container, Fade } from '@chakra-ui/react';
+import {
+  Box,
+  Container,
+  Fade,
+  Flex,
+  Button,
+} from '@chakra-ui/react';
 import PairingSelection from './Pairing Selection/PairingSelection';
 import PriceSelection from '../components/PriceSelection';
 import { fetchFilteredWines } from '../services/wineService';
-import type { Wine } from '../types/wine';
 import { getCountryRegion } from '../utils/geo';
+import type { Wine } from '../types/wine';
 
 function Selection() {
   const [pairing, setPairing] = useState<string | null>(null);
@@ -32,7 +38,6 @@ function Selection() {
         if ('wines' in response) {
           setCountryWines(response.wines);
         }
-
         if ('availablePairings' in response && 'overallPriceBracket' in response) {
           setAvailablePairings(response.availablePairings);
           setSliderBounds({
@@ -55,7 +60,6 @@ function Selection() {
         if ('wines' in response) {
           setCountryWines(response.wines);
         }
-
         if ('availablePairings' in response) {
           setAvailablePairings(response.availablePairings);
         }
@@ -79,31 +83,53 @@ function Selection() {
     navigate(`/results?${params.toString()}`);
   }, [region, country, pairing, price, navigate]);
 
-  return (
-    <Container maxW="container.md" py={8}>
-      {!price && (
-        <Fade in>
-          <Box>
-            <PriceSelection
-              minPrice={sliderBounds.min - 2}
-              maxPrice={sliderBounds.max + 2}
-              onConfirm={setPrice}
-            />
-          </Box>
-        </Fade>
-      )}
+  const handleBack = () => {
+    navigate('/');
+  };
 
-      {price && !pairing && (
-        <Fade in>
-          <Box>
-            <PairingSelection
-              onSelect={setPairing}
-              availableOptions={availablePairings}
-            />
-          </Box>
-        </Fade>
-      )}
-    </Container>
+  return (
+    <Box pt={4}>
+      <Flex justify="flex-start" mb={4} px={4} position="relative" zIndex="1300">
+        <Button
+          onClick={handleBack}
+          bg="whiteAlpha.600"
+          color="brand.primary"
+          borderRadius="full"
+          fontSize="lg"
+          px={4}
+          py={2}
+          boxShadow="md"
+          _hover={{ bg: 'whiteAlpha.800' }}
+        >
+          ←
+        </Button>
+      </Flex>
+
+      <Container maxW="container.md" py={4}>
+        {!price && (
+          <Fade in>
+            <Box>
+              <PriceSelection
+                minPrice={sliderBounds.min - 2}
+                maxPrice={sliderBounds.max + 2}
+                onConfirm={setPrice}
+              />
+            </Box>
+          </Fade>
+        )}
+
+        {price && !pairing && (
+          <Fade in>
+            <Box>
+              <PairingSelection
+                onSelect={setPairing}
+                availableOptions={availablePairings}
+              />
+            </Box>
+          </Fade>
+        )}
+      </Container>
+    </Box>
   );
 }
 

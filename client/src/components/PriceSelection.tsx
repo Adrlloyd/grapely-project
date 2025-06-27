@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
 import WineBottle from '../components/WineBottle';
 import '../styles/PriceSelection.css';
 import { Box, Button, Text } from '@chakra-ui/react';
@@ -17,8 +16,6 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
   const [minValue, setMinValue] = useState(minPrice);
   const [maxValue, setMaxValue] = useState(maxPrice);
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     setMinValue(minPrice);
     setMaxValue(maxPrice);
@@ -26,10 +23,6 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
 
   const handleConfirm = () => {
     onConfirm({ min: minValue, max: maxValue });
-  };
-
-  const handleBack = () => {
-    navigate('/');
   };
 
   const handleMinChange = (newMinValue: number) => {
@@ -51,23 +44,6 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
 
   return (
     <Box className="price-selection">
-      <Box className="price-header">
-        <Button
-          onClick={handleBack}
-          className="back-button"
-          bg="whiteAlpha.600"
-          color="brand.primary"
-          borderRadius="full"
-          fontSize="md"
-          px={4}
-          py={2}
-          boxShadow="md"
-          _hover={{ bg: 'whiteAlpha.800' }}
-        >
-          ← Back
-        </Button>
-      </Box>
-
       <Text className="price-selection-title" fontFamily="heading">
         Set Your Budget
       </Text>

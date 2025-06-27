@@ -67,7 +67,7 @@ function WorldMap() {
           boxShadow="md"
           _hover={{ bg: 'whiteAlpha.800' }}
         >
-          ← Back
+          ←
         </Button>
       </Flex>
 

@@ -5,7 +5,8 @@ import type { ReactNode, ReactElement } from 'react';
 
 interface User {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string,
   email: string;
   token: string;
 }
@@ -55,3 +56,4 @@ const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
 
 
 export { AuthProvider, AuthContext} ;
+export type { AuthContextType };

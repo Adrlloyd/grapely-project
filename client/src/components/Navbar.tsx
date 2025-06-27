@@ -38,16 +38,16 @@ const Navbar: React.FC = () => {
 
 
   // add more menu items & add the routing links here
-  const menuItems = user ?
+  const menuItems = user?
     [
-      { label: `Hello ${user.name}!`},
-      { label: "Favourites", href: "" },
-      { label: "Your Profile", href: "" },
-      { label: "Log out", href: "", onclick: logout }
+      { label: `Hello ${user.firstName}!`},
+      { label: "Favourites", href: "" , onClick: () => navigate('/favourites')},
+      { label: "Your Profile", href: "", onClick: () => navigate('/userProfile')},
+      { label: "Log out", href: "", onClick: logout }
     ]
     :
     [
-      { label: "Log in", href: "/login" },
+      { label: "Log in", href: "", onClick: () => navigate('/login') },
     ]
     ;
 
@@ -75,7 +75,7 @@ const Navbar: React.FC = () => {
                   key={index}
                   href={item.href}
                   className="nav-link"
-                  onClick={item.onclick}
+                  onClick={item.onClick}
                 >
                   {item.label}
                 </a>
@@ -111,7 +111,7 @@ const Navbar: React.FC = () => {
 
                   onClick={(e) => {
                     e.preventDefault();
-                    if (item.onclick) {item.onclick();}
+                    if (item.onClick) {item.onClick();}
                     setIsMenuOpen(false)
                   }}
                 >

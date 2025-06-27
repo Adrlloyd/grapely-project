@@ -48,7 +48,8 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
     res.status(201).json({
       message: 'Registration successful',
       id: newUser.id,
-      name: newUser.firstName,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
       email: newUser.email,
       token,
     });
@@ -109,7 +110,8 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
     res.status(200).json({
       message: 'Login successful',
       id: user.id,
-      name: user.firstName,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       token,
     });

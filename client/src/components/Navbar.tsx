@@ -98,7 +98,7 @@ function Navbar() {
               flexShrink={0}
             >
               <Image
-                src="/noun-wine-5003254.png"
+                src="/logo/noun-wine-5003254.png"
                 alt="Grapely Logo"
                 height={{ base: '55px', md: '72px' }}
                 objectFit="cover"

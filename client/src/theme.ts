@@ -1,4 +1,5 @@
 import { extendTheme, type ThemeConfig } from '@chakra-ui/react';
+import { color } from 'framer-motion';
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -53,7 +54,7 @@ const theme = extendTheme({
   },
   fonts: {
     heading: `'Cinzel', serif`,
-    body: `'Open Sans', sans-serif`,
+    body: `'Cinzel', sans-serif`,
   },
   styles: {
     global: {

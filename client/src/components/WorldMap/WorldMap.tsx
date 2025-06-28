@@ -31,7 +31,7 @@ function WorldMap() {
           as="h2"
           fontSize="2xl"
           mb={4}
-          color="brand.secondary"
+          color="brand.primary"
           fontFamily="heading"
         >
           Select Wine Region

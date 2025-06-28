@@ -88,7 +88,7 @@ function Selection() {
   };
 
   return (
-    <Box pt={4}>
+    <Box>
       <Flex justify="flex-start" mb={4} px={4} position="relative" zIndex="1300">
         <Button
           onClick={handleBack}
@@ -105,7 +105,7 @@ function Selection() {
         </Button>
       </Flex>
 
-      <Container maxW="container.md" py={4}>
+      <Container maxW="container.md">
         {!price && (
           <Fade in>
             <Box>

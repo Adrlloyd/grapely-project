@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ComposableMap, Geographies } from 'react-simple-maps';
-import { Box, Heading, Flex, Button, Image } from '@chakra-ui/react';
+import { Box, Heading, Flex, Button, Image, Text } from '@chakra-ui/react';
 import RegionCardList from '../RegionCardList/RegionCardList';
 import { wineRegions } from '../../config/wineRegions';
 import { renderGeographies } from './renderGeographies';
@@ -14,7 +14,7 @@ function WorldMap() {
     selectedRegion,
     setSelectedRegion,
     selectedCountry,
-    setSelectedCountry
+    setSelectedCountry,
   } = useRegionNavigation();
 
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
@@ -26,16 +26,16 @@ function WorldMap() {
 
   if (!selectedRegion) {
     return (
-      <Box textAlign="center">
-        <Heading
-          as="h2"
+      <Box textAlign="center" px={4} pt={8}>
+        <Text
           fontSize="2xl"
-          mb={4}
+          mb={6}
           color="brand.primary"
           fontFamily="heading"
+          fontWeight="semibold"
         >
           Select Wine Region
-        </Heading>
+        </Text>
         <RegionCardList onSelect={setSelectedRegion} />
       </Box>
     );
@@ -44,15 +44,20 @@ function WorldMap() {
   const region = wineRegions[selectedRegion];
   const projectionConfig = {
     scale: region.scale,
-    center: region.center
+    center: region.center,
   };
 
   return (
-    <Box w="100%" py={{ base: 4, md: 6 }} px={{ base: 2, md: 6 }} textAlign="center">
+    <Box
+      px={4}
+      pt={8}
+      pb={12}
+      textAlign="center"
+    >
       <Flex 
         justify="flex-start" 
         mb={4} 
-        px={4}
+        px={2}
         position="relative"
         zIndex="1300"
       >
@@ -103,7 +108,7 @@ function WorldMap() {
         <ComposableMap
           projection="geoMercator"
           projectionConfig={projectionConfig}
-          style={{ width: '100%', height: 'auto' }} // Chakra can't style SVGs
+          style={{ width: '100%', height: 'auto' }}
         >
           <Geographies geography={GEO_URL}>
             {({ geographies }: { geographies: Feature[] }) =>
@@ -112,7 +117,7 @@ function WorldMap() {
                 selectedRegion,
                 selectedCountry,
                 setSelectedCountry,
-                setHoveredCountry
+                setHoveredCountry,
               })
             }
           </Geographies>

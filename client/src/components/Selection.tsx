@@ -84,7 +84,7 @@ function Selection() {
   }, [region, country, pairing, price, navigate]);
 
   const handleBack = () => {
-    navigate('/');
+    navigate('/region');
   };
 
   return (

@@ -1,5 +1,4 @@
 import { extendTheme, type ThemeConfig } from '@chakra-ui/react';
-import { color } from 'framer-motion';
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -10,30 +9,27 @@ const theme = extendTheme({
   config,
   colors: {
     brand: {
-      // Full color scale for primary (wine purple)
       50: '#F7E6F0',
       100: '#EBC0D6',
       200: '#DE99BC',
       300: '#D173A2',
       400: '#C44C88',
-      500: '#7B2E5A', // Your primary
+      500: '#7B2E5A',
       600: '#6B2850',
       700: '#5B2246',
       800: '#4B1C3C',
       900: '#3B1632',
-      // Named colors for easier reference
       primary: '#7B2E5A',
       secondary: '#4A7C59',
       tertiary: '#E6C36F',
     },
-    // Additional color scales that work with your palette
     sage: {
       50: '#F0F4F1',
       100: '#D6E3D8',
       200: '#BCD1BF',
       300: '#A2C0A6',
       400: '#88AE8D',
-      500: '#4A7C59', // Your secondary
+      500: '#4A7C59',
       600: '#3F6B4D',
       700: '#345A41',
       800: '#294935',
@@ -45,7 +41,7 @@ const theme = extendTheme({
       200: '#F5E4A9',
       300: '#F1DA87',
       400: '#EDD065',
-      500: '#E6C36F', // Your tertiary
+      500: '#E6C36F',
       600: '#D4A845',
       700: '#A8863A',
       800: '#7C642B',
@@ -53,8 +49,8 @@ const theme = extendTheme({
     }
   },
   fonts: {
-    heading: `'Cinzel', serif`,
-    body: `'Cinzel', sans-serif`,
+    heading: `'Dancing Script', cursive`,
+    body: `'Yeseva One', serif`,
   },
   styles: {
     global: {
@@ -120,6 +116,7 @@ const theme = extendTheme({
       baseStyle: {
         fontFamily: 'heading',
         fontWeight: '600',
+        color: 'brand.primary', // default all headings to primary color
       },
       variants: {
         wine: {
@@ -139,7 +136,6 @@ const theme = extendTheme({
       },
     },
   },
-  // Custom breakpoints if needed
   breakpoints: {
     base: '0px',
     sm: '640px',

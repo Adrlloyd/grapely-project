@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ComposableMap, Geographies } from 'react-simple-maps';
-import { Box, Heading, Flex, Button, Image, Text } from '@chakra-ui/react';
+import { Box, Flex, Button, Image, Text } from '@chakra-ui/react';
 import RegionCardList from '../RegionCardList/RegionCardList';
 import { wineRegions } from '../../config/wineRegions';
 import { renderGeographies } from './renderGeographies';

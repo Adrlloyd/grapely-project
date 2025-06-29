@@ -105,8 +105,8 @@ function Selection() {
         </Button>
       </Flex>
 
-      <Container maxW="container.md">
-        {!price && (
+      {!price && (
+        <Container maxW="container.md">
           <Fade in>
             <Box>
               <PriceSelection
@@ -116,19 +116,19 @@ function Selection() {
               />
             </Box>
           </Fade>
-        )}
+        </Container>
+      )}
 
-        {price && !pairing && (
-          <Fade in>
-            <Box>
-              <PairingSelection
-                onSelect={setPairing}
-                availableOptions={availablePairings}
-              />
-            </Box>
-          </Fade>
-        )}
-      </Container>
+      {price && !pairing && (
+        <Fade in>
+          <Box>
+            <PairingSelection
+              onSelect={setPairing}
+              availableOptions={availablePairings}
+            />
+          </Box>
+        </Fade>
+      )}
     </Box>
   );
 }

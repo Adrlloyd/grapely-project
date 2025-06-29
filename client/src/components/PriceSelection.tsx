@@ -62,12 +62,12 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
         <div className="bottle-center-pair">
           <div className="bottle-block">
             <WineBottle fillPercentage={getFill(minValue)} />
-            <span className="price-label">Min: ${minValue.toFixed(2)}</span>
+            <span className="price-label">Min<br/>${minValue.toFixed(2)}</span>
           </div>
 
           <div className="bottle-block">
             <WineBottle fillPercentage={getFill(maxValue)} />
-            <span className="price-label">Max: ${maxValue.toFixed(2)}</span>
+            <span className="price-label">Max<br/>${maxValue.toFixed(2)}</span>
           </div>
         </div>
 

@@ -1,7 +1,8 @@
+/* Needs to remain as most of the code in PriceSelection.tsx isnt impacted by Chakra. SVG and creating the bottles isnt compatible */
 .price-selection {
   text-align: center;
   color: #7B2E5A;
-  font-family: 'Cinzel', serif;
+  font-family: 'Yeseva One', serif;
 }
 
 .price-selection-title {
@@ -14,6 +15,7 @@
   display: inline-block;
   width: 9ch;
   text-align: center;
+  line-height: 1.2;
 }
 
 .bottle-slider-frame {

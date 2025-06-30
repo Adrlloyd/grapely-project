@@ -7,8 +7,8 @@ import {
   Flex,
   Button,
 } from '@chakra-ui/react';
-import PairingSelection from './Pairing Selection/PairingSelection';
-import PriceSelection from '../components/PriceSelection';
+import PairingSelection from './PairingSelection/PairingSelection';
+import PriceSelection from './PriceSelection/PriceSelection';
 import { fetchFilteredWines } from '../services/wineService';
 import { getCountryRegion } from '../utils/geo';
 import type { Wine } from '../types/wine';

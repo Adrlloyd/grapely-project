@@ -3,7 +3,7 @@ interface WineBottleProps {
 }
 
 function WineBottle({ fillPercentage }: WineBottleProps) {
-  const viewBoxHeight = 125;
+  const viewBoxHeight = 88;
   
   const safeFillPercentage = Math.max(0, Math.min(100, fillPercentage));
   

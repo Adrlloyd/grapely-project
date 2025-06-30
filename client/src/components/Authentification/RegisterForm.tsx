@@ -50,7 +50,7 @@ const RegisterForm = () => {
         token: data.token,
       });
 
-      navigate('/');
+      navigate('/region');
     } catch (error) {
       alert('Registration failed');
       console.error('Registration failed:', error);

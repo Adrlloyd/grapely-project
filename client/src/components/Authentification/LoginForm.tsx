@@ -41,7 +41,7 @@ const LoginForm = () => {
         token: data.token,
       });
 
-      navigate('/');
+      navigate('/region');
     } catch (error) {
       alert('Login failed');
       console.error('Login failed:', error);

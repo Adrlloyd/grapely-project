@@ -1,7 +1,8 @@
 import { Routes, Route } from 'react-router';
 import './App.css';
-import Navbar from './components/Navbar'
-import LandingPage from './pages/LandingPage';
+import Layout from './components/Layout';
+import BeginJourney from './pages/LandingPage';
+import RegionSelectPage from './pages/RegionSelectPage';
 import SelectionPage from './pages/SelectionPage';
 import ResultsPage from './pages/ResultsPage';
 import SummaryPage from './pages/SummaryPage';
@@ -12,20 +13,19 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
-    <div>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/selection" element={<SelectionPage />} />
-        <Route path="/results" element={<ResultsPage />} />
-        <Route path="/summary" element={<SummaryPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/userProfile" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
-        <Route path="/favourites" element={<ProtectedRoute><ResultsPage favourites={true} /></ProtectedRoute>} />
-      </Routes>
-    </div>
-  ) 
+    <Routes>
+      <Route path="/" element={<BeginJourney />} />
+
+      <Route path="/region" element={<Layout><RegionSelectPage /></Layout>} />
+      <Route path="/selection" element={<Layout><SelectionPage /></Layout>} />
+      <Route path="/results" element={<Layout><ResultsPage /></Layout>} />
+      <Route path="/summary" element={<Layout><SummaryPage /></Layout>} />
+      <Route path="/login" element={<Layout><LoginPage /></Layout>} />
+      <Route path="/register" element={<Layout><RegisterPage /></Layout>} />
+      <Route path="/userProfile" element={<Layout><ProtectedRoute><UserProfilePage /></ProtectedRoute></Layout>} />
+      <Route path="/favourites" element={<Layout><ProtectedRoute><ResultsPage favourites={true} /></ProtectedRoute></Layout>} />
+    </Routes>
+  );
 }
 
 export default App;

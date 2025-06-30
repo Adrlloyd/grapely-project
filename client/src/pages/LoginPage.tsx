@@ -4,7 +4,6 @@ const LoginPage = () => {
 
   return (
     <>
-      <h2>Create an account</h2>
       <LoginForm />
     </>
   );

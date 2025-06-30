@@ -20,6 +20,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Results({ favourites = false }: { favourites?: boolean }) {
   const [wines, setWines] = useState<Wine[]>([]);
+  const [shouldRender, setShouldRender] = useState(false);
   const navigate = useNavigate();
   const { search } = useLocation();
   const { user } = useAuth();
@@ -34,8 +35,16 @@ function Results({ favourites = false }: { favourites?: boolean }) {
   const MotionBox = motion.create(Box);
 
   useEffect(() => {
+    // Delay initial render to allow fetch to complete
+    const renderTimer = setTimeout(() => {
+      setShouldRender(true);
+    }, 300);
+
     if (favourites) {
-      if (!user?.token) return
+      if (!user?.token) {
+        clearTimeout(renderTimer);
+        return;
+      }
 
       fetchFavouriteWines(user.token)
         .then((data) => {
@@ -48,10 +57,13 @@ function Results({ favourites = false }: { favourites?: boolean }) {
         .catch((error) => {
           console.error('Error fetching favourites:', error);
         });
-      return;
+      return () => clearTimeout(renderTimer);
     }
     
-    if (!country || !pairing || !min || !max) return;
+    if (!country || !pairing || !min || !max) {
+      clearTimeout(renderTimer);
+      return;
+    }
 
     fetchFilteredWines({
       country,
@@ -69,6 +81,8 @@ function Results({ favourites = false }: { favourites?: boolean }) {
       .catch((error) => {
         console.error('Error fetching final filtered wines:', error);
       });
+
+    return () => clearTimeout(renderTimer);
   }, [favourites, user?.token, country, min, max, pairing]);
 
   const handleSelect = (wine: Wine) => {
@@ -85,6 +99,8 @@ function Results({ favourites = false }: { favourites?: boolean }) {
   const handleBackClick = () => {
     navigate(-1);
   };
+
+
 
   return (
     <Box
@@ -140,12 +156,12 @@ function Results({ favourites = false }: { favourites?: boolean }) {
         px={4}
         pb={12}
       >
-        {wines.map((wine, index) => (
+        {shouldRender && wines.map((wine, index) => (
           <MotionBox
             key={wine.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.60, duration: 0.6 }}
+            transition={{ delay: index * 0.6, duration: 0.8 }}
             position="relative"
             w="260px"
             bg="white"

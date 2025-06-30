@@ -14,6 +14,7 @@ import { fetchFilteredWines } from '../services/wineService';
 import { fetchFavouriteWines } from '../services/favouritesService';
 import { useAuth } from '../context/useAuth';
 import type { Wine } from '../types/wine';
+import { motion } from 'framer-motion';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -29,6 +30,8 @@ function Results({ favourites = false }: { favourites?: boolean }) {
   const pairing = query.get('pairing') || '';
   const min = query.get('min');
   const max = query.get('max');
+
+  const MotionBox = motion.create(Box);
 
   useEffect(() => {
     if (favourites) {
@@ -117,7 +120,7 @@ function Results({ favourites = false }: { favourites?: boolean }) {
       <Heading
         as="h2"
         fontSize="2.3rem"
-        mb={10}
+        mb={55}
         fontFamily="heading"
         color="brand.primary"
       >
@@ -132,14 +135,17 @@ function Results({ favourites = false }: { favourites?: boolean }) {
           lg: "repeat(4, 1fr)",
           xl: "repeat(5, 1fr)"
         }}
-        gap={8}
+        gap={10}
         justifyItems="center"
         px={4}
         pb={12}
       >
-        {wines.map((wine) => (
-          <Box
+        {wines.map((wine, index) => (
+          <MotionBox
             key={wine.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.60, duration: 0.6 }}
             position="relative"
             w="260px"
             bg="white"
@@ -147,7 +153,9 @@ function Results({ favourites = false }: { favourites?: boolean }) {
             boxShadow="0 4px 14px rgba(0, 0, 0, 0.08)"
             cursor="pointer"
             p="1rem 1rem 1.5rem"
-            transition="transform 0.3s ease, box-shadow 0.3s ease"
+            transitionProperty="transform, box-shadow"
+            transitionDuration="0.3s"
+            transitionTimingFunction="ease"
             onClick={() => handleSelect(wine)}
             _hover={{
               transform: "scale(1.03)",
@@ -204,7 +212,7 @@ function Results({ favourites = false }: { favourites?: boolean }) {
                 <Text as="span" fontWeight="bold">Price:</Text> ${wine.price}
               </Text>
             </VStack>
-          </Box>
+          </MotionBox>
         ))}
       </Grid>
     </Box>

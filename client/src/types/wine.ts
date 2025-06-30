@@ -10,6 +10,7 @@ export interface Wine {
   image_url: string;
   description: string;
   pairingOptions: string[];
+  ratings?: { score: number }[];
 }
 
 export interface WineFilterPayload {

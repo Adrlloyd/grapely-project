@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use('/api/wines', wineRoutes);
 app.use('/api/favourites', favouriteRoutes);
 app.use('/api/', searchRoutes);
-app.use('/api/users', userRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/rating', ratingRoutes);
 app.use('/api/random', randomRoutes);

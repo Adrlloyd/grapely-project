@@ -22,10 +22,10 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/userProfile" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
-        <Route path="/favourites" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
+        <Route path="/favourites" element={<ProtectedRoute><ResultsPage favourites={true} /></ProtectedRoute>} />
       </Routes>
     </div>
-  )
+  ) 
 }
 
 export default App;

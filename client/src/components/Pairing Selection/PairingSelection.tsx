@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { usePairingCarousel } from './usePairingCarousel';
-import '../../styles/PariingCarousel.css';
+import '../../styles/PairingCarousel.css';
 
 interface PairingSelectionProps {
   onSelect: (pairing: string) => void;

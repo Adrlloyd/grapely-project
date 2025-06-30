@@ -24,3 +24,8 @@ export interface WineFilterPayload {
 export type FilteredWinesResponse =
   | { wines: Wine[]; count: number }
   | { availablePairings: string[]; overallPriceBracket: number[]; count: number };
+
+
+export type FavouriteWinesResponse = {
+  favourites: Wine[];
+}

@@ -2,14 +2,17 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import '../styles/Results.css';
 import { fetchFilteredWines } from '../services/wineService';
+import { fetchFavouriteWines } from '../services/favouritesService';
+import { useAuth } from '../context/useAuth';
 import type { Wine } from '../types/wine';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-function Results() {
+function Results({ favourites = false }: { favourites?: boolean }) {
   const [wines, setWines] = useState<Wine[]>([]);
   const navigate = useNavigate();
   const { search } = useLocation();
+  const { user } = useAuth();
 
   const query = new URLSearchParams(search);
   const country = query.get('country') || '';
@@ -19,6 +22,23 @@ function Results() {
   const max = query.get('max');
 
   useEffect(() => {
+    if (favourites) {
+      if (!user?.token) return
+
+      fetchFavouriteWines(user.token)
+        .then((data) => {
+          if (Array.isArray(data.favourites)) {
+            setWines(data.favourites);
+          } else {
+            console.warn('Invalid favourites response.');
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching favourites:', error);
+        });
+      return;
+    }
+    
     if (!country || !pairing || !min || !max) return;
 
     fetchFilteredWines({
@@ -37,7 +57,7 @@ function Results() {
       .catch((error) => {
         console.error('Error fetching final filtered wines:', error);
       });
-  }, [country, min, max, pairing]);
+  }, [favourites, user?.token, country, min, max, pairing]);
 
   const handleSelect = (wine: Wine) => {
     const encodedParams = new URLSearchParams({

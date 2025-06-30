@@ -44,7 +44,7 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
 
   return (
     <Box className="price-selection">
-      <Text className="price-selection-title" fontFamily="heading">
+      <Text fontSize="2.3rem" className="price-selection-title" fontFamily="heading">
         Set Your Budget
       </Text>
 
@@ -93,7 +93,7 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
         px={8}
         py={4}
         boxShadow="lg"
-        fontFamily="heading"
+        fontFamily="body"
         _hover={{
           bg: '#5e2347',
           transform: 'translateY(-2px)',

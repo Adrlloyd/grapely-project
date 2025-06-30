@@ -102,13 +102,13 @@ function Navbar() {
               align="center"
               gap={3}
               cursor="pointer"
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/region')}
               flexShrink={0}
             >
               <Image
                 src="/logo/noun-wine-5003254.png"
                 alt="Grapely Logo"
-                height={{ base: '45px', md: '60px' }}
+                height={{ base: '55px', md: '70px' }}
                 objectFit="cover"
                 objectPosition="top"
                 sx={{
@@ -117,7 +117,7 @@ function Navbar() {
                 }}
               />
               <Text
-                fontSize={{ base: 'lg', md: '2xl' }}
+                fontSize="2rem"
                 fontWeight="bold"
                 color="brand.tertiary"
                 fontFamily="heading"

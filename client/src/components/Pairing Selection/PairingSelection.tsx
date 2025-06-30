@@ -51,7 +51,7 @@ function PairingSelection({ onSelect, availableOptions }: PairingSelectionProps)
     <Box w="100%">
       <Heading
         as="h2"
-        fontSize="2xl"
+        fontSize="2.3rem"
         mb={6}
         color="brand.primary"
         fontFamily="heading"

@@ -96,8 +96,8 @@ function Results() {
 
       <Heading
         as="h2"
-        fontSize="2rem"
-        mb={8}
+        fontSize="2.3rem"
+        mb={10}
         fontFamily="heading"
         color="brand.primary"
       >
@@ -174,13 +174,13 @@ function Results() {
               >
                 {wine.name}
               </Text>
-              <Text fontSize="sm" color="gray.600">
+              <Text fontFamily="body" fontSize="sm" color="gray.600">
                 <Text as="span" fontWeight="bold">Country:</Text> {wine.country}
               </Text>
-              <Text fontSize="sm" color="gray.600">
+              <Text fontFamily="body" fontSize="sm" color="gray.600">
                 <Text as="span" fontWeight="bold">Grape:</Text> {wine.grape}
               </Text>
-              <Text fontSize="sm" color="gray.600">
+              <Text fontFamily="body" fontSize="sm" color="gray.600">
                 <Text as="span" fontWeight="bold">Price:</Text> ${wine.price}
               </Text>
             </VStack>

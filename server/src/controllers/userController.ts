@@ -5,31 +5,39 @@ import type { AuthenticatedRequest } from '../middleware/auth'
 
 const prisma = new PrismaClient();
 
-// // GET
-// const getUserById = async (req: Request, res: Response): Promise<void> => {
+// PUT
+const updateUserName = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  const userId = req.userId;
+  const { firstName, lastName } = req.body;
+  try {
+    if (!firstName || !lastName) {
+      res.status(400).json({ message: 'Both a first and last name are required to update credentials.' });
+      return;
+    }
 
-//   const {id} = req.params;
+    const user = await prisma.user.findUnique({
+      where: {id: userId}
+    });
 
-//   try {
+    if (!user) {
+      res.status(404).json({ message: 'User not found.' });
+      return;
+    }
 
-//     const user = await prisma.user.findUnique({
-//       where: { id }
-//     })
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        firstName: firstName,
+        lastName: lastName
+      },
+    });
 
-//     if (!user) {
-//       res.status(404).json({ error: 'User Id does not exist'});
-//       return;
-//     }
-
-//     res.status(200).json(user);
-
-//   } catch (error) {
-
-//     console.error('Error fetching user:', error);
-//     res.status(500).json({error: 'Internal server error'});
-
-//   }
-// };
+    res.status(200).json({ message: 'Name successfully updated.' });
+  } catch (error) {
+    console.log('Error updating name: ', error);
+    res.status(500).json({ error: 'Internal server error'});
+  }
+};
 
 // PUT
 const updateUserPassword = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
@@ -86,4 +94,4 @@ const deleteUser = async (req: AuthenticatedRequest, res: Response): Promise<voi
   }
 };
 
-export { /*getUserById*/ updateUserPassword, deleteUser };
+export { updateUserName, updateUserPassword, deleteUser };

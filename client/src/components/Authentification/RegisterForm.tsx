@@ -1,10 +1,25 @@
 import { useState } from 'react';
-import { useNavigate } from "react-router";
+import { useNavigate } from 'react-router';
 import { useAuth } from '../../context/useAuth';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  VStack,
+  Text,
+} from '@chakra-ui/react';
 
 const RegisterForm = () => {
+  const [form, setForm] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+  });
 
-  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '' })
   const { login } = useAuth();
   const navigate = useNavigate();
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
@@ -20,8 +35,8 @@ const RegisterForm = () => {
       const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
-        body: JSON.stringify(form)
-      })
+        body: JSON.stringify(form),
+      });
 
       if (!res.ok) throw new Error('Registration failed');
 
@@ -33,44 +48,105 @@ const RegisterForm = () => {
         lastName: data.lastName,
         email: data.email,
         token: data.token,
-      })
+      });
 
-      // redirect to Home // to adjust
-      const redirectTo = '/';
-      navigate(redirectTo);
-
+      navigate('/region');
     } catch (error) {
-      // Pop up for user
       alert('Registration failed');
-      // Error for dev
       console.error('Registration failed:', error);
     }
-  }
-
+  };
 
   return (
-    <>
+    <Box
+      maxW="500px"
+      mx="auto"
+      mt="2rem"
+      p="2rem"
+      borderRadius="lg"
+      boxShadow="lg"
+      bg="whiteAlpha.900"
+    >
+      <Heading
+        as="h2"
+        size="lg"
+        mb={6}
+        textAlign="center"
+        fontFamily="heading"
+        color="brand.primary"
+      >
+        Create Account
+      </Heading>
 
       <form onSubmit={handleSubmit}>
-        <label> First Name
-          <input name="firstName" onChange={handleChange} required />
-        </label>
-        <label> Last Name
-          <input name="lastName" onChange={handleChange} required />
-        </label>
-        <label> Email
-          <input name="email" onChange={handleChange} required />
-        </label>
-        <label> Password
-          <input name="password" onChange={handleChange} required />
-        </label>
-        <button type="submit">Create Account</button>
+        <VStack spacing={4} align="stretch">
+          <FormControl isRequired>
+            <FormLabel color="brand.primary" fontWeight="bold">First Name</FormLabel>
+            <Input
+              name="firstName"
+              value={form.firstName}
+              onChange={handleChange}
+              bg="white"
+              borderColor="brand.primary"
+              _focus={{ borderColor: 'brand.secondary' }}
+            />
+          </FormControl>
 
-      </form >
+          <FormControl isRequired>
+            <FormLabel color="brand.primary" fontWeight="bold">Last Name</FormLabel>
+            <Input
+              name="lastName"
+              value={form.lastName}
+              onChange={handleChange}
+              bg="white"
+              borderColor="brand.primary"
+              _focus={{ borderColor: 'brand.secondary' }}
+            />
+          </FormControl>
 
-    </>
+          <FormControl isRequired>
+            <FormLabel color="brand.primary" fontWeight="bold">Email</FormLabel>
+            <Input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              bg="white"
+              borderColor="brand.primary"
+              _focus={{ borderColor: 'brand.secondary' }}
+            />
+          </FormControl>
 
-  )
-}
+          <FormControl isRequired>
+            <FormLabel color="brand.primary" fontWeight="bold">Password</FormLabel>
+            <Input
+              type="password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              bg="white"
+              borderColor="brand.primary"
+              _focus={{ borderColor: 'brand.secondary' }}
+            />
+          </FormControl>
+
+          <Button
+            type="submit"
+            mt={4}
+            bg="brand.primary"
+            color="white"
+            _hover={{ bg: 'brand.secondary' }}
+          >
+            Create Account
+          </Button>
+        </VStack>
+      </form>
+
+      <Text mt={6} fontSize="sm" textAlign="center" color="gray.600">
+        Already have an account? Log in from the menu.
+      </Text>
+    </Box>
+  );
+};
 
 export default RegisterForm;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
 import WineBottle from '../components/WineBottle';
 import '../styles/PriceSelection.css';
+import { Box, Button, Text } from '@chakra-ui/react';
 
 interface PriceSelectionProps {
   minPrice: number;
@@ -10,14 +10,11 @@ interface PriceSelectionProps {
 }
 
 function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) {
-  // Add buffer range
   const sliderMin = Math.floor(minPrice) - 1;
   const sliderMax = Math.ceil(maxPrice) + 1;
 
   const [minValue, setMinValue] = useState(minPrice);
   const [maxValue, setMaxValue] = useState(maxPrice);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     setMinValue(minPrice);
@@ -26,10 +23,6 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
 
   const handleConfirm = () => {
     onConfirm({ min: minValue, max: maxValue });
-  };
-
-  const handleBack = () => {
-    navigate('/');
   };
 
   const handleMinChange = (newMinValue: number) => {
@@ -50,12 +43,10 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
     ((value - sliderMin) / (sliderMax - sliderMin)) * 100;
 
   return (
-    <div className="price-selection">
-      <div className="price-header">
-        <button onClick={handleBack} className="back-button">← Back</button>
-      </div>
-
-      <h2 className="price-selection-title">Set Your Budget</h2>
+    <Box className="price-selection">
+      <Text fontSize="2.3rem" className="price-selection-title" fontFamily="heading">
+        Set Your Budget
+      </Text>
 
       <div className="bottle-slider-frame">
         <input
@@ -71,12 +62,12 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
         <div className="bottle-center-pair">
           <div className="bottle-block">
             <WineBottle fillPercentage={getFill(minValue)} />
-            <span className="price-label">Min: ${minValue.toFixed(2)}</span>
+            <span className="price-label">Min<br/>${minValue.toFixed(2)}</span>
           </div>
 
           <div className="bottle-block">
             <WineBottle fillPercentage={getFill(maxValue)} />
-            <span className="price-label">Max: ${maxValue.toFixed(2)}</span>
+            <span className="price-label">Max<br/>${maxValue.toFixed(2)}</span>
           </div>
         </div>
 
@@ -91,12 +82,28 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
         />
       </div>
 
-      <button onClick={handleConfirm} className="price-button">
+      <Button
+        onClick={handleConfirm}
+        className="price-button"
+        bg="brand.primary"
+        color="white"
+        borderRadius="full"
+        fontSize="lg"
+        mt={8}
+        px={8}
+        py={4}
+        boxShadow="lg"
+        fontFamily="body"
+        _hover={{
+          bg: '#5e2347',
+          transform: 'translateY(-2px)',
+          boxShadow: 'xl',
+        }}
+      >
         Confirm Price Range
-      </button>
-    </div>
+      </Button>
+    </Box>
   );
 }
-
 
 export default PriceSelection;

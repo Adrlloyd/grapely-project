@@ -1,7 +1,15 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import type { Wine } from '../types/wine';
-import '../styles/SearchBar.css';
 import { Link } from 'react-router';
+import type { Wine } from '../types/wine';
+import {
+  Box,
+  Input,
+  Button,
+  VStack,
+  Text,
+  Flex,
+  Image,
+} from '@chakra-ui/react';
 
 interface SearchBarProps {
   autoFocus?: boolean;
@@ -19,19 +27,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ autoFocus = false, onClose }) => 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // this is to prevent the predictive search from triggering too many times
-  const debouncedSearch = useCallback(
-    (() => {
-      let timeoutId: number;
-      return (searchQuery: string) => {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-          performSearch(searchQuery);
-        }, 300); // 300ms delay
-      };
-    })(),
-    []
-  );
+  const debouncedSearch = useCallback(() => {
+    let timeoutId: number;
+    return (searchQuery: string) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        performSearch(searchQuery);
+      }, 300);
+    };
+  }, [])();
 
   const performSearch = async (searchQuery: string) => {
     if (!searchQuery.trim()) {
@@ -66,7 +70,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ autoFocus = false, onClose }) => 
     await performSearch(query);
   };
 
-  // clear results when query is empty
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
@@ -80,19 +83,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ autoFocus = false, onClose }) => 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Handle Escape key to close search (mobile mode)
   useEffect(() => {
     if (!onClose) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
+      if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
-  // open dropdown when results are updated and there are results
   useEffect(() => {
     if (results.length > 0 && query.trim()) {
       setDropdownOpen(true);
@@ -101,7 +100,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ autoFocus = false, onClose }) => 
     }
   }, [results, query]);
 
-  // click outside to close dropdown
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
@@ -109,9 +107,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ autoFocus = false, onClose }) => 
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const formatPrice = (price?: number) => {
@@ -120,67 +116,112 @@ const SearchBar: React.FC<SearchBarProps> = ({ autoFocus = false, onClose }) => 
   };
 
   return (
-    <div className="searchbar-container" ref={containerRef}>
-      <form className="searchbar-form" onSubmit={handleSubmit}>
-        <input
-          className="searchbar-input"
-          type="text"
+    <Box 
+      ref={containerRef} 
+      w={{ base: '90%', md: '400px' }} 
+      mx="auto" 
+      position="relative"
+    >
+      <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center' }}>
+        <Input
           placeholder="Search wines..."
           value={query}
           onChange={handleInputChange}
           autoFocus={autoFocus}
-          onFocus={() => { if (results.length > 0) setDropdownOpen(true); }}
+          onFocus={() => results.length > 0 && setDropdownOpen(true)}
+          borderRadius="md 0 0 md"
+          bg="white"
+          color="black"
+          borderColor="gray.300"
+          _placeholder={{ color: 'gray.500' }}
         />
-        <button className="searchbar-button" type="submit">
-          {isMobile ? 'Q' : 'Search'}
-        </button>
+        <Button
+          type="submit"
+          borderRadius="0 md md 0"
+          bg="brand.primary"
+          color="white"
+          _hover={{ bg: '#5e2347' }}
+        >
+          {isMobile ? '🔍' : ''}
+        </Button>
       </form>
-      {loading && <div className="loading">Searching...</div>}
-      {error && <div className="error">{error}</div>}
+
+      {loading && <Text mt={2} color="brand.primary" fontStyle="italic">Searching...</Text>}
+      {error && <Text mt={2} color="red.500">{error}</Text>}
+
       {dropdownOpen && results.length > 0 && !loading && !error && (
-        <div className="searchbar-dropdown">
-          <ul className="searchbar-results">
-            {/* this is the mapped list of results */}
+        <Box
+          position="absolute"
+          top="100%"
+          left={0}
+          right={0}
+          mt={1}
+          bg="white"
+          border="1px solid"
+          borderColor="gray.300"
+          borderRadius="0 0 8px 8px"
+          maxHeight="350px"
+          overflowY="auto"
+          zIndex={10}
+          boxShadow="lg"
+          _before={{
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundImage: "url('/images/wine-background.jpg')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            opacity: 0.6,
+            zIndex: -1,
+            pointerEvents: 'none',
+            borderRadius: '0 0 8px 8px'
+          }}
+        >
+          <VStack spacing={0} align="stretch">
             {results.map((result) => (
-              <li key={result.id} className="searchbar-result-item">
-                <Link
-                  to="/summary"
-                  state={{ wine: result }}
-                  className='searchbar-result-link'
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-                  onClick={() => setDropdownOpen(false)}
-                >
-                  <div className="wine-info">
-                    <h3>{result.name}</h3>
-                    <div className="wine-details">
-                      {result.grape && <span className="grape">Grape: {result.grape}</span>}
-                      {result.color && <span className="color">Color: {result.color}</span>}
-                      {/* {result.sparkling && <span className="sparkling">✨ Sparkling</span>}
-                      {result.region && <span className="region">Region: {result.region}</span>} */}
-                      {result.country && <span className="country">Country: {result.country}</span>}
-                      {result.price && <span className="price">{formatPrice(result.price)}</span>}
-                    </div>
-                    {/* {result.description && (
-                      <p className="description">{result.description}</p>
-                    )}
-                    {result.pairingOptions.length > 0 && (
-                      <div className="pairings">
-                        <strong>Pairings:</strong> {result.pairingOptions.join(', ')}
-                      </div>
-                    )} */}
-                  </div>
-                  {result.image_url && (
-                    <div className="wine-image">
-                      <img src={`${API_BASE_URL}/${result.image_url}`} alt={result.name} />
-                    </div>
-                  )}
-                </Link>
-              </li>
+              <Box
+                as={Link}
+                to="/summary"
+                state={{ wine: result }}
+                key={result.id}
+                _hover={{ bg: 'rgba(247, 250, 252, 0.8)' }}
+                px={4}
+                py={3}
+                display="flex"
+                gap={4}
+                textDecoration="none"
+                color="inherit"
+                position="relative"
+                bg="rgba(255, 255, 255, 0.9)"
+              >
+                <Box flex="1">
+                  <Text fontWeight="bold" fontSize="md" color="black"><strong>{result.name}</strong></Text>
+                  <Flex wrap="wrap" gap={2} mt={1} fontSize="sm">
+                    {result.grape && <Text color="black"><strong>Grape:</strong> {result.grape}</Text>}
+                    {result.color && <Text color="black"><strong>Color:</strong> {result.color}</Text>}
+                    {result.country && <Text color="black"><strong>Country:</strong> {result.country}</Text>}
+                    {result.price && <Text color="black"><strong>Price:</strong> {formatPrice(result.price)}</Text>}
+                  </Flex>
+                </Box>
+                {result.image_url && (
+                  <Image
+                    src={`${API_BASE_URL}/${result.image_url}`}
+                    alt={result.name}
+                    boxSize="48px"
+                    objectFit="contain"
+                    borderRadius="md"
+                  />
+                )}
+              </Box>
             ))}
-          </ul>
-        </div>
+          </VStack>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 

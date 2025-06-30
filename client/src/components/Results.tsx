@@ -1,15 +1,27 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
-import '../styles/Results.css';
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Heading,
+  Image,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { fetchFilteredWines } from '../services/wineService';
+import { fetchFavouriteWines } from '../services/favouritesService';
+import { useAuth } from '../context/useAuth';
 import type { Wine } from '../types/wine';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-function Results() {
+function Results({ favourites = false }: { favourites?: boolean }) {
   const [wines, setWines] = useState<Wine[]>([]);
   const navigate = useNavigate();
   const { search } = useLocation();
+  const { user } = useAuth();
 
   const query = new URLSearchParams(search);
   const country = query.get('country') || '';
@@ -19,6 +31,23 @@ function Results() {
   const max = query.get('max');
 
   useEffect(() => {
+    if (favourites) {
+      if (!user?.token) return
+
+      fetchFavouriteWines(user.token)
+        .then((data) => {
+          if (Array.isArray(data.favourites)) {
+            setWines(data.favourites);
+          } else {
+            console.warn('Invalid favourites response.');
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching favourites:', error);
+        });
+      return;
+    }
+    
     if (!country || !pairing || !min || !max) return;
 
     fetchFilteredWines({
@@ -37,7 +66,7 @@ function Results() {
       .catch((error) => {
         console.error('Error fetching final filtered wines:', error);
       });
-  }, [country, min, max, pairing]);
+  }, [favourites, user?.token, country, min, max, pairing]);
 
   const handleSelect = (wine: Wine) => {
     const encodedParams = new URLSearchParams({
@@ -55,34 +84,130 @@ function Results() {
   };
 
   return (
-    <div>
-      <div className="results-page">
-        <div className="results-header">
-          <button className="back-button" onClick={handleBackClick}>← Back</button>
-          <h2 className="results-title">Choose a bottle</h2>
-        </div>
+    <Box
+      fontFamily="heading"
+      color="brand.primary"
+      textAlign="center"
+      minH="100vh"
+    >
+      <Flex
+        align="center"
+        gap={4}
+        justify="flex-start"
+        px={4}
+        pb={4}
+      >
+        <Button
+          onClick={handleBackClick}
+          bg="whiteAlpha.600"
+          color="brand.primary"
+          border="none"
+          fontSize="lg"
+          px={4}
+          py={2}
+          borderRadius="20px"
+          boxShadow="0 2px 6px rgba(0, 0, 0, 0.1)"
+          _hover={{ bg: 'whiteAlpha.850' }}
+          transition="background 0.3s ease"
+        >
+          ←
+        </Button>
+      </Flex>
 
-        <div className="wine-list">
-          {wines.map((wine) => (
-            <div key={wine.id} className="wine-card" onClick={() => handleSelect(wine)}>
-              <div className="wine-image-wrapper">
-                <img
-                  src={`${BASE_URL}/${wine.image_url}`}
-                  alt={wine.name}
-                  className="wine-image"
-                />
-              </div>
-              <div className="wine-info">
-                <p className="wine-name"><strong>{wine.name}</strong></p>
-                <p className="wine-detail"><strong>Country:</strong> {wine.country}</p>
-                <p className="wine-detail"><strong>Grape:</strong> {wine.grape}</p>
-                <p className="wine-detail"><strong>Price:</strong> ${wine.price}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
+      <Heading
+        as="h2"
+        fontSize="2.3rem"
+        mb={10}
+        fontFamily="heading"
+        color="brand.primary"
+      >
+        Choose a bottle
+      </Heading>
+
+      <Grid
+        templateColumns={{
+          base: "1fr",
+          sm: "repeat(2, 1fr)",
+          md: "repeat(3, 1fr)",
+          lg: "repeat(4, 1fr)",
+          xl: "repeat(5, 1fr)"
+        }}
+        gap={8}
+        justifyItems="center"
+        px={4}
+        pb={12}
+      >
+        {wines.map((wine) => (
+          <Box
+            key={wine.id}
+            position="relative"
+            w="260px"
+            bg="white"
+            borderRadius="16px"
+            boxShadow="0 4px 14px rgba(0, 0, 0, 0.08)"
+            cursor="pointer"
+            p="1rem 1rem 1.5rem"
+            transition="transform 0.3s ease, box-shadow 0.3s ease"
+            onClick={() => handleSelect(wine)}
+            _hover={{
+              transform: "scale(1.03)",
+              boxShadow: "0 6px 20px rgba(123, 46, 90, 0.2)",
+              zIndex: 2,
+              "& .wine-image-wrapper": {
+                top: "-60px",
+              },
+              "& .wine-image": {
+                transform: "scale(1.12)",
+              },
+            }}
+          >
+            <Box
+              className="wine-image-wrapper"
+              position="relative"
+              top="-50px"
+              display="flex"
+              justifyContent="center"
+              zIndex={1}
+              transition="top 0.3s ease"
+            >
+              <Image
+                className="wine-image"
+                src={`${BASE_URL}/${wine.image_url}`}
+                alt={wine.name}
+                w="100px"
+                h="auto"
+                objectFit="contain"
+                transition="transform 0.3s ease"
+                zIndex={3}
+              />
+            </Box>
+            
+            <VStack
+              spacing={2}
+              pt={2}
+              textAlign="center"
+            >
+              <Text
+                fontWeight="600"
+                color="brand.primary"
+                fontSize="md"
+              >
+                {wine.name}
+              </Text>
+              <Text fontFamily="body" fontSize="sm" color="gray.600">
+                <Text as="span" fontWeight="bold">Country:</Text> {wine.country}
+              </Text>
+              <Text fontFamily="body" fontSize="sm" color="gray.600">
+                <Text as="span" fontWeight="bold">Grape:</Text> {wine.grape}
+              </Text>
+              <Text fontFamily="body" fontSize="sm" color="gray.600">
+                <Text as="span" fontWeight="bold">Price:</Text> ${wine.price}
+              </Text>
+            </VStack>
+          </Box>
+        ))}
+      </Grid>
+    </Box>
   );
 }
 

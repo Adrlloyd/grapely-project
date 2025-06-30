@@ -1,20 +1,24 @@
 import { useLocation, useNavigate } from 'react-router';
-import '../styles/WineCard.css';
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Image,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import type { Wine } from '../types/wine';
 
-/* could probably just use the wine interface here or clean up
- the whole thing to use just props */
 interface WineCardProps {
   wine?: Wine;
 }
 
-//it now takes a wine prop OR uses the query params
 function WineCard({ wine }: WineCardProps) {
   const { search } = useLocation();
   const navigate = useNavigate();
   const query = new URLSearchParams(search);
 
-  // if wine prop is passed use it, otherwise use the query params
   let selectedBottle = wine;
   if (!selectedBottle) {
     const bottleName = decodeURIComponent(query.get('bottle') || '');
@@ -30,7 +34,16 @@ function WineCard({ wine }: WineCardProps) {
   };
 
   if (!selectedBottle) {
-    return <p className="winecard-error">Bottle Not Found</p>;
+    return (
+      <Text
+        fontFamily="heading"
+        color="brand.primary"
+        fontSize="xl"
+        textAlign="center"
+      >
+        Bottle Not Found
+      </Text>
+    );
   }
 
   const {
@@ -45,27 +58,96 @@ function WineCard({ wine }: WineCardProps) {
   } = selectedBottle;
 
   return (
-    <div className="winecard-container">
-      <div className="winecard-header">
-        <button className="back-button" onClick={handleBackClick}>← Back</button>
-      </div>
+    <Box
+      fontFamily="heading"
+      color="brand.primary"
+      textAlign="center"
+      pb={{ base: "1rem", md: "2rem" }}
+    >
+      <Flex
+        align="center"
+        gap={4}
+        justify="flex-start"
+        px={4}
+        pb={4}
+      >
+        <Button
+          onClick={handleBackClick}
+          bg="whiteAlpha.600"
+          color="brand.primary"
+          border="none"
+          fontSize="xl"
+          px={4}
+          py={2}
+          borderRadius="20px"
+          boxShadow="0 2px 6px rgba(0, 0, 0, 0.1)"
+          _hover={{ bg: 'whiteAlpha.850' }}
+          transition="background 0.2s ease"
+        >
+          ←
+        </Button>
+      </Flex>
 
-      <div className="winecard-card">
-        <div className="winecard-image-wrapper">
-          <img src={`${IMAGE_BASE_URL}/${image_url}`} alt={name} className="winecard-image" />
-        </div>
+      <Box
+        bg="transparent"
+        maxW="800px"
+        mx="auto"
+        p="1.5rem 1rem"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
+        <Box
+          position="relative"
+          top="-30px"
+          zIndex={1}
+          display="flex"
+          justifyContent="center"
+        >
+          <Image
+            src={`${IMAGE_BASE_URL}/${image_url}`}
+            alt={name}
+            w={{ base: "80px", md: "100px" }}
+            h="auto"
+            objectFit="contain"
+            transition="transform 0.3s ease"
+          />
+        </Box>
 
-        <div className="winecard-info">
-          <h1 className="winecard-title">{name}</h1>
-          <p><strong>Grape:</strong> {grape}</p>
-          <p><strong>Region:</strong> {region}</p>
-          <p><strong>Country:</strong> {country}</p>
-          <p><strong>Price:</strong> ${price}</p>
-          <p className="winecard-description"><strong>Description:</strong> {description}</p>
-          <p><strong>Pairing:</strong> {pairingOptions.join(', ')}</p>
-        </div>
-      </div>
-    </div>
+        <VStack
+          spacing={3}
+          textAlign="left"
+          w="100%"
+          mt="-10px"
+          fontSize={{ base: "sm", md: "md" }}
+          color="black"
+          fontFamily="body"
+        >
+          <Heading
+            as="h1"
+            fontSize={{ base: "xl", md: "1.6rem" }}
+            fontWeight="bold"
+            mb={4}
+            fontFamily="heading"
+            w="100%"
+            color="brand.primary"
+          >
+            {name}
+          </Heading>
+          
+          <Text w="100%"><strong>Grape:</strong> {grape}</Text>
+          <Text w="100%"><strong>Region:</strong> {region}</Text>
+          <Text w="100%"><strong>Country:</strong> {country}</Text>
+          <Text w="100%"><strong>Price:</strong> ${price}</Text>
+
+          <Text w="100%" mt={4} color="black">
+            <strong>Description:</strong> {description}
+          </Text>
+
+          <Text w="100%"><strong>Pairing:</strong> {pairingOptions.join(', ')}</Text>
+        </VStack>
+      </Box>
+    </Box>
   );
 }
 

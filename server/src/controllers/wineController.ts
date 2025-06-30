@@ -1,36 +1,56 @@
 import type { Request, Response } from 'express'
 import type { Prisma } from '../generated/prisma';
-
 import prisma from '../prisma';
+import { AuthenticatedRequest } from '../middleware/auth';
 
-const getRecommendedWines = async (req: Request, res: Response): Promise<any> => {
+type FullWine = Prisma.WineGetPayload<{
+  include: { ratings: { select: { score: true } } };
+}>;
+
+type PartialWine = { price: number; pairingOptions: string[] };
+
+const getRecommendedWines = async (req: Request | AuthenticatedRequest, res: Response): Promise<any> => {
     const { country, priceBracket, pairing } = req.body;
+    const userId = (req as AuthenticatedRequest).userId || null;
 
     const filters: Prisma.WineWhereInput = {};
+    
     filters.country = country;
+   
     if (priceBracket && priceBracket.min !== undefined && priceBracket.max !== undefined) {
       filters.price = {
         gte: priceBracket.min,
         lt: priceBracket.max
       };
     }
+    
     if (pairing) filters.pairingOptions = { has: pairing };
 
     try {
       const isFinalStep = country && priceBracket && pairing;
 
-      const recommendedWines = await prisma.wine.findMany({
-        where: filters,
-        ...(isFinalStep
-          ? {}
-          : {
-              select: {
-                price: true,
-                pairingOptions: true,
-              }
-            })
-      }); 
+      let recommendedWines: FullWine[] | PartialWine[] = [];
 
+      if (isFinalStep) {
+        recommendedWines = await prisma.wine.findMany({
+          where: filters,
+          include: userId ? {
+            ratings: {
+              where: { userId },
+              select: { score: true },
+            }
+          } : undefined
+        })
+      } else {
+        recommendedWines = await prisma.wine.findMany({
+          where: filters,
+          select: {
+            price: true,
+            pairingOptions: true,
+          }
+        })
+      }
+ 
       const winesCount = recommendedWines.length;
 
       if (!isFinalStep && winesCount) {
@@ -60,28 +80,4 @@ const getRecommendedWines = async (req: Request, res: Response): Promise<any> =>
     }
 }
 
-const getAllWines = async (req: Request, res: Response): Promise<void> => {
-  try {
-
-  } catch (error) {
-
-  }
-};
-
-const getWineById = async (req: Request, res: Response): Promise<void> => {
-  try {
-
-  } catch (error) {
-
-  }
-};
-
-const getSurpriseWine = async (req: Request, res: Response): Promise<void> => {
-  try {
-
-  } catch (error) {
-
-  }
-};
-
-export { getRecommendedWines, getAllWines, getWineById, getSurpriseWine }
+export { getRecommendedWines }

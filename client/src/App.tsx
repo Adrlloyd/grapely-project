@@ -23,7 +23,7 @@ function App() {
       <Route path="/login" element={<Layout><LoginPage /></Layout>} />
       <Route path="/register" element={<Layout><RegisterPage /></Layout>} />
       <Route path="/userProfile" element={<Layout><ProtectedRoute><UserProfilePage /></ProtectedRoute></Layout>} />
-      <Route path="/favourites" element={<Layout><ProtectedRoute><ResultsPage /></ProtectedRoute></Layout>} />
+      <Route path="/favourites" element={<Layout><ProtectedRoute><ResultsPage favourites={true} /></ProtectedRoute></Layout>} />
     </Routes>
   );
 }

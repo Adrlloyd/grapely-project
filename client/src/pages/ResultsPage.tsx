@@ -1,9 +1,9 @@
 import Results from '../components/Results';
 
-function ResultsPage() {
+function ResultsPage({ favourites = false }: { favourites?: boolean }) {
   return (
     <div>
-      <Results />
+      <Results favourites={favourites}/>
     </div>
   );
 }

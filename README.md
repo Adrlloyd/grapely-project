@@ -1,8 +1,6 @@
 # Grapely
 
-A beautifully interactive wine discovery and recommendation platform that allows users to explore wines around the world based on country and price, with deeper engagement through user accounts, personalized recommendations, and search/filter tools.
-
-Primary color: #7B2E5A
+A beautifully interactive wine discovery and recommendation platform that allows users to explore wines around the world based on country and price, with deeper engagement through user accounts, personalised recommendations, and search/filter tools.
 
 ## Table of Contents
 
@@ -68,24 +66,29 @@ Create an account
 
 ### Frontend
 
-- React – UI library
-- React Router – Router for React
-- Vite – Web project Build tool
-- TypeScript –  Strongly typed programming language that builds on JavaScript
-- Chakra UI – Component library for styling
-- Emotion – CSS-in-JS styling library
-- Framer Motion – Animations library
-- D3-geo + react-simple-maps – SVG maps creation
+- React – UI library ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+- React Router – Router for React ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
+- Vite – Web project Build tool ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+- TypeScript –  Strongly typed programming language that builds on JavaScript ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+- Chakra UI – Component library for styling ![Chakra UI](https://img.shields.io/badge/Chakra_UI-319795?style=for-the-badge&logo=chakra-ui&logoColor=white)
+- Emotion – CSS-in-JS styling library ![Emotion](https://img.shields.io/badge/Emotion-D94892?style=for-the-badge&logo=emotion&logoColor=white)
+- Framer Motion – Animations library ![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)
+- D3-geo + react-simple-maps – SVG maps creation ![D3.js](https://img.shields.io/badge/D3.js-F9A03C?style=for-the-badge&logo=d3.js&logoColor=white)
 
 
 ### Backend
-- Express – Web framework for node.js
-- TypeScript –  Strongly typed programming language that builds on JavaScript
-- PostgreSQL – Database
-- Prisma – ORM
-- Puppeteer – JS library for scraping
-- JWT (jsonwebtoken) – Authentication
-- Bcrypt – Password hashing
+- Express – Web framework for node.js![Express](https://img.shields.io/badge/Express-404D59?style=for-the-badge)
+- TypeScript –  Strongly typed programming language that builds on JavaScript ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+- PostgreSQL – Database ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
+- Prisma – ORM ![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
+- Puppeteer – JS library for scraping ![Puppeteer](https://img.shields.io/badge/Puppeteer-000000?style=for-the-badge&logo=puppeteer&logoColor=white)
+- JWT (jsonwebtoken) – Authentication ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
+- Bcrypt – Password hashing ![Bcrypt](https://img.shields.io/badge/Bcrypt-632960?style=for-the-badge)
+
+
+
+
+
 
 
 ##  Getting Started

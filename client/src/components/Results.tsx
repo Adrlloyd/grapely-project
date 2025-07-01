@@ -6,6 +6,7 @@ import {
   Flex,
   Grid,
   Heading,
+  Text,
 } from '@chakra-ui/react';
 import { fetchFilteredWines } from '../services/wineService';
 import { fetchFavouriteWines } from '../services/favouritesService';
@@ -17,6 +18,16 @@ import WineCard from './WineCard';
 function Results({ favourites = false }: { favourites?: boolean }) {
   const [wines, setWines] = useState<Wine[]>([]);
   const [shouldRender, setShouldRender] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const winesPerPage = 25;
+  const indexOfLastWine = currentPage * winesPerPage;
+  const indexOfFirstWine = indexOfLastWine - winesPerPage;
+  const currentWines = wines.slice(indexOfFirstWine, indexOfLastWine)
+  const totalPages = Math.ceil(wines.length / winesPerPage);
+  
+  
+  
   const navigate = useNavigate();
   const { search } = useLocation();
   const { user } = useAuth();
@@ -27,6 +38,10 @@ function Results({ favourites = false }: { favourites?: boolean }) {
   const pairing = query.get('pairing') || '';
   const min = query.get('min');
   const max = query.get('max');
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
 
   useEffect(() => {
     // Delay initial render to allow fetch to complete
@@ -195,7 +210,7 @@ function Results({ favourites = false }: { favourites?: boolean }) {
         px={4}
         pb={12}
       >
-        {shouldRender && wines.map((wine, index) => (
+        {shouldRender && currentWines.map((wine, index) => (
           <WineCard
             index={index}
             key={wine.id}
@@ -205,6 +220,20 @@ function Results({ favourites = false }: { favourites?: boolean }) {
           />
         ))}
       </Grid>
+      {shouldRender && wines.length > 0 && (
+        <Flex justify="center" align="center" mt={6} mb={16} gap={4}>
+          <Button
+            onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
+            isDisabled={currentPage === 1}
+            leftIcon={<Text fontSize="xl">←</Text>}
+          >Prev</Button>
+          <Text>Page {currentPage} of {totalPages}</Text>
+          <Button
+            onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
+            isDisabled={currentPage === totalPages}
+            rightIcon={<Text fontSize="xl">→</Text>}
+          >Next</Button>
+        </Flex>)}
     </Box>
   );
 }

@@ -103,41 +103,54 @@ Bcrypt – Password hashing
 
 Create .env files based on structure below:
 
-grapely-project/client/.env
+**grapely-project/client/.env**
 
 VITE_API_BASE_URL=http://localhost:3000
+
 VITE_IMAGE_BASE_URL=http://localhost:3000
 
-grapely-project/client/.env.production
+**grapely-project/client/.env.production**
 
 VITE_IMAGE_BASE_URL= ... your ss3 bucket
 
-grapely-project/server/.env
+**grapely-project/server/.env**
 
 DATABASE_URL= ... postgresql://<user>:<password>@localhost:5432/grapely
+
 AWS_ACCESS_KEY_ID= ... your access key id
+
 AWS_SECRET_ACCESS_KEY= ... your secret access key
+
 AWS_REGION=eu-north-1
+
 S3_BUCKET_NAME= your bucket name
+
 JWT_SECRET= ... your jwt password
 
 ### Installation Steps
 
 Open two terminals:
 
-Terminal 1 - Server:
+**Terminal 1 - Server:**
 
 cd server
+
 npm install
+
 npx prisma generate
+
 npx prisma db push
+
 npx prisma db seed
+
 npm run dev
 
-Terminal 2 - Client:
+**Terminal 2 - Client:**
 
 cd client
+
 npm run install:legacy
+
 npm run dev
 
 Then open the Vite link in your browser (usually http://localhost:5173)

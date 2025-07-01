@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import JWT from 'jsonwebtoken';
 
 interface JWTPayload {
-  userID: string;
+  userId: string;
   name: string;
 }
 
@@ -21,12 +21,33 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const decoded = JWT.verify(token, process.env.JWT_SECRET as string) as JWTPayload;
-    (req as AuthenticatedRequest).userId = decoded.userID;
+    (req as AuthenticatedRequest).userId = decoded.userId;
     next();
-  } catch (err) {
+  } catch (error) {
+    console.warn('Invalid token.');
     return res.status(401).json({ error: 'Invalid or expired token' });
   }
 };
 
-export { authenticate };
+
+function optionalAuthenticate(req: Request, res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+  const token = authHeader?.split(' ')[1];
+
+  if (!token) {
+    return next();
+  }
+
+  try {
+    const decoded = JWT.verify(token, process.env.JWT_SECRET!) as { userId: string };
+    (req as AuthenticatedRequest).userId = decoded.userId;
+  } catch (error) {
+    console.warn('Invalid token, continuing without userId.');
+  }
+
+  next();
+}
+
+
+export { authenticate, optionalAuthenticate };
 export type { AuthenticatedRequest }

@@ -8,6 +8,8 @@ const createOrUpdateRating = async (req: AuthenticatedRequest, res: Response): P
   const { wineId, score } = req.body;
   const userId = req.userId;
 
+  console.log("Incoming rating:", { userId, wineId, score }); // Testing input
+
   if (!userId || !wineId || typeof score !== 'number') {
     res.status(400).json({ error: 'Missing or invalid input' });
     return;
@@ -19,6 +21,12 @@ const createOrUpdateRating = async (req: AuthenticatedRequest, res: Response): P
   }
 
   try {
+
+    const wine = await prisma.wine.findUnique({ where: { id: wineId } }); // Test input
+    if (!wine) { // Test input
+      console.warn("Wine not found for ID:", wineId); // Test input
+    }
+
     const rating = await prisma.rating.upsert({
       where: {
         userId_wineId: {
@@ -35,6 +43,8 @@ const createOrUpdateRating = async (req: AuthenticatedRequest, res: Response): P
         score
       }
     });
+
+    console.log("Rating successfully saved:", rating); // Testing input
 
   res.status(200).json({
     message: 'Rating saved',
@@ -66,12 +76,4 @@ const deleteRating = async (req: AuthenticatedRequest, res: Response): Promise<v
   }
 };
 
-const getRatingByUserAndWine = async (req: Request, res: Response): Promise<void> => {
-  try {
-
-  } catch (error) {
-
-  }
-};
-
-export { createOrUpdateRating, deleteRating, getRatingByUserAndWine };
+export { createOrUpdateRating, deleteRating };

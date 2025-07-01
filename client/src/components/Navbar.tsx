@@ -102,10 +102,10 @@ function Navbar() {
               align="center"
               gap={3}
               cursor="pointer"
-              onClick={() => navigate('/region')}
               flexShrink={0}
             >
               <Image
+                onClick={() => navigate('/')}
                 src="/logo/noun-wine-5003254.png"
                 alt="Grapely Logo"
                 height={{ base: '55px', md: '70px' }}
@@ -117,6 +117,7 @@ function Navbar() {
                 }}
               />
               <Text
+                onClick={() => navigate('/region')}
                 fontSize="2rem"
                 fontWeight="bold"
                 color="brand.tertiary"

@@ -12,13 +12,17 @@ import {
 } from '@chakra-ui/react';
 import { fetchFilteredWines } from '../services/wineService';
 import { fetchFavouriteWines } from '../services/favouritesService';
+import { submitRating, deleteRating } from '../services/ratingService';
 import { useAuth } from '../context/useAuth';
 import type { Wine } from '../types/wine';
+import { motion } from 'framer-motion';
+import StarRating from './StarRating';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Results({ favourites = false }: { favourites?: boolean }) {
   const [wines, setWines] = useState<Wine[]>([]);
+  const [shouldRender, setShouldRender] = useState(false);
   const navigate = useNavigate();
   const { search } = useLocation();
   const { user } = useAuth();
@@ -30,9 +34,21 @@ function Results({ favourites = false }: { favourites?: boolean }) {
   const min = query.get('min');
   const max = query.get('max');
 
+  const MotionBox = motion.create(Box);
+
   useEffect(() => {
+    // Delay initial render to allow fetch to complete
+    const renderTimer = setTimeout(() => {
+      setShouldRender(true);
+    }, 300);
+
+    console.log('useEffect triggered BABY');
+
     if (favourites) {
-      if (!user?.token) return
+      if (!user?.token) {
+        clearTimeout(renderTimer);
+        return;
+      }
 
       fetchFavouriteWines(user.token)
         .then((data) => {
@@ -45,16 +61,19 @@ function Results({ favourites = false }: { favourites?: boolean }) {
         .catch((error) => {
           console.error('Error fetching favourites:', error);
         });
-      return;
+      return () => clearTimeout(renderTimer);
     }
     
-    if (!country || !pairing || !min || !max) return;
+    if (!country || !pairing || !min || !max) {
+      clearTimeout(renderTimer);
+      return;
+    }
 
     fetchFilteredWines({
       country,
       priceBracket: { min: parseFloat(min), max: parseFloat(max) },
       pairing,
-    })
+    }, user?.token)
       .then((response) => {
         if ('wines' in response) {
           setWines(response.wines);
@@ -66,6 +85,8 @@ function Results({ favourites = false }: { favourites?: boolean }) {
       .catch((error) => {
         console.error('Error fetching final filtered wines:', error);
       });
+
+    return () => clearTimeout(renderTimer);
   }, [favourites, user?.token, country, min, max, pairing]);
 
   const handleSelect = (wine: Wine) => {
@@ -76,12 +97,60 @@ function Results({ favourites = false }: { favourites?: boolean }) {
       price: wine.price.toString(),
       bottle: wine.name,
     });
+    console.log("NAVIGATING TO WINE DETAIL");
     navigate(`/summary?${encodedParams.toString()}`);
   };
+
+  const handleRating = async (wineId: string, newScore: number) => {
+    if (!user?.token) return;
+
+    const wine = wines.find(wine => wine.id === wineId);
+    const currentScore = wine?.ratings?.[0]?.score;
+
+    try {
+      if (currentScore === newScore) {
+        await deleteRating(user.token, wineId);
+
+        if (favourites) {
+          const updatedFavourites = await fetchFavouriteWines(user.token);
+          if (Array.isArray(updatedFavourites.favourites)) {
+            setWines(updatedFavourites.favourites);
+          }
+        } else {
+        // Otherwise, just update local state
+          setWines(prev => prev.map(wine => wine.id === wineId
+            ? { ...wine, ratings: [] }
+            : wine
+          ));
+        }
+        return;
+      }
+      
+      await submitRating(user.token, wineId, newScore);
+      
+      if (favourites) {
+        const updatedFavourites = await fetchFavouriteWines(user.token);
+        if (Array.isArray(updatedFavourites.favourites)) {
+          setWines(updatedFavourites.favourites);
+        }
+      } else {
+        setWines(prev => prev.map(wine => wine.id === wineId
+          ? { ...wine, ratings: [{ score: newScore }] }
+          : wine
+        ));
+      }
+      
+      console.log("Updated wine list:", wines.map(w => w.ratings));
+    } catch (error) {
+      console.error('Error submitting rating:', error);
+    }
+  }
 
   const handleBackClick = () => {
     navigate(-1);
   };
+
+
 
   return (
     <Box
@@ -117,7 +186,7 @@ function Results({ favourites = false }: { favourites?: boolean }) {
       <Heading
         as="h2"
         fontSize="2.3rem"
-        mb={10}
+        mb={55}
         fontFamily="heading"
         color="brand.primary"
       >
@@ -132,14 +201,17 @@ function Results({ favourites = false }: { favourites?: boolean }) {
           lg: "repeat(4, 1fr)",
           xl: "repeat(5, 1fr)"
         }}
-        gap={8}
+        gap={10}
         justifyItems="center"
         px={4}
         pb={12}
       >
-        {wines.map((wine) => (
-          <Box
+        {shouldRender && wines.map((wine, index) => (
+          <MotionBox
             key={wine.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.6, duration: 0.8 }}
             position="relative"
             w="260px"
             bg="white"
@@ -147,7 +219,9 @@ function Results({ favourites = false }: { favourites?: boolean }) {
             boxShadow="0 4px 14px rgba(0, 0, 0, 0.08)"
             cursor="pointer"
             p="1rem 1rem 1.5rem"
-            transition="transform 0.3s ease, box-shadow 0.3s ease"
+            transitionProperty="transform, box-shadow"
+            transitionDuration="0.3s"
+            transitionTimingFunction="ease"
             onClick={() => handleSelect(wine)}
             _hover={{
               transform: "scale(1.03)",
@@ -203,8 +277,9 @@ function Results({ favourites = false }: { favourites?: boolean }) {
               <Text fontFamily="body" fontSize="sm" color="gray.600">
                 <Text as="span" fontWeight="bold">Price:</Text> ${wine.price}
               </Text>
+              <StarRating rating={wine.ratings?.[0]?.score ?? 0} onRate={user ? (value) => handleRating(wine.id, value) : undefined} ></StarRating>
             </VStack>
-          </Box>
+          </MotionBox>
         ))}
       </Grid>
     </Box>

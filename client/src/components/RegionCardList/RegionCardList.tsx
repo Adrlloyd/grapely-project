@@ -115,7 +115,7 @@ export default function RegionCardList({ onSelect }: Props) {
                 animation: `${shake} 0.4s ease-in-out`,
               }}
             >
-              {name}
+              🍇 {name}
             </Button>
           </Flex>
         ))}

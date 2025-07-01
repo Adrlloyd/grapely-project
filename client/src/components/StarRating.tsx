@@ -1,6 +1,5 @@
-import React from "react";
 import { HStack, IconButton } from "@chakra-ui/react";
-import { StarIcon } from "@chakra-ui/icons";
+import { LuGrape } from "react-icons/lu";
 
 interface StarRatingProps {
   rating: number;
@@ -15,24 +14,22 @@ function StarRating({ rating, onRate }: StarRatingProps) {
       <IconButton
         key={i}
         aria-label={`Rate ${i + 1} stars`}
-        icon={<StarIcon />}
-        size='md'
+        icon={<LuGrape />}
+        size='lg'
         type='button'
-        color={filled ? 'yellow.400' : 'gray.300'}
+        color={filled ? 'primary.500' : 'gray.300'}
         variant="ghost"
         onClick={(e) => {
           e.stopPropagation();
           onRate?.(i + 1);
         }}
         isDisabled={!onRate}
-        _hover={ onRate ? { color: 'yellow.500' } : undefined}
+        _hover={onRate ? { color: 'primary.600' } : undefined}
       />
     );
   });
-  
-  return (
-    <HStack spacing={1}>{stars}</HStack>
-  )
+
+  return <HStack spacing={1}>{stars}</HStack>;
 }
 
 export default StarRating;

@@ -34,8 +34,6 @@ function Results({ favourites = false }: { favourites?: boolean }) {
       setShouldRender(true);
     }, 300);
 
-    console.log('useEffect triggered BABY');
-
     if (favourites) {
       if (!user?.token) {
         clearTimeout(renderTimer);
@@ -89,7 +87,6 @@ function Results({ favourites = false }: { favourites?: boolean }) {
       price: wine.price.toString(),
       bottle: wine.name,
     });
-    console.log("NAVIGATING TO WINE DETAIL");
     navigate(`/summary?${encodedParams.toString()}`);
   };
 

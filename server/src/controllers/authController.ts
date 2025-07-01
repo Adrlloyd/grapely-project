@@ -5,7 +5,7 @@ import JWT from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 interface JWTPayload {
-  userID: string;
+  userId: string;
   name: string;
 }
 
@@ -40,7 +40,7 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
     // Create session token for user
 
     const token = JWT.sign(
-      { userID: newUser.id, name: newUser.firstName } as JWTPayload,
+      { userId: newUser.id, name: newUser.firstName } as JWTPayload,
       process.env.JWT_SECRET as string,
       { expiresIn: '30m' }
     );
@@ -101,7 +101,7 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
     }
 
     const token = JWT.sign(
-      { userID: user.id, name: user.firstName } as JWTPayload,
+      { userId: user.id, name: user.firstName } as JWTPayload,
       process.env.JWT_SECRET as string,
       { expiresIn: '30m' }
     );

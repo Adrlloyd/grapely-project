@@ -17,9 +17,19 @@ const getUserFavourites = async (req: AuthenticatedRequest, res: Response): Prom
         wine: true
       }
     })
+
+    // res.status(200).json({
+    //   favourites: favourites.map((rating) => {return rating.wine})
+    // })
+
     res.status(200).json({
-      favourites: favourites.map((rating) => {return rating.wine})
-    })
+      favourites: favourites.map((rating) => {
+        return {
+          ...rating.wine,
+          ratings: [{ score: rating.score }] // manually attach user's rating
+        };
+      })
+    });
   } catch (error) {
     console.error('Error fetching favorites:', error);
     res.status(500).json({ error: 'Server error' });

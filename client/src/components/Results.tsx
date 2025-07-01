@@ -12,9 +12,11 @@ import {
 } from '@chakra-ui/react';
 import { fetchFilteredWines } from '../services/wineService';
 import { fetchFavouriteWines } from '../services/favouritesService';
+import { submitRating, deleteRating } from '../services/ratingService';
 import { useAuth } from '../context/useAuth';
 import type { Wine } from '../types/wine';
 import { motion } from 'framer-motion';
+import StarRating from './StarRating';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -39,6 +41,8 @@ function Results({ favourites = false }: { favourites?: boolean }) {
     const renderTimer = setTimeout(() => {
       setShouldRender(true);
     }, 300);
+
+    console.log('useEffect triggered BABY');
 
     if (favourites) {
       if (!user?.token) {
@@ -69,7 +73,7 @@ function Results({ favourites = false }: { favourites?: boolean }) {
       country,
       priceBracket: { min: parseFloat(min), max: parseFloat(max) },
       pairing,
-    })
+    }, user?.token)
       .then((response) => {
         if ('wines' in response) {
           setWines(response.wines);
@@ -93,8 +97,54 @@ function Results({ favourites = false }: { favourites?: boolean }) {
       price: wine.price.toString(),
       bottle: wine.name,
     });
+    console.log("NAVIGATING TO WINE DETAIL");
     navigate(`/summary?${encodedParams.toString()}`);
   };
+
+  const handleRating = async (wineId: string, newScore: number) => {
+    if (!user?.token) return;
+
+    const wine = wines.find(wine => wine.id === wineId);
+    const currentScore = wine?.ratings?.[0]?.score;
+
+    try {
+      if (currentScore === newScore) {
+        await deleteRating(user.token, wineId);
+
+        if (favourites) {
+          const updatedFavourites = await fetchFavouriteWines(user.token);
+          if (Array.isArray(updatedFavourites.favourites)) {
+            setWines(updatedFavourites.favourites);
+          }
+        } else {
+        // Otherwise, just update local state
+          setWines(prev => prev.map(wine => wine.id === wineId
+            ? { ...wine, ratings: [] }
+            : wine
+          ));
+        }
+        return;
+      }
+      
+      await submitRating(user.token, wineId, newScore);
+      
+      if (favourites) {
+        const updatedFavourites = await fetchFavouriteWines(user.token);
+        if (Array.isArray(updatedFavourites.favourites)) {
+          setWines(updatedFavourites.favourites);
+        }
+      } else {
+        setWines(prev => prev.map(wine => wine.id === wineId
+          ? { ...wine, ratings: [{ score: newScore }] }
+          : wine
+        ));
+      }
+      
+      console.log("Updated wine list:", wines.map(w => w.ratings));
+    } catch (error) {
+      console.error('Error submitting rating:', error);
+    }
+  }
 
   const handleBackClick = () => {
     navigate(-1);
@@ -227,6 +277,7 @@ function Results({ favourites = false }: { favourites?: boolean }) {
               <Text fontFamily="body" fontSize="sm" color="gray.600">
                 <Text as="span" fontWeight="bold">Price:</Text> ${wine.price}
               </Text>
+              <StarRating rating={wine.ratings?.[0]?.score ?? 0} onRate={user ? (value) => handleRating(wine.id, value) : undefined} ></StarRating>
             </VStack>
           </MotionBox>
         ))}

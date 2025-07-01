@@ -1,5 +1,5 @@
 export interface Wine {
-  id: number;
+  id: string;
   name: string;
   grape: string;
   color: string;

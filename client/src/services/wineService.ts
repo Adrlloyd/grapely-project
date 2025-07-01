@@ -4,7 +4,7 @@ import { geoToDataCountryName } from '../utils/countryNameMap';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export async function fetchFilteredWines(
-  filters: WineFilterPayload
+  filters: WineFilterPayload, token?: string
 ): Promise<FilteredWinesResponse> {
   const normalizedCountry =
     geoToDataCountryName[filters.country] || filters.country;
@@ -18,6 +18,7 @@ export async function fetchFilteredWines(
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      ...(token && { Authorization: `Bearer ${token}` })
     },
     body: JSON.stringify(normalizedFilters),
   });

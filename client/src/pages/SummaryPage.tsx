@@ -1,4 +1,4 @@
-import WineCard from '../components/WineCard';
+import WineCard from '../components/WineCardDetail';
 import { useLocation } from 'react-router';
 
 function SummaryPage() {

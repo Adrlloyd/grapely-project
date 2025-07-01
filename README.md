@@ -68,38 +68,24 @@ Create an account
 
 ### Frontend
 
-React – UI library
-
-React Router – Router for React
-
-Vite – Web project Build tool
-
-TypeScript –  Strongly typed programming language that builds on JavaScript
-
-Chakra UI – Component library for styling
-
-Emotion – CSS-in-JS styling library
-
-Framer Motion – Animations library
-
-D3-geo + react-simple-maps – SVG maps creation
+- React – UI library
+- React Router – Router for React
+- Vite – Web project Build tool
+- TypeScript –  Strongly typed programming language that builds on JavaScript
+- Chakra UI – Component library for styling
+- Emotion – CSS-in-JS styling library
+- Framer Motion – Animations library
+- D3-geo + react-simple-maps – SVG maps creation
 
 
 ### Backend
-
-Express – Web framework for node.js
-
-TypeScript –  Strongly typed programming language that builds on JavaScript
-
-PostgreSQL – Database
-
-Prisma – ORM
-
-Puppeteer – JS library for scraping
-
-JWT (jsonwebtoken) – Authentication
-
-Bcrypt – Password hashing
+- Express – Web framework for node.js
+- TypeScript –  Strongly typed programming language that builds on JavaScript
+- PostgreSQL – Database
+- Prisma – ORM
+- Puppeteer – JS library for scraping
+- JWT (jsonwebtoken) – Authentication
+- Bcrypt – Password hashing
 
 
 ##  Getting Started

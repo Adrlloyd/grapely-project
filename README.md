@@ -25,34 +25,34 @@ Primary color: #7B2E5A;
 ##  Screenshots
 
 Home Page
-![alt text](<Screenshot 2025-07-01 at 09.25.58.png>)
+![alt text](<docs/screenshots/Screenshot 2025-07-01 at 09.25.58.png>)
 
 Select Wine Region
-![alt text](<Screenshot 2025-07-01 at 09.26.21.png>)
+![alt text](<docs/screenshots/Screenshot 2025-07-01 at 09.26.21.png>)
 
 Select Country
-![alt text](<Screenshot 2025-07-01 at 09.26.42.png>)
+![alt text](<docs/screenshots/Screenshot 2025-07-01 at 09.26.42.png>)
 
 Select Price range
-![alt text](<Screenshot 2025-07-01 at 09.27.41.png>)
+![alt text](<docs/screenshots/Screenshot 2025-07-01 at 09.27.41.png>)
 
 Select Food Pairing
-![alt text](<Screenshot 2025-07-01 at 09.27.55.png>)
+![alt text](<docs/screenshots/Screenshot 2025-07-01 at 09.27.55.png>)
 
 Choose Bottle
-![alt text](<Screenshot 2025-07-01 at 09.28.58.png>)
+![alt text](<docs/screenshots/Screenshot 2025-07-01 at 09.28.58.png>)
 
 Bottle Summary
-![alt text](<Screenshot 2025-07-01 at 09.29.14.png>)
+![alt text](<docs/screenshots/Screenshot 2025-07-01 at 09.29.14.png>)
 
 Search Bottle
-![alt text](<Screenshot 2025-07-01 at 09.29.48.png>)
+![alt text](<docs/screenshots/Screenshot 2025-07-01 at 09.29.48.png>)
 
 Log in
-![alt text](<Screenshot 2025-07-01 at 09.30.12.png>)
+![alt text](<docs/screenshots/Screenshot 2025-07-01 at 09.30.12.png>)
 
 Create an account
-![alt text](<Screenshot 2025-07-01 at 09.32.54.png>)
+![alt text](<docs/screenshots/Screenshot 2025-07-01 at 09.32.54.png>)
 
 ##  Tech Stack
 

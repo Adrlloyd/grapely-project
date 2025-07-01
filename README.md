@@ -105,27 +105,27 @@ Create .env files based on structure below:
 
 **grapely-project/client/.env**
 
-VITE_API_BASE_URL=http://localhost:3000
+    VITE_API_BASE_URL=http://localhost:3000
 
-VITE_IMAGE_BASE_URL=http://localhost:3000
+    VITE_IMAGE_BASE_URL=http://localhost:3000
 
 **grapely-project/client/.env.production**
 
-VITE_IMAGE_BASE_URL= ... your ss3 bucket
+    VITE_IMAGE_BASE_URL= ... your ss3 bucket
 
 **grapely-project/server/.env**
 
-DATABASE_URL= ... postgresql://<user>:<password>@localhost:5432/grapely
+    DATABASE_URL= ... postgresql://<user>:<password>@localhost:5432/grapely
 
-AWS_ACCESS_KEY_ID= ... your access key id
+    AWS_ACCESS_KEY_ID= ... your access key id
 
-AWS_SECRET_ACCESS_KEY= ... your secret access key
+    AWS_SECRET_ACCESS_KEY= ... your secret access key
 
-AWS_REGION=eu-north-1
+    AWS_REGION=eu-north-1
 
-S3_BUCKET_NAME= your bucket name
+    S3_BUCKET_NAME= your bucket name
 
-JWT_SECRET= ... your jwt password
+    JWT_SECRET= ... your jwt password
 
 ### Installation Steps
 
@@ -133,27 +133,27 @@ Open two terminals:
 
 **Terminal 1 - Server:**
 
-cd server
+    cd server
 
-npm install
+    npm install
 
-npx prisma generate
+    npx prisma generate
 
-npx prisma db push
+    npx prisma db push
 
-npx prisma db seed
+    npx prisma db seed
 
-npm run dev
+    npm run dev
 
 **Terminal 2 - Client:**
 
-cd client
+    cd client
 
-npm run install:legacy
+    npm run install:legacy
 
-npm run dev
+    npm run dev
 
-Then open the Vite link in your browser (usually http://localhost:5173)
+    Then open the Vite link in your browser (usually http://localhost:5173)
 
 ## Usage
 

@@ -1,11 +1,8 @@
-import WorldMap from '../components/WorldMap/WorldMap';
-import '../styles/LandingPage.css';
+import BeginJourney from '../components/BeginJourney';
 
 const LandingPage = () => {
   return (
-    <div className="landing-container">
-      <WorldMap />
-    </div>
+      <BeginJourney />
   );
 }
 

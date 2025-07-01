@@ -11,14 +11,15 @@ type RenderGeographiesProps = {
   selectedRegion: RegionName;
   selectedCountry: string | null;
   setSelectedCountry: (country: string) => void;
+  setHoveredCountry: (country: string | null) => void;
 };
 
-// This function filters and maps GeoJSON features to styled <Geography> elements
 export function renderGeographies({
   geographies,
   selectedRegion,
   selectedCountry,
-  setSelectedCountry
+  setSelectedCountry,
+  setHoveredCountry,
 }: RenderGeographiesProps) {
   const region = wineRegions[selectedRegion];
 
@@ -26,8 +27,9 @@ export function renderGeographies({
     .filter((geo) => getFeatureName(geo) !== 'Antarctica')
     .filter((geo) => {
       const name = getFeatureName(geo);
-      const countryRegion = getCountryRegion(name);
-      return countryRegion === selectedRegion || !region.countries.includes(name);
+      const isInSelectedRegion = getCountryRegion(name) === selectedRegion;
+      const isUnrelated = !region.countries.includes(name);
+      return isInSelectedRegion || isUnrelated;
     })
     .map((geo) => {
       const name = getFeatureName(geo);
@@ -42,6 +44,12 @@ export function renderGeographies({
             if (isWineProducer) {
               setSelectedCountry(name);
             }
+          }}
+          onMouseEnter={() => {
+            if (isWineProducer) setHoveredCountry(name);
+          }}
+          onMouseLeave={() => {
+            setHoveredCountry(null);
           }}
           style={getGeographyStyle(isWineProducer, isSelected)}
         />

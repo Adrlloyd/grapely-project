@@ -1,9 +1,18 @@
 import { useState } from 'react';
-import { useNavigate, Link } from "react-router";
+import { useNavigate, Link } from 'react-router';
 import { useAuth } from '../../context/useAuth';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 
 const LoginForm = () => {
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useAuth();
@@ -15,13 +24,10 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-
       const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
-
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-
+        body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) throw new Error('Invalid login');
@@ -33,47 +39,84 @@ const LoginForm = () => {
         lastName: data.lastName,
         email: data.email,
         token: data.token,
-      })
+      });
 
-      // redirect to Home // to adjust
-      const redirectTo = '/';
-      navigate(redirectTo);
-
+      navigate('/region');
     } catch (error) {
-
-      // Pop up for user
       alert('Login failed');
-      // Error for dev
       console.error('Login failed:', error);
     }
-
   };
 
-return (
-  <>
-  <form onSubmit = {handleSubmit}>
+  return (
+    <Box
+      maxW="500px"
+      mx="auto"
+      mt="4rem"
+      p="2rem"
+      borderRadius="lg"
+      boxShadow="lg"
+      bg="whiteAlpha.900"
+    >
+      <Heading
+        as="h2"
+        size="lg"
+        mb={6}
+        textAlign="center"
+        fontFamily="heading"
+        color="brand.primary"
+      >
+        Log in
+      </Heading>
 
-    <label>Email:
-      <input value={email} onChange={e => setEmail(e.target.value)} required />
-    </label>
+      <form onSubmit={handleSubmit}>
+        <VStack spacing={4} align="stretch">
+          <FormControl isRequired>
+            <FormLabel color="brand.primary" fontWeight="bold">Email</FormLabel>
+            <Input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              bg="white"
+              borderColor="brand.primary"
+              _focus={{ borderColor: 'brand.secondary' }}
+            />
+          </FormControl>
 
-    <label>Password:
-      <input value={password} onChange={e => setPassword(e.target.value)} required />
-    </label>
+          <FormControl isRequired>
+            <FormLabel color="brand.primary" fontWeight="bold">Password</FormLabel>
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              bg="white"
+              borderColor="brand.primary"
+              _focus={{ borderColor: 'brand.secondary' }}
+            />
+          </FormControl>
 
-    <button type="submit">Log in</button>
+          <Button
+            type="submit"
+            bg="brand.primary"
+            color="white"
+            _hover={{ bg: 'brand.secondary' }}
+            mt={4}
+          >
+            Log in
+          </Button>
+        </VStack>
+      </form>
 
-  </form>
-
-  <div>
-    <h6>
-      Don't have an account?
-      <Link to='/register'> Create one here </Link>
-    </h6>
-  </div>
-      </>
-)
-
+      <Text mt={6} textAlign="center" color="gray.600">
+        Don&apos;t have an account?{' '}
+        <Link to="/register">
+          <Text as="span" color="brand.primary" fontWeight="bold" textDecoration="underline">
+            Create one here
+          </Text>
+        </Link>
+      </Text>
+    </Box>
+  );
 };
 
 export default LoginForm;

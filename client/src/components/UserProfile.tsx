@@ -1,27 +1,50 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import '../styles/UserProfile.css';
-// import modal component?
-import { AuthContext } from '../context/AuthContext';
-// import type { AuthContextType } from '../context/AuthContext';
-import { updatePassword, deleteUser } from '../services/userService';
+import {
+  Box,
+  Button,
+  Heading,
+  Text,
+  VStack,
+  HStack,
+  Alert,
+  AlertIcon,
+} from '@chakra-ui/react';
+import { useAuth } from '../context/useAuth';
+import { updateName, updatePassword, deleteUser } from '../services/userService';
+import NameModal from './Modals/NameModal';
+import PasswordModal from './Modals/PasswordModal';
+import DeleteModal from './Modals/DeleteModal';
 
 function UserProfile() {
-  const navigate = useNavigate(); //To be used for the 'deleteAccount' function - also set {replace:true} as argument to disable return nav through back button
-  const auth = useContext(AuthContext)
 
-  const [currentPassword, setCurrentPassword] = useState<string>('');
-  const [newPassword, setNewPassword] = useState<string>('');
-  const [confirmedPassword,setConfirmedPassword] = useState<string>('');
+  const { user, login, logout } = useAuth()
+
+  const [activeModal, setActiveModal] = useState<'name' | 'password' | 'delete' | null>(null);
+
+  const navigate = useNavigate(); //To be used for the 'deleteAccount' function - also set {replace:true} as argument to disable return nav through back button
   const [status, setStatus] = useState<string>('');
 
-  const user = auth?.user;
-  if (!user) {
-    return null;
+  if (!user) return null;
+
+    const handleUpdateName = async (firstName: string | undefined, lastName: string | undefined) => {
+    setStatus('');
+    if (!firstName || !lastName ) {
+      setStatus('Please fill in all name fields.');
+      return;
+    }
+    try {
+      await updateName(user.token, firstName, lastName);
+      login({...user, firstName, lastName})
+      setStatus('Name updated successfully.');
+      setActiveModal(null);
+    } catch (error) {
+      console.error(`Oh no, there's a problem updating your name: `, error)
+      setStatus('Failed to update name.');
+    }
   }
 
-  const handleUpdatePassword = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleUpdatePassword = async (currentPassword: string, newPassword: string, confirmedPassword: string) => {
     setStatus('');
     if (!currentPassword || !newPassword || !confirmedPassword) {
       setStatus('Please fill in all password fields.');
@@ -32,72 +55,74 @@ function UserProfile() {
       return;
     }
     try {
-      await updatePassword(user.token, currentPassword, newPassword); /// import function from auth service file
+      await updatePassword(user.token, currentPassword, newPassword);
       setStatus('Password updated successfully.');
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmedPassword('');
+      setActiveModal(null);
     } catch (error) {
-      console.error(`Oh no, there's a problem updating your password: `, error)
+      console.error('Password update error:', error);
       setStatus('Failed to update password. Please check your current password.');
     }
-  }
+  };
 
-  const handleDeleteUser = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const handleDeleteUser = async () => {
     setStatus('');
     try {
-      const response = await deleteUser(user.token); /// import function from auth service file
+      const response = await deleteUser(user.token);
       if (response.ok) {
-        auth?.logout()
-        navigate('/');
+        logout()
+        navigate('/', {replace:true});
       } else {
-        console.error(`Oh no, there's a problem with the server.`);
+        setStatus('Server error while deleting account.');
       }
     } catch (error) {
-      console.error(`Oh no, we haven't been able to reach the server: `, error)
+      console.error('Account deletion error:', error);
       setStatus('Failed to delete account. Please try again.');
     }
   }
 
-
   return (
-    <div>
-      <div>
-        <h4>User Profile</h4>
-        <h6>Name</h6>
-        <p>{user.firstName} {user.lastName}</p>
-        <h6>Email</h6>
-        <p>{user.email}</p>
-      </div>
-      <div>
-        <form onSubmit={handleUpdatePassword} className="edit-form">
-          <input
-            type="password"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            placeholder="Please enter your current password"
-          />
-          <input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="Please enter a new password"
-          />
-          <input
-            type="password"
-            value={confirmedPassword}
-            onChange={(e) => setConfirmedPassword(e.target.value)}
-            placeholder="Please confirm your new password"
-          />
-          <div className="button-row">
-            <button type="submit" className="save-button">Save</button>
-            <button type="button" onClick={handleDeleteUser} className="delete-account-button">Delete</button>
-          </div>
-        </form>
-      </div>
-      {status && <h6 className="status-message">{status}</h6>}
-    </div>
+    <Box
+      maxW="500px"
+      mx="auto"
+      mt="5rem"
+      p={6}
+      bg="whiteAlpha.900"
+      boxShadow="lg"
+      borderRadius="lg"
+      fontFamily="heading"
+      color="brand.primary"
+    >
+      <Heading as="h3" size="lg" mb={4} textAlign="center">
+        User Profile
+      </Heading>
+      <VStack spacing={2} align="start" mb={6}>
+        <Text fontWeight="bold">Name:</Text>
+        <Text>{user.firstName} {user.lastName}</Text>
+        <Text fontWeight="bold">Email:</Text>
+        <Text>{user.email}</Text>
+      </VStack>
+
+      <HStack spacing={4} pt={2}>
+        <Button onClick={() => setActiveModal('name')}>Update Name</Button>
+        <Button onClick={() => setActiveModal('password')}>Change Password</Button>
+        <Button onClick={() => setActiveModal('delete')}>Delete Account</Button>
+      </HStack>
+      {activeModal === 'name' && (
+        <NameModal onSubmit={handleUpdateName} onCancel={() => setActiveModal(null)}/>
+      )}
+      {activeModal === 'password' && (
+        <PasswordModal onSubmit={handleUpdatePassword} onCancel={() => setActiveModal(null)}/>
+      )}
+      {activeModal === 'delete' && (
+        <DeleteModal onConfirm={handleDeleteUser} onCancel={() => setActiveModal(null)}/>
+      )}
+      {status && (
+        <Alert status="info" mt={6} borderRadius="md">
+          <AlertIcon />
+          {status}
+        </Alert>
+      )}
+    </Box>
   );
 }
 

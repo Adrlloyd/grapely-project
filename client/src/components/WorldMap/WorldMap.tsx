@@ -1,6 +1,6 @@
-import '../../styles/WorldMap.css';
+import { useState } from 'react';
 import { ComposableMap, Geographies } from 'react-simple-maps';
-
+import { Box, Flex, Button, Image, Text } from '@chakra-ui/react';
 import RegionCardList from '../RegionCardList/RegionCardList';
 import { wineRegions } from '../../config/wineRegions';
 import { renderGeographies } from './renderGeographies';
@@ -14,42 +14,101 @@ function WorldMap() {
     selectedRegion,
     setSelectedRegion,
     selectedCountry,
-    setSelectedCountry
+    setSelectedCountry,
   } = useRegionNavigation();
+
+  const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
 
   const handleBackToRegions = () => {
     setSelectedRegion(null);
     setSelectedCountry(null);
   };
 
-  // Show region selector if no region is currently chosen
   if (!selectedRegion) {
     return (
-      <div className="worldmap-container">
-        <h2 className="worldmap-title">Select Wine Region</h2>
+      <Box textAlign="center" px={4} pt={8}>
+        <Text
+          fontSize="2.3rem"
+          mb={6}
+          color="brand.primary"
+          fontFamily="heading"
+          fontWeight="semibold"
+        >
+          Select Wine Region
+        </Text>
         <RegionCardList onSelect={setSelectedRegion} />
-      </div>
+      </Box>
     );
   }
 
-  // Set projection config for focused region
   const region = wineRegions[selectedRegion];
   const projectionConfig = {
     scale: region.scale,
-    center: region.center
+    center: region.center,
   };
 
   return (
-    <div className="worldmap-container">
-      <div className="map-wrapper">
-        <div className="map-header">
-          <button onClick={handleBackToRegions} className="back-button">← Back</button>
-        </div>
+    <Box
+      px={4}
+      pt={8}
+      pb={12}
+      textAlign="center"
+    >
+      <Flex 
+        justify="flex-start" 
+        mb={4} 
+        px={2}
+        position="relative"
+        zIndex="1300"
+      >
+        <Button
+          onClick={handleBackToRegions}
+          bg="whiteAlpha.600"
+          color="brand.primary"
+          borderRadius="full"
+          fontSize="lg"
+          px={4}
+          py={2}
+          boxShadow="md"
+          _hover={{ bg: 'whiteAlpha.800' }}
+        >
+          ←
+        </Button>
+      </Flex>
+
+      <Box
+        width="100%"
+        maxH={{ base: '70vh', md: '80vh' }}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        position="relative"
+      >
+        {hoveredCountry && (
+          <Box
+            position="absolute"
+            top="1rem"
+            right="1rem"
+            bg="white"
+            borderRadius="full"
+            boxShadow="lg"
+            p={3}
+            zIndex="1200"
+          >
+            <Image
+              src={`/flags/${hoveredCountry.toLowerCase().replace(/ /g, '-')}.png`}
+              alt={`${hoveredCountry} flag`}
+              boxSize="64px"
+              borderRadius="full"
+              objectFit="cover"
+            />
+          </Box>
+        )}
 
         <ComposableMap
           projection="geoMercator"
           projectionConfig={projectionConfig}
-          className="map-svg"
+          style={{ width: '100%', height: 'auto' }}
         >
           <Geographies geography={GEO_URL}>
             {({ geographies }: { geographies: Feature[] }) =>
@@ -57,13 +116,14 @@ function WorldMap() {
                 geographies,
                 selectedRegion,
                 selectedCountry,
-                setSelectedCountry
+                setSelectedCountry,
+                setHoveredCountry,
               })
             }
           </Geographies>
         </ComposableMap>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

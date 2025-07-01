@@ -93,7 +93,7 @@ Create an account
 ### Prerequisites
 
 - Node.js
-- PostgreSQL
+- PostgreSQL: Create a new database named grapelyDb and keep PostgreSQL running
 
 ### Environment setup
 
@@ -111,7 +111,11 @@ Create .env files based on structure below:
 
 **grapely-project/server/.env**
 
-    DATABASE_URL= ... postgresql://<user>:<password>@localhost:5432/grapely
+    DATABASE_URL= ... postgresql://<user>:<password>@localhost:5432/grapelyDb
+
+    JWT_SECRET= ... your jwt password
+
+    **For Production Only:**
 
     AWS_ACCESS_KEY_ID= ... your access key id
 
@@ -120,8 +124,6 @@ Create .env files based on structure below:
     AWS_REGION=eu-north-1
 
     S3_BUCKET_NAME= your bucket name
-
-    JWT_SECRET= ... your jwt password
 
 ### Installation Steps
 
@@ -133,11 +135,11 @@ Open two terminals:
 
     npm install
 
-    npx prisma generate
+    npx prisma generate (only for the initial set up)
 
-    npx prisma db push
+    npx prisma db push (only for the initial set up)
 
-    npx prisma db seed
+    npx prisma db seed (only for the initial set up)
 
     npm run dev
 
@@ -157,7 +159,7 @@ Open two terminals:
 - Log in / Sign up: Create or access your account
 - Bottle icon: Return to Home Page
 - Grapely logo: Return to Wine Region selection
-- Seach bar: Start directly for a specific wine bottle
+- Search bar: Start directly for a specific wine bottle
 
 **1 - Home Page**
 - Globe button: Begin selecting a wine by country and preferences

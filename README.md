@@ -144,7 +144,7 @@ Then open the Vite link in your browser (usually http://localhost:5173)
 
 ## Usage
 
-0 *** Navigation Bar***
+0 **Navigation Bar**
 - Log in / Sign up: Create or access your account
 - Bottle icon: Return to Home Page
 - Grapely logo: Return to Wine Region selection

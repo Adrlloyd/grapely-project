@@ -64,13 +64,7 @@ function WineCard({ wine }: WineCardProps) {
       textAlign="center"
       pb={{ base: "1rem", md: "2rem" }}
     >
-      <Flex
-        align="center"
-        gap={4}
-        justify="flex-start"
-        px={4}
-        pb={4}
-      >
+      <Flex align="center" gap={4} justify="flex-start" px={4} pb={4}>
         <Button
           onClick={handleBackClick}
           bg="whiteAlpha.600"
@@ -90,16 +84,16 @@ function WineCard({ wine }: WineCardProps) {
 
       <Box
         bg="transparent"
-        maxW="800px"
+        maxW="600px"
         mx="auto"
-        p="1.5rem 1rem"
+        p={{ base: 4, md: 6 }}
         display="flex"
         flexDirection="column"
         alignItems="center"
       >
         <Box
           position="relative"
-          top="-30px"
+          top="-20px"
           zIndex={1}
           display="flex"
           justifyContent="center"
@@ -107,7 +101,7 @@ function WineCard({ wine }: WineCardProps) {
           <Image
             src={`${IMAGE_BASE_URL}/${image_url}`}
             alt={name}
-            w={{ base: "80px", md: "100px" }}
+            w={{ base: "100px", md: "140px" }}
             h="auto"
             objectFit="contain"
             transition="transform 0.3s ease"
@@ -115,36 +109,66 @@ function WineCard({ wine }: WineCardProps) {
         </Box>
 
         <VStack
-          spacing={3}
-          textAlign="left"
+          spacing={6}
+          textAlign="center"
           w="100%"
-          mt="-10px"
           fontSize={{ base: "sm", md: "md" }}
           color="black"
           fontFamily="body"
         >
           <Heading
             as="h1"
-            fontSize={{ base: "xl", md: "1.6rem" }}
+            fontSize={{ base: "xl", md: "2xl" }}
             fontWeight="bold"
-            mb={4}
             fontFamily="heading"
-            w="100%"
             color="brand.primary"
+            mb={2}
           >
             {name}
           </Heading>
-          
-          <Text w="100%"><strong>Grape:</strong> {grape}</Text>
-          <Text w="100%"><strong>Region:</strong> {region}</Text>
-          <Text w="100%"><strong>Country:</strong> {country}</Text>
-          <Text w="100%"><strong>Price:</strong> ${price}</Text>
 
-          <Text w="100%" mt={4} color="black">
-            <strong>Description:</strong> {description}
-          </Text>
+          <VStack
+            spacing={3}
+            w="100%"
+            align="center"
+            justify="center"
+            mt={2}
+          >
+            {[
+              { label: 'Grape', value: grape },
+              { label: 'Region', value: region },
+              { label: 'Country', value: country },
+              { label: 'Price', value: `$${price}` },
+            ].map((item) => (
+              <Box
+                key={item.label}
+                bg="gold.500"
+                color="black"
+                px={5}
+                py={2}
+                borderRadius="md"
+                boxShadow="md"
+                w="350px"
+                textAlign="center"
+                fontSize="md"
+                fontWeight="medium"
+              >
+                {item.label}: {item.value}
+              </Box>
+            ))}
+          </VStack>
 
-          <Text w="100%"><strong>Pairing:</strong> {pairingOptions.join(', ')}</Text>
+          {/* Section: Description */}
+          <Box pt={2}>
+            <Text fontWeight="bold" mb={1}>Description</Text>
+            <Text fontWeight="medium">{description}</Text>
+          </Box>
+
+          {/* Section: Pairing */}
+          <Box pt={2}>
+            <Text fontWeight="bold" mb={1}>Pairing</Text>
+            <Text fontWeight="medium">{pairingOptions.join(', ')}</Text>
+          </Box>
         </VStack>
       </Box>
     </Box>

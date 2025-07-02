@@ -12,6 +12,10 @@ This directory contains unit tests for the backend controllers and services.
 
 ## Running Tests
 
+remember to add 
+"server/coverage/" 
+to your server gitignore
+
 ```bash
 # run all the test
 npm test

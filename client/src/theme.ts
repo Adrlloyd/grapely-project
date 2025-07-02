@@ -87,6 +87,12 @@ const theme = extendTheme({
           color: 'white',
           _hover: {
             bg: 'brand.600',
+            transform: 'translateY(-1px)',
+            boxShadow: 'lg',
+          },
+          _active: {
+            transform: 'translateY(0)',
+            boxShadow: 'md',
           },
         },
         sage: {
@@ -94,6 +100,12 @@ const theme = extendTheme({
           color: 'white',
           _hover: {
             bg: 'sage.600',
+            transform: 'translateY(-1px)',
+            boxShadow: 'lg',
+          },
+          _active: {
+            transform: 'translateY(0)',
+            boxShadow: 'md',
           },
         },
         gold: {
@@ -101,6 +113,26 @@ const theme = extendTheme({
           color: 'brand.primary',
           _hover: {
             bg: 'gold.600',
+            transform: 'translateY(-1px)',
+            boxShadow: 'lg',
+          },
+          _active: {
+            transform: 'translateY(0)',
+            boxShadow: 'md',
+          },
+        },
+        white: {
+          bg: 'white',
+          color: 'brand.primary',
+          _hover: {
+            bg: 'brand.tertiary',
+            color: 'white',
+            transform: 'translateY(-1px)',
+            boxShadow: 'lg'
+          },
+          _active: {
+            transform: 'translateY(0)',
+            boxShadow: 'md',
           },
         },
       },

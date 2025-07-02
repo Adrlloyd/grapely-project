@@ -62,7 +62,7 @@ const WineCard = React.memo(({ wine, index, onRate, onSelect }: WineCardProps) =
           src={`${BASE_URL}/${wine.image_url}`}
           alt={wine.name}
           w="auto"
-          h="220px"
+          h="280px"
           objectFit="contain"
           transition="transform 0.3s ease"
           zIndex={3}
@@ -84,7 +84,7 @@ const WineCard = React.memo(({ wine, index, onRate, onSelect }: WineCardProps) =
             textOverflow="ellipsis"
             fontWeight="600"
             color="brand.primary"
-            fontSize="md"
+            fontSize="xl"
             transition="transform 6s linear"
             _hover={{
               textOverflow: 'unset',
@@ -95,14 +95,14 @@ const WineCard = React.memo(({ wine, index, onRate, onSelect }: WineCardProps) =
             {wine.name}
           </Text>
         </Box>
-        <Text fontSize="sm" color="gray.600">
-          <Text as="span" fontWeight="bold">Country:</Text> {wine.country}
+        <Text fontSize="sm" color="gray.600" fontFamily="body" fontWeight="bold">
+          <Text as="span" fontWeight="light">Country:</Text> {wine.country}
         </Text>
-        <Text fontSize="sm" color="gray.600">
-          <Text as="span" fontWeight="bold">Grape:</Text> {wine.grape}
+        <Text fontSize="sm" color="gray.600" fontFamily="body" fontWeight="bold">
+          <Text as="span" fontWeight="light">Grape:</Text> {wine.grape}
         </Text>
-        <Text fontSize="sm" color="gray.600">
-          <Text as="span" fontWeight="bold">Price:</Text> ${wine.price}
+        <Text fontSize="sm" color="gray.600" fontFamily="body" fontWeight="bold">
+          <Text as="span" fontWeight="light">Price:</Text> ${wine.price}
         </Text>
         <StarRating
           rating={wine.ratings?.[0]?.score ?? 0}

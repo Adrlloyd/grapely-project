@@ -82,7 +82,7 @@ function UserProfile() {
 
   return (
     <Box
-      maxW="500px"
+      maxW="600px"
       mx="auto"
       mt="5rem"
       p={6}
@@ -95,17 +95,17 @@ function UserProfile() {
       <Heading as="h3" size="lg" mb={4} textAlign="center">
         User Profile
       </Heading>
-      <VStack spacing={2} align="start" mb={6}>
-        <Text fontWeight="bold">Name:</Text>
-        <Text>{user.firstName} {user.lastName}</Text>
-        <Text fontWeight="bold">Email:</Text>
-        <Text>{user.email}</Text>
+      <VStack fontFamily="body" spacing={2} align="center" mb={6}>
+        <Text fontWeight="thin">Name:</Text>
+        <Text fontWeight="bold">{user.firstName} {user.lastName}</Text>
+        <Text fontWeight="thin">Email:</Text>
+        <Text fontWeight="bold">{user.email}</Text>
       </VStack>
 
-      <HStack spacing={4} pt={2}>
-        <Button onClick={() => setActiveModal('name')}>Update Name</Button>
-        <Button onClick={() => setActiveModal('password')}>Change Password</Button>
-        <Button onClick={() => setActiveModal('delete')}>Delete Account</Button>
+      <HStack fontFamily="body"  justify="center" spacing={4} pt={2}>
+        <Button w="180px" h="40px" size="sm" onClick={() => setActiveModal('name')}>Update Name</Button>
+        <Button w="180px" h="40px" size="sm" onClick={() => setActiveModal('password')}>Change Password</Button>
+        <Button w="180px" h="40px" size="sm" onClick={() => setActiveModal('delete')}>Delete Account</Button>
       </HStack>
       {activeModal === 'name' && (
         <NameModal onSubmit={handleUpdateName} onCancel={() => setActiveModal(null)}/>

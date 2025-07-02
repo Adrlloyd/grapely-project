@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getRecommendedWines } from '../../src/controllers/wineController';
 
-//mocks
+// mocks
 jest.mock('../../src/prisma', () => ({
   wine: {
     findMany: jest.fn(),
@@ -11,7 +11,6 @@ jest.mock('../../src/prisma', () => ({
 const mockPrisma = require('../../src/prisma');
 
 describe('Wine Controller', () => {
-  //setup mocks
   let mockRequest: Partial<Request>;
   let mockResponse: Partial<Response>;
   let mockJson: jest.Mock;
@@ -26,11 +25,8 @@ describe('Wine Controller', () => {
       json: mockJson,
     };
 
-    // clear mocks
     jest.clearAllMocks();
-
-    // stop console.error from being called
-    jest.spyOn(console, 'error').mockImplementation(() => { });
+    jest.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   describe('getRecommendedWines', () => {
@@ -42,6 +38,7 @@ describe('Wine Controller', () => {
           country: 'France',
           price: 25,
           pairingOptions: ['cheese', 'meat'],
+          ratings: [{ score: 5 }],
         },
         {
           id: '2',
@@ -49,6 +46,7 @@ describe('Wine Controller', () => {
           country: 'France',
           price: 30,
           pairingOptions: ['fish', 'poultry'],
+          ratings: [{ score: 4 }],
         },
       ];
 
@@ -85,25 +83,15 @@ describe('Wine Controller', () => {
 
     it('should return count and available options when not final step (no pairing)', async () => {
       const mockWines = [
-        {
-          price: 25,
-          pairingOptions: ['cheese', 'meat'],
-        },
-        {
-          price: 30,
-          pairingOptions: ['fish', 'poultry'],
-        },
-        {
-          price: 35,
-          pairingOptions: ['cheese', 'dessert'],
-        },
+        { price: 25, pairingOptions: ['cheese', 'meat'] },
+        { price: 30, pairingOptions: ['fish', 'poultry'] },
+        { price: 35, pairingOptions: ['cheese', 'dessert'] },
       ];
 
       mockRequest = {
         body: {
           country: 'France',
           priceBracket: { min: 20, max: 40 },
-          // No pairing provided
         },
       };
 
@@ -134,20 +122,13 @@ describe('Wine Controller', () => {
 
     it('should return count and overall price bracket when no price bracket provided', async () => {
       const mockWines = [
-        {
-          price: 25,
-          pairingOptions: ['cheese'],
-        },
-        {
-          price: 30,
-          pairingOptions: ['meat'],
-        },
+        { price: 25, pairingOptions: ['cheese'] },
+        { price: 30, pairingOptions: ['meat'] },
       ];
 
       mockRequest = {
         body: {
           country: 'France',
-          // No price bracket provided
           pairing: 'cheese',
         },
       };
@@ -185,14 +166,13 @@ describe('Wine Controller', () => {
         },
       };
 
-      const error = new Error('Database error');
-      mockPrisma.wine.findMany.mockRejectedValue(error);
+      mockPrisma.wine.findMany.mockRejectedValue(new Error('Database error'));
 
       await getRecommendedWines(mockRequest as Request, mockResponse as Response);
 
       expect(mockStatus).toHaveBeenCalledWith(500);
       expect(mockJson).toHaveBeenCalledWith({
-        message: 'Server error',
+        error: 'Internal server error',
       });
     });
 
@@ -215,4 +195,4 @@ describe('Wine Controller', () => {
       });
     });
   });
-}); 
+});

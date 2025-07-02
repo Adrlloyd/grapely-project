@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const MotionBox = motion(Box);
+const MotionBox = motion.create(Box);
 
 interface WineCardProps {
   wine: Wine;
@@ -18,6 +18,9 @@ interface WineCardProps {
 const WineCard = React.memo(({ wine, index, onRate, onSelect }: WineCardProps) => {
   return (
     <MotionBox
+      display="flex"
+      flexDirection="column"
+      justifyContent="flex-end"
       key={wine.id}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -38,7 +41,7 @@ const WineCard = React.memo(({ wine, index, onRate, onSelect }: WineCardProps) =
         boxShadow: "0 6px 20px rgba(123, 46, 90, 0.2)",
         zIndex: 2,
         "& .wine-image-wrapper": {
-          top: "-60px",
+          top: "-30px",
         },
         "& .wine-image": {
           transform: "scale(1.12)",
@@ -48,7 +51,7 @@ const WineCard = React.memo(({ wine, index, onRate, onSelect }: WineCardProps) =
       <Box
         className="wine-image-wrapper"
         position="relative"
-        top="-50px"
+        top="-20px"
         display="flex"
         justifyContent="center"
         zIndex={1}
@@ -58,8 +61,8 @@ const WineCard = React.memo(({ wine, index, onRate, onSelect }: WineCardProps) =
           className="wine-image"
           src={`${BASE_URL}/${wine.image_url}`}
           alt={wine.name}
-          w="100px"
-          h="auto"
+          w="auto"
+          h="280px"
           objectFit="contain"
           transition="transform 0.3s ease"
           zIndex={3}
@@ -67,17 +70,39 @@ const WineCard = React.memo(({ wine, index, onRate, onSelect }: WineCardProps) =
       </Box>
 
       <VStack spacing={2} pt={2} textAlign="center">
-        <Text fontWeight="600" color="brand.primary" fontSize="md">
-          {wine.name}
+        <Box
+          w="100%"
+          maxW="220px"
+          overflow="hidden"
+          whiteSpace="nowrap"
+          position="relative"
+        >
+          <Text
+            as="span"
+            display="inline-block"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            fontWeight="600"
+            color="brand.primary"
+            fontSize="xl"
+            transition="transform 6s linear"
+            _hover={{
+              textOverflow: 'unset',
+              overflow: 'visible',
+              animation: 'scrollText 6s linear forwards',
+            }}
+          >
+            {wine.name}
+          </Text>
+        </Box>
+        <Text fontSize="sm" color="gray.600" fontFamily="body" fontWeight="bold">
+          <Text as="span" fontWeight="light">Country:</Text> {wine.country}
         </Text>
-        <Text fontSize="sm" color="gray.600">
-          <Text as="span" fontWeight="bold">Country:</Text> {wine.country}
+        <Text fontSize="sm" color="gray.600" fontFamily="body" fontWeight="bold">
+          <Text as="span" fontWeight="light">Grape:</Text> {wine.grape}
         </Text>
-        <Text fontSize="sm" color="gray.600">
-          <Text as="span" fontWeight="bold">Grape:</Text> {wine.grape}
-        </Text>
-        <Text fontSize="sm" color="gray.600">
-          <Text as="span" fontWeight="bold">Price:</Text> ${wine.price}
+        <Text fontSize="sm" color="gray.600" fontFamily="body" fontWeight="bold">
+          <Text as="span" fontWeight="light">Price:</Text> ${wine.price}
         </Text>
         <StarRating
           rating={wine.ratings?.[0]?.score ?? 0}

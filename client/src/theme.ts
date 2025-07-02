@@ -58,6 +58,20 @@ const theme = extendTheme({
         bg: 'white',
         color: 'gray.800',
       },
+      '@keyframes pulseGlow': {
+        '0%': {
+          transform: 'scale(1)',
+          boxShadow: '0 0 0 0 rgba(74, 124, 89, 0.6)',
+        },
+        '50%': {
+          transform: 'scale(1.01)',
+          boxShadow: '0 0 0 12px rgba(74, 124, 89, 0)',
+        },
+        '100%': {
+          transform: 'scale(1)',
+          boxShadow: '0 0 0 0 rgba(74, 124, 89, 0)',
+        },
+      },
     },
   },
   components: {
@@ -87,6 +101,12 @@ const theme = extendTheme({
           color: 'white',
           _hover: {
             bg: 'brand.600',
+            transform: 'translateY(-1px)',
+            boxShadow: 'lg',
+          },
+          _active: {
+            transform: 'translateY(0)',
+            boxShadow: 'md',
           },
         },
         sage: {
@@ -94,6 +114,12 @@ const theme = extendTheme({
           color: 'white',
           _hover: {
             bg: 'sage.600',
+            transform: 'translateY(-1px)',
+            boxShadow: 'lg',
+          },
+          _active: {
+            transform: 'translateY(0)',
+            boxShadow: 'md',
           },
         },
         gold: {
@@ -101,6 +127,26 @@ const theme = extendTheme({
           color: 'brand.primary',
           _hover: {
             bg: 'gold.600',
+            transform: 'translateY(-1px)',
+            boxShadow: 'lg',
+          },
+          _active: {
+            transform: 'translateY(0)',
+            boxShadow: 'md',
+          },
+        },
+        white: {
+          bg: 'white',
+          color: 'brand.primary',
+          _hover: {
+            bg: 'brand.tertiary',
+            color: 'white',
+            transform: 'translateY(-1px)',
+            boxShadow: 'lg'
+          },
+          _active: {
+            transform: 'translateY(0)',
+            boxShadow: 'md',
           },
         },
       },
@@ -116,7 +162,7 @@ const theme = extendTheme({
       baseStyle: {
         fontFamily: 'heading',
         fontWeight: '600',
-        color: 'brand.primary', // default all headings to primary color
+        color: 'brand.primary',
       },
       variants: {
         wine: {

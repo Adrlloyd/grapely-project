@@ -5,15 +5,13 @@ import { getRandomWine } from '../../src/controllers/randomController';
 jest.mock('../../src/prisma', () => ({
   wine: {
     count: jest.fn(),
-    findMany: jest.fn(),
+    findFirst: jest.fn(),
   },
 }));
 
 const mockPrisma = require('../../src/prisma');
 
-
 describe('Random Controller', () => {
-  // setup mocks
   let mockRequest: Partial<Request>;
   let mockResponse: Partial<Response>;
   let mockJson: jest.Mock;
@@ -28,11 +26,8 @@ describe('Random Controller', () => {
       json: mockJson,
     };
 
-    // reset mocks
     jest.clearAllMocks();
-
-    // stop console.error from being called
-    jest.spyOn(console, 'error').mockImplementation(() => { });
+    jest.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   describe('getRandomWine', () => {
@@ -48,14 +43,13 @@ describe('Random Controller', () => {
       mockRequest = {};
 
       mockPrisma.wine.count.mockResolvedValue(100);
-      mockPrisma.wine.findMany.mockResolvedValue([mockWine]);
+      mockPrisma.wine.findFirst.mockResolvedValue(mockWine);
 
       await getRandomWine(mockRequest as Request, mockResponse as Response);
 
       expect(mockPrisma.wine.count).toHaveBeenCalled();
-      expect(mockPrisma.wine.findMany).toHaveBeenCalledWith({
+      expect(mockPrisma.wine.findFirst).toHaveBeenCalledWith({
         skip: expect.any(Number),
-        take: 1,
       });
       expect(mockJson).toHaveBeenCalledWith(mockWine);
     });
@@ -63,18 +57,17 @@ describe('Random Controller', () => {
     it('should handle case when no wines exist', async () => {
       mockRequest = {};
 
-      //mocking the database to return 0 wines and an empty array
       mockPrisma.wine.count.mockResolvedValue(0);
-      mockPrisma.wine.findMany.mockResolvedValue([]);
+      mockPrisma.wine.findFirst.mockResolvedValue(undefined);
 
       await getRandomWine(mockRequest as Request, mockResponse as Response);
 
       expect(mockPrisma.wine.count).toHaveBeenCalled();
-      expect(mockPrisma.wine.findMany).toHaveBeenCalledWith({
-        skip: 0,
-        take: 1,
+      expect(mockPrisma.wine.findFirst).not.toHaveBeenCalled();
+      expect(mockStatus).toHaveBeenCalledWith(404);
+      expect(mockJson).toHaveBeenCalledWith({
+        error: 'No wines available',
       });
-      expect(mockJson).toHaveBeenCalledWith(undefined);
     });
 
     it('should handle database errors', async () => {
@@ -85,7 +78,6 @@ describe('Random Controller', () => {
 
       await getRandomWine(mockRequest as Request, mockResponse as Response);
 
-      //expect the 500 status
       expect(mockStatus).toHaveBeenCalledWith(500);
       expect(mockJson).toHaveBeenCalledWith({
         error: 'Internal server error',
@@ -97,7 +89,7 @@ describe('Random Controller', () => {
 
       mockPrisma.wine.count.mockResolvedValue(100);
       const error = new Error('Fetch error');
-      mockPrisma.wine.findMany.mockRejectedValue(error);
+      mockPrisma.wine.findFirst.mockRejectedValue(error);
 
       await getRandomWine(mockRequest as Request, mockResponse as Response);
 
@@ -110,22 +102,19 @@ describe('Random Controller', () => {
     it('should generate random index within valid range', async () => {
       mockRequest = {};
 
-      //mocking the array to 50 totatl wines to test the range+random index
       const totalWines = 50;
       mockPrisma.wine.count.mockResolvedValue(totalWines);
-      mockPrisma.wine.findMany.mockResolvedValue([{ id: '1', name: 'Test Wine' }]);
+      mockPrisma.wine.findFirst.mockResolvedValue({ id: '1', name: 'Test Wine' });
 
       await getRandomWine(mockRequest as Request, mockResponse as Response);
 
-      expect(mockPrisma.wine.findMany).toHaveBeenCalledWith({
+      expect(mockPrisma.wine.findFirst).toHaveBeenCalledWith({
         skip: expect.any(Number),
-        take: 1,
       });
 
-      // this is to check that the skip value is within the valid range (0-49)
-      const findManyCall = mockPrisma.wine.findMany.mock.calls[0][0];
-      expect(findManyCall.skip).toBeGreaterThanOrEqual(0);
-      expect(findManyCall.skip).toBeLessThan(totalWines);
+      const findFirstCall = mockPrisma.wine.findFirst.mock.calls[0][0];
+      expect(findFirstCall.skip).toBeGreaterThanOrEqual(0);
+      expect(findFirstCall.skip).toBeLessThan(totalWines);
     });
   });
-}); 
+});

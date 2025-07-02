@@ -5,8 +5,9 @@ import {
   Container,
   Fade,
   Flex,
-  Button,
+  IconButton,
 } from '@chakra-ui/react';
+import { ChevronLeftIcon } from "@chakra-ui/icons";
 import PairingSelection from './PairingSelection/PairingSelection';
 import PriceSelection from './PriceSelection/PriceSelection';
 import { fetchFilteredWines } from '../services/wineService';
@@ -83,26 +84,25 @@ function Selection() {
     navigate(`/results?${params.toString()}`);
   }, [region, country, pairing, price, navigate]);
 
-  const handleBack = () => {
+  const handleBackClick = () => {
     navigate('/region');
   };
 
   return (
     <Box>
       <Flex justify="flex-start" mb={4} px={4} position="relative" zIndex="1300">
-        <Button
-          onClick={handleBack}
-          bg="whiteAlpha.600"
-          color="brand.primary"
+        <IconButton
+          aria-label="Go Back"
+          icon={<ChevronLeftIcon boxSize="1.5rem" />}
+          onClick={handleBackClick}
+          bg="brand.primary"
+          color="whiteAlpha.800"
           borderRadius="full"
-          fontSize="lg"
-          px={4}
-          py={2}
+          fontSize="1.5rem"
           boxShadow="md"
-          _hover={{ bg: 'whiteAlpha.800' }}
-        >
-          ←
-        </Button>
+          zIndex={10}
+          _hover={{ bg: 'brand.secondary' }}
+        />
       </Flex>
 
       {!price && (

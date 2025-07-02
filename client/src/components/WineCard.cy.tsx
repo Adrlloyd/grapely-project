@@ -1,5 +1,5 @@
 import React from 'react'
-import WineCard from './WineCard'
+import WineCard from './WineCardDetail'
 
 describe('<WineCard />', () => {
   it('renders', () => {

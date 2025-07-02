@@ -1,154 +1,93 @@
-import { useLocation, useNavigate } from 'react-router';
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Image,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import React from 'react';
+import { Box, Image, Text, VStack } from '@chakra-ui/react';
+import StarRating from './StarRating';
 import type { Wine } from '../types/wine';
+import { motion } from 'framer-motion';
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const MotionBox = motion(Box);
 
 interface WineCardProps {
-  wine?: Wine;
+  wine: Wine;
+  index: number,
+  onRate: (value: number) => void;
+  onSelect: () => void;
 }
 
-function WineCard({ wine }: WineCardProps) {
-  const { search } = useLocation();
-  const navigate = useNavigate();
-  const query = new URLSearchParams(search);
-
-  let selectedBottle = wine;
-  if (!selectedBottle) {
-    const bottleName = decodeURIComponent(query.get('bottle') || '');
-    const storedWines = localStorage.getItem('filteredWines');
-    const wineList: Wine[] = storedWines ? JSON.parse(storedWines) : [];
-    selectedBottle = wineList.find((bottle) => bottle.name === bottleName);
-  }
-
-  const IMAGE_BASE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
-
-  const handleBackClick = () => {
-    navigate(-1);
-  };
-
-  if (!selectedBottle) {
-    return (
-      <Text
-        fontFamily="heading"
-        color="brand.primary"
-        fontSize="xl"
-        textAlign="center"
-      >
-        Bottle Not Found
-      </Text>
-    );
-  }
-
-  const {
-    name,
-    grape,
-    region,
-    country,
-    price,
-    image_url,
-    description,
-    pairingOptions,
-  } = selectedBottle;
-
+const WineCard = React.memo(({ wine, index, onRate, onSelect }: WineCardProps) => {
   return (
-    <Box
-      fontFamily="heading"
-      color="brand.primary"
-      textAlign="center"
-      pb={{ base: "1rem", md: "2rem" }}
+    <MotionBox
+      key={wine.id}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.4, duration: 0.6 }}
+      position="relative"
+      w="260px"
+      bg="white"
+      borderRadius="16px"
+      boxShadow="0 4px 14px rgba(0, 0, 0, 0.08)"
+      cursor="pointer"
+      p="1rem 1rem 1.5rem"
+      transitionProperty="transform, box-shadow"
+      transitionDuration="0.3s"
+      transitionTimingFunction="ease"
+      onClick={() => onSelect()}
+      _hover={{
+        transform: "scale(1.03)",
+        boxShadow: "0 6px 20px rgba(123, 46, 90, 0.2)",
+        zIndex: 2,
+        "& .wine-image-wrapper": {
+          top: "-60px",
+        },
+        "& .wine-image": {
+          transform: "scale(1.12)",
+        },
+      }}
     >
-      <Flex
-        align="center"
-        gap={4}
-        justify="flex-start"
-        px={4}
-        pb={4}
-      >
-        <Button
-          onClick={handleBackClick}
-          bg="whiteAlpha.600"
-          color="brand.primary"
-          border="none"
-          fontSize="xl"
-          px={4}
-          py={2}
-          borderRadius="20px"
-          boxShadow="0 2px 6px rgba(0, 0, 0, 0.1)"
-          _hover={{ bg: 'whiteAlpha.850' }}
-          transition="background 0.2s ease"
-        >
-          ←
-        </Button>
-      </Flex>
-
       <Box
-        bg="transparent"
-        maxW="800px"
-        mx="auto"
-        p="1.5rem 1rem"
+        className="wine-image-wrapper"
+        position="relative"
+        top="-50px"
         display="flex"
-        flexDirection="column"
-        alignItems="center"
+        justifyContent="center"
+        zIndex={1}
+        transition="top 0.3s ease"
       >
-        <Box
-          position="relative"
-          top="-30px"
-          zIndex={1}
-          display="flex"
-          justifyContent="center"
-        >
-          <Image
-            src={`${IMAGE_BASE_URL}/${image_url}`}
-            alt={name}
-            w={{ base: "80px", md: "100px" }}
-            h="auto"
-            objectFit="contain"
-            transition="transform 0.3s ease"
-          />
-        </Box>
-
-        <VStack
-          spacing={3}
-          textAlign="left"
-          w="100%"
-          mt="-10px"
-          fontSize={{ base: "sm", md: "md" }}
-          color="black"
-          fontFamily="body"
-        >
-          <Heading
-            as="h1"
-            fontSize={{ base: "xl", md: "1.6rem" }}
-            fontWeight="bold"
-            mb={4}
-            fontFamily="heading"
-            w="100%"
-            color="brand.primary"
-          >
-            {name}
-          </Heading>
-          
-          <Text w="100%"><strong>Grape:</strong> {grape}</Text>
-          <Text w="100%"><strong>Region:</strong> {region}</Text>
-          <Text w="100%"><strong>Country:</strong> {country}</Text>
-          <Text w="100%"><strong>Price:</strong> ${price}</Text>
-
-          <Text w="100%" mt={4} color="black">
-            <strong>Description:</strong> {description}
-          </Text>
-
-          <Text w="100%"><strong>Pairing:</strong> {pairingOptions.join(', ')}</Text>
-        </VStack>
+        <Image
+          className="wine-image"
+          src={`${BASE_URL}/${wine.image_url}`}
+          alt={wine.name}
+          w="100px"
+          h="auto"
+          objectFit="contain"
+          transition="transform 0.3s ease"
+          zIndex={3}
+        />
       </Box>
-    </Box>
+
+      <VStack spacing={2} pt={2} textAlign="center">
+        <Text fontWeight="600" color="brand.primary" fontSize="md">
+          {wine.name}
+        </Text>
+        <Text fontSize="sm" color="gray.600">
+          <Text as="span" fontWeight="bold">Country:</Text> {wine.country}
+        </Text>
+        <Text fontSize="sm" color="gray.600">
+          <Text as="span" fontWeight="bold">Grape:</Text> {wine.grape}
+        </Text>
+        <Text fontSize="sm" color="gray.600">
+          <Text as="span" fontWeight="bold">Price:</Text> ${wine.price}
+        </Text>
+        <StarRating
+          rating={wine.ratings?.[0]?.score ?? 0}
+          onRate={onRate}
+        />
+      </VStack>
+    </MotionBox>
   );
-}
+}, (prevProps, nextProps) => {
+  return prevProps.wine.ratings?.[0]?.score === nextProps.wine.ratings?.[0]?.score;
+});
 
 export default WineCard;

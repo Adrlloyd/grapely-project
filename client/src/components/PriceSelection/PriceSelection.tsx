@@ -53,7 +53,7 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
           type="range"
           min={sliderMin}
           max={sliderMax}
-          step="0.01"
+          step="1"
           value={minValue}
           onChange={(e) => handleMinChange(Number(e.target.value))}
           className="bottle-slider-vertical"
@@ -75,7 +75,7 @@ function PriceSelection({ minPrice, maxPrice, onConfirm }: PriceSelectionProps) 
           type="range"
           min={sliderMin}
           max={sliderMax}
-          step="0.01"
+          step="1"
           value={maxValue}
           onChange={(e) => handleMaxChange(Number(e.target.value))}
           className="bottle-slider-vertical"

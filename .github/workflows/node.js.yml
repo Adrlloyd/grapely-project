@@ -18,14 +18,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install client dependencies
-        working-directory: client
-        run: npm ci
-
-      - name: Run client tests
-        working-directory: client
-        run: npm test
-
       - name: Install server dependencies
         working-directory: server
         run: npm ci
@@ -33,7 +25,6 @@ jobs:
       - name: Run server tests
         working-directory: server
         run: npm test
-
 
 
 

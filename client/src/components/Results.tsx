@@ -6,21 +6,28 @@ import {
   Flex,
   Grid,
   Heading,
-  Image,
   Text,
-  VStack,
 } from '@chakra-ui/react';
 import { fetchFilteredWines } from '../services/wineService';
 import { fetchFavouriteWines } from '../services/favouritesService';
+import { submitRating, deleteRating } from '../services/ratingService';
 import { useAuth } from '../context/useAuth';
 import type { Wine } from '../types/wine';
-import { motion } from 'framer-motion';
-
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import WineCard from './WineCard';
 
 function Results({ favourites = false }: { favourites?: boolean }) {
   const [wines, setWines] = useState<Wine[]>([]);
   const [shouldRender, setShouldRender] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const winesPerPage = 25;
+  const indexOfLastWine = currentPage * winesPerPage;
+  const indexOfFirstWine = indexOfLastWine - winesPerPage;
+  const currentWines = wines.slice(indexOfFirstWine, indexOfLastWine)
+  const totalPages = Math.ceil(wines.length / winesPerPage);
+  
+  
+  
   const navigate = useNavigate();
   const { search } = useLocation();
   const { user } = useAuth();
@@ -32,7 +39,9 @@ function Results({ favourites = false }: { favourites?: boolean }) {
   const min = query.get('min');
   const max = query.get('max');
 
-  const MotionBox = motion.create(Box);
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
 
   useEffect(() => {
     // Delay initial render to allow fetch to complete
@@ -69,7 +78,7 @@ function Results({ favourites = false }: { favourites?: boolean }) {
       country,
       priceBracket: { min: parseFloat(min), max: parseFloat(max) },
       pairing,
-    })
+    }, user?.token)
       .then((response) => {
         if ('wines' in response) {
           setWines(response.wines);
@@ -95,6 +104,51 @@ function Results({ favourites = false }: { favourites?: boolean }) {
     });
     navigate(`/summary?${encodedParams.toString()}`);
   };
+
+  const handleRating = async (wineId: string, newScore: number) => {
+    if (!user?.token) return;
+
+    const wine = wines.find(wine => wine.id === wineId);
+    const currentScore = wine?.ratings?.[0]?.score;
+
+    try {
+      if (currentScore === newScore) {
+        await deleteRating(user.token, wineId);
+
+        if (favourites) {
+          const updatedFavourites = await fetchFavouriteWines(user.token);
+          if (Array.isArray(updatedFavourites.favourites)) {
+            setWines(updatedFavourites.favourites);
+          }
+        } else {
+        // Otherwise, just update local state
+          setWines(prev => prev.map(wine => wine.id === wineId
+            ? { ...wine, ratings: [] }
+            : wine
+          ));
+        }
+        return;
+      }
+      
+      await submitRating(user.token, wineId, newScore);
+      
+      if (favourites) {
+        const updatedFavourites = await fetchFavouriteWines(user.token);
+        if (Array.isArray(updatedFavourites.favourites)) {
+          setWines(updatedFavourites.favourites);
+        }
+      } else {
+        setWines(prev => prev.map(wine => wine.id === wineId
+          ? { ...wine, ratings: [{ score: newScore }] }
+          : wine
+        ));
+      }
+      
+      console.log("Updated wine list:", wines.map(w => w.ratings));
+    } catch (error) {
+      console.error('Error submitting rating:', error);
+    }
+  }
 
   const handleBackClick = () => {
     navigate(-1);
@@ -156,81 +210,30 @@ function Results({ favourites = false }: { favourites?: boolean }) {
         px={4}
         pb={12}
       >
-        {shouldRender && wines.map((wine, index) => (
-          <MotionBox
+        {shouldRender && currentWines.map((wine, index) => (
+          <WineCard
+            index={index}
             key={wine.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.6, duration: 0.8 }}
-            position="relative"
-            w="260px"
-            bg="white"
-            borderRadius="16px"
-            boxShadow="0 4px 14px rgba(0, 0, 0, 0.08)"
-            cursor="pointer"
-            p="1rem 1rem 1.5rem"
-            transitionProperty="transform, box-shadow"
-            transitionDuration="0.3s"
-            transitionTimingFunction="ease"
-            onClick={() => handleSelect(wine)}
-            _hover={{
-              transform: "scale(1.03)",
-              boxShadow: "0 6px 20px rgba(123, 46, 90, 0.2)",
-              zIndex: 2,
-              "& .wine-image-wrapper": {
-                top: "-60px",
-              },
-              "& .wine-image": {
-                transform: "scale(1.12)",
-              },
-            }}
-          >
-            <Box
-              className="wine-image-wrapper"
-              position="relative"
-              top="-50px"
-              display="flex"
-              justifyContent="center"
-              zIndex={1}
-              transition="top 0.3s ease"
-            >
-              <Image
-                className="wine-image"
-                src={`${BASE_URL}/${wine.image_url}`}
-                alt={wine.name}
-                w="100px"
-                h="auto"
-                objectFit="contain"
-                transition="transform 0.3s ease"
-                zIndex={3}
-              />
-            </Box>
-            
-            <VStack
-              spacing={2}
-              pt={2}
-              textAlign="center"
-            >
-              <Text
-                fontWeight="600"
-                color="brand.primary"
-                fontSize="md"
-              >
-                {wine.name}
-              </Text>
-              <Text fontFamily="body" fontSize="sm" color="gray.600">
-                <Text as="span" fontWeight="bold">Country:</Text> {wine.country}
-              </Text>
-              <Text fontFamily="body" fontSize="sm" color="gray.600">
-                <Text as="span" fontWeight="bold">Grape:</Text> {wine.grape}
-              </Text>
-              <Text fontFamily="body" fontSize="sm" color="gray.600">
-                <Text as="span" fontWeight="bold">Price:</Text> ${wine.price}
-              </Text>
-            </VStack>
-          </MotionBox>
+            wine={wine}
+            onRate={(value) => handleRating(wine.id, value)}
+            onSelect={() => handleSelect(wine)}
+          />
         ))}
       </Grid>
+      {shouldRender && wines.length > 0 && (
+        <Flex justify="center" align="center" mt={6} mb={16} gap={4}>
+          <Button
+            onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
+            isDisabled={currentPage === 1}
+            leftIcon={<Text fontSize="xl">←</Text>}
+          >Prev</Button>
+          <Text>Page {currentPage} of {totalPages}</Text>
+          <Button
+            onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
+            isDisabled={currentPage === totalPages}
+            rightIcon={<Text fontSize="xl">→</Text>}
+          >Next</Button>
+        </Flex>)}
     </Box>
   );
 }

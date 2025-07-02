@@ -7,7 +7,6 @@ import {
   Heading,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import { keyframes } from '@emotion/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { usePairingCarousel } from './usePairingCarousel';
 
@@ -15,15 +14,6 @@ interface PairingSelectionProps {
   onSelect: (pairing: string) => void;
   availableOptions: string[];
 }
-
-// Define the shake animation keyframes
-const shake = keyframes`
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  50% { transform: translateX(4px); }
-  75% { transform: translateX(-4px); }
-  100% { transform: translateX(0); }
-`;
 
 function PairingSelection({ onSelect, availableOptions }: PairingSelectionProps) {
   const {
@@ -71,13 +61,13 @@ function PairingSelection({ onSelect, availableOptions }: PairingSelectionProps)
           top="50%"
           left={{ base: '0.25rem', md: '0.5rem' }}
           transform="translateY(-50%)"
-          bg="whiteAlpha.600"
-          color="brand.primary"
+          bg="brand.primary"
+          color="whiteAlpha.800"
           borderRadius="full"
           fontSize="1.5rem"
           boxShadow="md"
           zIndex={10}
-          _hover={{ bg: 'whiteAlpha.800' }}
+          _hover={{ bg: 'brand.secondary' }}
         />
 
         <Flex
@@ -128,7 +118,7 @@ function PairingSelection({ onSelect, availableOptions }: PairingSelectionProps)
                 _hover={{
                   borderColor: 'brand.secondary',
                   color: 'brand.secondary',
-                  animation: `${shake} 0.4s ease-in-out`,
+                  animation: `pulseGlow 2s ease-in-out`,
                 }}
               >
                 {option}
@@ -145,13 +135,13 @@ function PairingSelection({ onSelect, availableOptions }: PairingSelectionProps)
           top="50%"
           right={{ base: '0.25rem', md: '0.5rem' }}
           transform="translateY(-50%)"
-          bg="whiteAlpha.600"
-          color="brand.primary"
+          bg="brand.primary"
+          color="whiteAlpha.800"
           borderRadius="full"
           fontSize="1.5rem"
           boxShadow="md"
           zIndex={10}
-          _hover={{ bg: 'whiteAlpha.800' }}
+          _hover={{ bg: 'brand.secondary' }}
         />
       </Box>
     </Box>

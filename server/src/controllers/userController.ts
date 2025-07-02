@@ -1,67 +1,57 @@
 import bcrypt from 'bcrypt';
 import { Response } from 'express';
-import { PrismaClient } from '../generated/prisma';
-import type { AuthenticatedRequest } from '../middleware/auth'
+import prisma from '../prisma';
+import type { AuthenticatedRequest } from '../middleware/auth';
 
-const prisma = new PrismaClient();
-
-// PUT
 const updateUserName = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   const userId = req.userId;
   const { firstName, lastName } = req.body;
-  try {
-    if (!firstName || !lastName) {
-      res.status(400).json({ message: 'Both a first and last name are required to update credentials.' });
-      return;
-    }
 
-    const user = await prisma.user.findUnique({
-      where: {id: userId}
-    });
+  if (!firstName || !lastName) {
+    res.status(400).json({ error: 'First and last name are required.' });
+    return;
+  }
+
+  try {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
 
     if (!user) {
-      res.status(404).json({ message: 'User not found.' });
+      res.status(404).json({ error: 'User not found.' });
       return;
     }
 
     await prisma.user.update({
       where: { id: userId },
-      data: {
-        firstName: firstName,
-        lastName: lastName
-      },
+      data: { firstName, lastName },
     });
 
-    res.status(200).json({ message: 'Name successfully updated.' });
+    res.status(200).json({ message: 'Name updated successfully.' });
   } catch (error) {
-    console.log('Error updating name: ', error);
-    res.status(500).json({ error: 'Internal server error'});
+    console.error('Error updating name:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-// PUT
 const updateUserPassword = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   const userId = req.userId;
   const { currentPassword, newPassword } = req.body;
-  try {
-    if (!currentPassword || !newPassword) {
-      res.status(400).json({ message: 'Both a current and a new password are required to update credentials.' });
-      return;
-    }
 
-    const user = await prisma.user.findUnique({
-      where: {id: userId}
-    });
+  if (!currentPassword || !newPassword) {
+    res.status(400).json({ error: 'Both current and new passwords are required.' });
+    return;
+  }
+
+  try {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
 
     if (!user) {
-      res.status(404).json({ message: 'User not found.' });
+      res.status(404).json({ error: 'User not found.' });
       return;
     }
 
     const passwordMatch = await bcrypt.compare(currentPassword, user.password);
-
     if (!passwordMatch) {
-      res.status(401).json({ error: 'Current password is incorrect' });
+      res.status(401).json({ error: 'Current password is incorrect.' });
       return;
     }
 
@@ -72,25 +62,22 @@ const updateUserPassword = async (req: AuthenticatedRequest, res: Response): Pro
       data: { password: hashedPassword },
     });
 
-    res.status(200).json({ message: 'Password successfully updated.' });
+    res.status(200).json({ message: 'Password updated successfully.' });
   } catch (error) {
-    console.log('Error updating password: ', error);
-    res.status(500).json({ error: 'Internal server error'});
+    console.error('Error updating password:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-
-// DELETE
 const deleteUser = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   const userId = req.userId;
+
   try {
-    await prisma.user.delete({
-      where: {id: userId}
-    });
-    res.status(200).json({message: 'User deleted successfully'});
+    await prisma.user.delete({ where: { id: userId } });
+    res.status(200).json({ message: 'User deleted successfully.' });
   } catch (error) {
-    console.error('Error deleting user: ',error);
-    res.status(500).json({error: 'Internal server error'});
+    console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 

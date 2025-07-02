@@ -82,7 +82,7 @@ describe('Auth Controller', () => {
         },
       });
       expect(JWT.sign).toHaveBeenCalledWith(
-        { userID: '1', name: 'jonny' },
+        { userId: '1', name: 'jonny' },
         'test-secret',
         { expiresIn: '30m' }
       );
@@ -192,7 +192,7 @@ describe('Auth Controller', () => {
       });
       expect(bcrypt.compare).toHaveBeenCalledWith('password123', 'hashedPassword');
       expect(JWT.sign).toHaveBeenCalledWith(
-        { userID: '1', name: 'jonny' },
+        { userId: '1', name: 'jonny' },
         'test-secret',
         { expiresIn: '30m' }
       );

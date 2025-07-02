@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const MotionBox = motion(Box);
+const MotionBox = motion.create(Box);
 
 interface WineCardProps {
   wine: Wine;

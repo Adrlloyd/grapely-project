@@ -10,11 +10,12 @@ interface AuthenticatedRequest extends Request {
   userId: string;
 }
 
-const authenticate = (req: Request, res: Response, next: NextFunction) => {
+const authenticate = (req: Request, res: Response, next: NextFunction): void => {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Authorization header missing or invalid' });
+  if (!authHeader?.startsWith('Bearer ')) {
+    res.status(401).json({ error: 'Authorization header missing or invalid' });
+    return;
   }
 
   const token = authHeader.split(' ')[1];
@@ -25,29 +26,28 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
     next();
   } catch (error) {
     console.warn('Invalid token.');
-    return res.status(401).json({ error: 'Invalid or expired token' });
+    res.status(401).json({ error: 'Invalid or expired token' });
   }
 };
 
-
-function optionalAuthenticate(req: Request, res: Response, next: NextFunction) {
+const optionalAuthenticate = (req: Request, _res: Response, next: NextFunction): void => {
   const authHeader = req.headers.authorization;
-  const token = authHeader?.split(' ')[1];
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
 
   if (!token) {
-    return next();
+    next();
+    return;
   }
 
   try {
-    const decoded = JWT.verify(token, process.env.JWT_SECRET!) as { userId: string };
+    const decoded = JWT.verify(token, process.env.JWT_SECRET as string) as JWTPayload;
     (req as AuthenticatedRequest).userId = decoded.userId;
   } catch (error) {
     console.warn('Invalid token, continuing without userId.');
   }
 
   next();
-}
-
+};
 
 export { authenticate, optionalAuthenticate };
-export type { AuthenticatedRequest }
+export type { AuthenticatedRequest };

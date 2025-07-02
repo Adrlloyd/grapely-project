@@ -9,7 +9,9 @@ import {
   HStack,
   Alert,
   AlertIcon,
+  IconButton
 } from '@chakra-ui/react';
+import { ChevronLeftIcon } from '@chakra-ui/icons';
 import { useAuth } from '../context/useAuth';
 import { updateName, updatePassword, deleteUser } from '../services/userService';
 import NameModal from './Modals/NameModal';
@@ -81,47 +83,64 @@ function UserProfile() {
   }
 
   return (
-    <Box
-      maxW="600px"
-      mx="auto"
-      mt="5rem"
-      p={6}
-      bg="whiteAlpha.900"
-      boxShadow="lg"
-      borderRadius="lg"
-      fontFamily="heading"
-      color="brand.primary"
-    >
-      <Heading as="h3" size="lg" mb={4} textAlign="center">
-        User Profile
-      </Heading>
-      <VStack fontFamily="body" spacing={2} align="center" mb={6}>
-        <Text fontWeight="thin">Name:</Text>
-        <Text fontWeight="bold">{user.firstName} {user.lastName}</Text>
-        <Text fontWeight="thin">Email:</Text>
-        <Text fontWeight="bold">{user.email}</Text>
-      </VStack>
+    <Box position="relative" overflowX="hidden" py="3rem">
+      <IconButton
+        aria-label="Go Back"
+        icon={<ChevronLeftIcon boxSize="1.5rem" />}
+        onClick={() => navigate(-1)}
+        position="absolute"
+        top="1rem"
+        left="1rem"
+        bg="brand.primary"
+        color="whiteAlpha.800"
+        borderRadius="full"
+        fontSize="1.5rem"
+        boxShadow="md"
+        zIndex={10}
+        _hover={{ bg: 'brand.secondary' }}
+      />
+      <Box
+        maxW="600px"
+        mx="auto"
+        mt="5rem"
+        p={6}
+        bg="whiteAlpha.900"
+        boxShadow="lg"
+        borderRadius="lg"
+        fontFamily="heading"
+        color="brand.primary"
+      >
+        <Heading as="h3" size="lg" mb={4} textAlign="center">
+          User Profile
+        </Heading>
+        <VStack fontFamily="body" spacing={2} align="center" mb={6}>
+          <Text fontWeight="thin">Name:</Text>
+          <Text fontWeight="bold">{user.firstName} {user.lastName}</Text>
+          <Text fontWeight="thin">Email:</Text>
+          <Text fontWeight="bold">{user.email}</Text>
+        </VStack>
 
-      <HStack fontFamily="body"  justify="center" spacing={4} pt={2}>
-        <Button w="180px" h="40px" size="sm" onClick={() => setActiveModal('name')}>Update Name</Button>
-        <Button w="180px" h="40px" size="sm" onClick={() => setActiveModal('password')}>Change Password</Button>
-        <Button w="180px" h="40px" size="sm" onClick={() => setActiveModal('delete')}>Delete Account</Button>
-      </HStack>
-      {activeModal === 'name' && (
-        <NameModal onSubmit={handleUpdateName} onCancel={() => setActiveModal(null)}/>
-      )}
-      {activeModal === 'password' && (
-        <PasswordModal onSubmit={handleUpdatePassword} onCancel={() => setActiveModal(null)}/>
-      )}
-      {activeModal === 'delete' && (
-        <DeleteModal onConfirm={handleDeleteUser} onCancel={() => setActiveModal(null)}/>
-      )}
-      {status && (
-        <Alert status="info" mt={6} borderRadius="md">
-          <AlertIcon />
-          {status}
-        </Alert>
-      )}
+        <HStack fontFamily="body"  justify="center" spacing={4} pt={2}>
+          <Button w="180px" h="40px" size="sm" onClick={() => setActiveModal('name')}>Update Name</Button>
+          <Button w="180px" h="40px" size="sm" onClick={() => setActiveModal('password')}>Change Password</Button>
+          <Button w="180px" h="40px" size="sm" onClick={() => setActiveModal('delete')}>Delete Account</Button>
+        </HStack>
+        {activeModal === 'name' && (
+          <NameModal onSubmit={handleUpdateName} onCancel={() => setActiveModal(null)}/>
+        )}
+        {activeModal === 'password' && (
+          <PasswordModal onSubmit={handleUpdatePassword} onCancel={() => setActiveModal(null)}/>
+        )}
+        {activeModal === 'delete' && (
+          <DeleteModal onConfirm={handleDeleteUser} onCancel={() => setActiveModal(null)}/>
+        )}
+        {status && (
+          <Alert status="info" mt={6} borderRadius="md">
+            <AlertIcon />
+            {status}
+          </Alert>
+        )}
+      </Box>
     </Box>
   );
 }

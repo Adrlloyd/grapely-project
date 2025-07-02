@@ -1,13 +1,14 @@
 import { useLocation, useNavigate } from 'react-router';
 import {
   Box,
-  Button,
+  IconButton,
   Flex,
   Heading,
   Image,
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { ChevronLeftIcon } from "@chakra-ui/icons";
 import type { Wine } from '../types/wine';
 
 interface WineCardProps {
@@ -71,21 +72,17 @@ function WineCard({ wine }: WineCardProps) {
         px={4}
         pb={4}
       >
-        <Button
+        <IconButton
+          aria-label="Go Back"
+          icon={<ChevronLeftIcon boxSize="1.5rem" />}
           onClick={handleBackClick}
           bg="whiteAlpha.600"
           color="brand.primary"
-          border="none"
-          fontSize="xl"
-          px={4}
-          py={2}
-          borderRadius="20px"
-          boxShadow="0 2px 6px rgba(0, 0, 0, 0.1)"
-          _hover={{ bg: 'whiteAlpha.850' }}
-          transition="background 0.2s ease"
-        >
-          ←
-        </Button>
+          borderRadius="full"
+          fontSize="1.5rem"
+          boxShadow="md"
+          _hover={{ bg: 'whiteAlpha.800' }}
+        />
       </Flex>
 
       <Box

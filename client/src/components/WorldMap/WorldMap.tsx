@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ComposableMap, Geographies } from 'react-simple-maps';
-import { Box, Flex, Button, Image, Text } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Image, Text } from '@chakra-ui/react';
+import { ChevronLeftIcon } from "@chakra-ui/icons";
 import RegionCardList from '../RegionCardList/RegionCardList';
 import { wineRegions } from '../../config/wineRegions';
 import { renderGeographies } from './renderGeographies';
@@ -61,19 +62,17 @@ function WorldMap() {
         position="relative"
         zIndex="1300"
       >
-        <Button
+        <IconButton
+          aria-label="Go Back"
+          icon={<ChevronLeftIcon boxSize="1.5rem" />}
           onClick={handleBackToRegions}
           bg="whiteAlpha.600"
           color="brand.primary"
           borderRadius="full"
-          fontSize="lg"
-          px={4}
-          py={2}
+          fontSize="1.5rem"
           boxShadow="md"
           _hover={{ bg: 'whiteAlpha.800' }}
-        >
-          ←
-        </Button>
+        />
       </Flex>
 
       <Box

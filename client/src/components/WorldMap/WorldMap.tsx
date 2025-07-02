@@ -66,12 +66,13 @@ function WorldMap() {
           aria-label="Go Back"
           icon={<ChevronLeftIcon boxSize="1.5rem" />}
           onClick={handleBackToRegions}
-          bg="whiteAlpha.600"
-          color="brand.primary"
+          bg="brand.primary"
+          color="whiteAlpha.800"
           borderRadius="full"
           fontSize="1.5rem"
           boxShadow="md"
-          _hover={{ bg: 'whiteAlpha.800' }}
+          zIndex={10}
+          _hover={{ bg: 'brand.secondary' }}
         />
       </Flex>
 

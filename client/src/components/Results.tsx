@@ -175,12 +175,13 @@ function Results({ favourites = false }: { favourites?: boolean }) {
           aria-label="Go Back"
           icon={<ChevronLeftIcon boxSize="1.5rem" />}
           onClick={handleBackClick}
-          bg="whiteAlpha.600"
-          color="brand.primary"
+          bg="brand.primary"
+          color="whiteAlpha.800"
           borderRadius="full"
           fontSize="1.5rem"
           boxShadow="md"
-          _hover={{ bg: 'whiteAlpha.800' }}
+          zIndex={10}
+          _hover={{ bg: 'brand.secondary' }}
         />
       </Flex>
 
@@ -224,12 +225,13 @@ function Results({ favourites = false }: { favourites?: boolean }) {
             icon={<ChevronLeftIcon boxSize="1.5rem" />}
             onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
             isDisabled={currentPage === 1}
-            bg="whiteAlpha.600"
-            color="brand.primary"
+            bg="brand.primary"
+            color="whiteAlpha.800"
             borderRadius="full"
             fontSize="1.5rem"
             boxShadow="md"
-            _hover={{ bg: 'whiteAlpha.800' }}
+            zIndex={10}
+            _hover={{ bg: 'brand.secondary' }}
           />
 
           <Text fontWeight="medium">
@@ -241,12 +243,13 @@ function Results({ favourites = false }: { favourites?: boolean }) {
             icon={<ChevronRightIcon boxSize="1.5rem" />}
             onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
             isDisabled={currentPage === totalPages}
-            bg="whiteAlpha.600"
-            color="brand.primary"
+            bg="brand.primary"
+            color="whiteAlpha.800"
             borderRadius="full"
             fontSize="1.5rem"
             boxShadow="md"
-            _hover={{ bg: 'whiteAlpha.800' }}
+            zIndex={10}
+            _hover={{ bg: 'brand.secondary' }}
           />
         </Flex>)}
     </Box>

@@ -58,6 +58,20 @@ const theme = extendTheme({
         bg: 'white',
         color: 'gray.800',
       },
+      '@keyframes pulseGlow': {
+        '0%': {
+          transform: 'scale(1)',
+          boxShadow: '0 0 0 0 rgba(74, 124, 89, 0.6)',
+        },
+        '50%': {
+          transform: 'scale(1.01)',
+          boxShadow: '0 0 0 12px rgba(74, 124, 89, 0)',
+        },
+        '100%': {
+          transform: 'scale(1)',
+          boxShadow: '0 0 0 0 rgba(74, 124, 89, 0)',
+        },
+      },
     },
   },
   components: {
@@ -116,7 +130,7 @@ const theme = extendTheme({
       baseStyle: {
         fontFamily: 'heading',
         fontWeight: '600',
-        color: 'brand.primary', // default all headings to primary color
+        color: 'brand.primary',
       },
       variants: {
         wine: {

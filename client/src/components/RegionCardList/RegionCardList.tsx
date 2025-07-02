@@ -112,7 +112,7 @@ export default function RegionCardList({ onSelect }: Props) {
               _hover={{
                 borderColor: 'brand.secondary',
                 color: 'brand.secondary',
-                animation: `${shake} 0.4s ease-in-out`,
+                animation: `pulseGlow 2s ease-in-out`,
               }}
             >
               🍇 {name}

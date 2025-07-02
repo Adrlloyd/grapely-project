@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import {
   Box,
-  Button,
   Flex,
   Grid,
   Heading,
   Text,
+  IconButton,
 } from '@chakra-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { fetchFilteredWines } from '../services/wineService';
 import { fetchFavouriteWines } from '../services/favouritesService';
 import { submitRating, deleteRating } from '../services/ratingService';
@@ -170,21 +171,18 @@ function Results({ favourites = false }: { favourites?: boolean }) {
         px={4}
         pb={4}
       >
-        <Button
+        <IconButton
+          aria-label="Go Back"
+          icon={<ChevronLeftIcon boxSize="1.5rem" />}
           onClick={handleBackClick}
-          bg="whiteAlpha.600"
-          color="brand.primary"
-          border="none"
-          fontSize="lg"
-          px={4}
-          py={2}
-          borderRadius="20px"
-          boxShadow="0 2px 6px rgba(0, 0, 0, 0.1)"
-          _hover={{ bg: 'whiteAlpha.850' }}
-          transition="background 0.3s ease"
-        >
-          ←
-        </Button>
+          bg="brand.primary"
+          color="whiteAlpha.800"
+          borderRadius="full"
+          fontSize="1.5rem"
+          boxShadow="md"
+          zIndex={10}
+          _hover={{ bg: 'brand.secondary' }}
+        />
       </Flex>
 
       <Heading
@@ -221,18 +219,38 @@ function Results({ favourites = false }: { favourites?: boolean }) {
         ))}
       </Grid>
       {shouldRender && wines.length > 0 && (
-        <Flex justify="center" align="center" mt={6} mb={16} gap={4}>
-          <Button
+        <Flex justify="center" align="center" mt={6} mb={16} gap={6}>
+          <IconButton
+            aria-label="Previous Page"
+            icon={<ChevronLeftIcon boxSize="1.5rem" />}
             onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
             isDisabled={currentPage === 1}
-            leftIcon={<Text fontSize="xl">←</Text>}
-          >Prev</Button>
-          <Text>Page {currentPage} of {totalPages}</Text>
-          <Button
+            bg="brand.primary"
+            color="whiteAlpha.800"
+            borderRadius="full"
+            fontSize="1.5rem"
+            boxShadow="md"
+            zIndex={10}
+            _hover={{ bg: 'brand.secondary' }}
+          />
+
+          <Text fontWeight="medium">
+            Page {currentPage} of {totalPages}
+          </Text>
+
+          <IconButton
+            aria-label="Next Page"
+            icon={<ChevronRightIcon boxSize="1.5rem" />}
             onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
             isDisabled={currentPage === totalPages}
-            rightIcon={<Text fontSize="xl">→</Text>}
-          >Next</Button>
+            bg="brand.primary"
+            color="whiteAlpha.800"
+            borderRadius="full"
+            fontSize="1.5rem"
+            boxShadow="md"
+            zIndex={10}
+            _hover={{ bg: 'brand.secondary' }}
+          />
         </Flex>)}
     </Box>
   );
